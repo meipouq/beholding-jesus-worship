@@ -210,11 +210,18 @@ export const LineupsListView: React.FC = () => {
                 </div>
               </div>
 
-              {/* Worship Leader & Assigned Vocalists */}
-              <div className="py-3 text-xs text-stone-600 space-y-1">
-                <div>
-                  <span className="text-stone-400 font-medium">Worship Leader:</span>{' '}
-                  <strong className="text-stone-800">{lineup.worship_leader_name}</strong>
+              {/* Author, Worship Leader & Assigned Vocalists */}
+              <div className="py-2.5 text-xs text-stone-600 space-y-1">
+                <div className="flex items-center justify-between gap-2">
+                  <div>
+                    <span className="text-stone-400 font-medium">Worship Leader:</span>{' '}
+                    <strong className="text-stone-800">{lineup.worship_leader_name}</strong>
+                  </div>
+                  {lineup.created_by && (
+                    <span className="text-[10px] font-bold text-amber-800 px-2 py-0.5 rounded-full bg-amber-100/70 border border-amber-200/80">
+                      By {lineup.created_by.split(' ')[0]}
+                    </span>
+                  )}
                 </div>
                 {lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0 && (
                   <div className="truncate">

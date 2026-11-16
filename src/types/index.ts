@@ -1,5 +1,6 @@
 export interface TeamMember {
   id: string;
+  username?: string;
   name: string;
   email: string;
   avatar: string;
@@ -185,7 +186,7 @@ export interface NotificationItem {
   id: string;
   title: string;
   message: string;
-  type: 'lineup' | 'song' | 'rehearsal' | 'task' | 'announcement' | 'chat';
+  type: 'lineup' | 'song' | 'rehearsal' | 'task' | 'announcement';
   link_module?: string;
   is_read: boolean;
   created_at: string;

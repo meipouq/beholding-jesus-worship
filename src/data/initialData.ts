@@ -6,8 +6,6 @@ import {
   Rehearsal,
   Task,
   Announcement,
-  Conversation,
-  ChatMessage,
   NotificationItem,
   TeamActivity,
   WorshipResource
@@ -37,47 +35,6 @@ export const INITIAL_REHEARSALS: Rehearsal[] = [];
 export const INITIAL_TASKS: Task[] = [];
 
 export const INITIAL_ANNOUNCEMENTS: Announcement[] = [];
-
-export const INITIAL_CONVERSATIONS: Conversation[] = [
-  {
-    id: 'conv-1',
-    name: 'General Worship Team',
-    is_direct: false,
-    channel_type: 'general',
-    description: 'Main chat for general worship team fellowship, praise reports, and coordination.',
-    participant_ids: [],
-    unread_count: 0
-  },
-  {
-    id: 'conv-2',
-    name: 'Sunday Service Lineup',
-    is_direct: false,
-    channel_type: 'lineups',
-    description: 'Discussion and notes specific to Sunday worship setlists and arrangements.',
-    participant_ids: [],
-    unread_count: 0
-  },
-  {
-    id: 'conv-3',
-    name: 'Vocalists & Harmonies',
-    is_direct: false,
-    channel_type: 'vocalists',
-    description: 'Vocal warmups, key adjustments, and harmony assignments.',
-    participant_ids: [],
-    unread_count: 0
-  },
-  {
-    id: 'conv-4',
-    name: 'Band & Rhythm Section',
-    is_direct: false,
-    channel_type: 'band',
-    description: 'Drum cues, bass grooves, electric guitar tones, and tempo sync.',
-    participant_ids: [],
-    unread_count: 0
-  }
-];
-
-export const INITIAL_MESSAGES: ChatMessage[] = [];
 
 export const INITIAL_NOTIFICATIONS: NotificationItem[] = [];
 

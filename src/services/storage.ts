@@ -6,8 +6,6 @@ import {
   Rehearsal,
   Task,
   Announcement,
-  Conversation,
-  ChatMessage,
   NotificationItem,
   TeamActivity,
   WorshipResource
@@ -21,8 +19,6 @@ import {
   INITIAL_REHEARSALS,
   INITIAL_TASKS,
   INITIAL_ANNOUNCEMENTS,
-  INITIAL_CONVERSATIONS,
-  INITIAL_MESSAGES,
   INITIAL_NOTIFICATIONS,
   INITIAL_ACTIVITIES,
   INITIAL_RESOURCES
@@ -37,8 +33,6 @@ const STORAGE_KEYS = {
   REHEARSALS: 'bjc_worship_rehearsals',
   TASKS: 'bjc_worship_tasks',
   ANNOUNCEMENTS: 'bjc_worship_announcements',
-  CONVERSATIONS: 'bjc_worship_conversations',
-  MESSAGES: 'bjc_worship_messages',
   NOTIFICATIONS: 'bjc_worship_notifications',
   ACTIVITIES: 'bjc_worship_activities',
   RESOURCES: 'bjc_worship_resources',
@@ -58,7 +52,6 @@ function initializeCleanSlate(): void {
         localStorage.removeItem(STORAGE_KEYS.REHEARSALS);
         localStorage.removeItem(STORAGE_KEYS.TASKS);
         localStorage.removeItem(STORAGE_KEYS.ANNOUNCEMENTS);
-        localStorage.removeItem(STORAGE_KEYS.MESSAGES);
         localStorage.removeItem(STORAGE_KEYS.ACTIVITIES);
         localStorage.removeItem(STORAGE_KEYS.NOTIFICATIONS);
         localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
@@ -325,56 +318,6 @@ export const StorageService = {
     return announcements;
   },
 
-  // Chat Conversations & Messages
-  getConversations(): Conversation[] {
-    return getItem<Conversation[]>(STORAGE_KEYS.CONVERSATIONS, INITIAL_CONVERSATIONS);
-  },
-
-  saveConversation(conv: Conversation): Conversation[] {
-    const convs = this.getConversations();
-    const index = convs.findIndex(c => c.id === conv.id);
-    let updated: Conversation[];
-    if (index >= 0) {
-      updated = [...convs];
-      updated[index] = conv;
-    } else {
-      updated = [...convs, conv];
-    }
-    setItem(STORAGE_KEYS.CONVERSATIONS, updated);
-    return updated;
-  },
-
-  getMessages(): ChatMessage[] {
-    return getItem<ChatMessage[]>(STORAGE_KEYS.MESSAGES, INITIAL_MESSAGES);
-  },
-
-  saveMessage(msg: ChatMessage): ChatMessage[] {
-    const messages = this.getMessages();
-    const updated = [...messages, msg];
-    setItem(STORAGE_KEYS.MESSAGES, updated);
-
-    // Update conversation last_message
-    const convs = this.getConversations();
-    const conv = convs.find(c => c.id === msg.conversation_id);
-    if (conv) {
-      conv.last_message = `${msg.sender_name.split(' ')[0]}: ${msg.content.substring(0, 45)}`;
-      conv.last_message_at = 'Just now';
-      setItem(STORAGE_KEYS.CONVERSATIONS, [...convs]);
-    }
-
-    return updated;
-  },
-
-  updateMessage(msg: ChatMessage): ChatMessage[] {
-    const messages = this.getMessages();
-    const index = messages.findIndex(m => m.id === msg.id);
-    if (index >= 0) {
-      messages[index] = msg;
-      setItem(STORAGE_KEYS.MESSAGES, [...messages]);
-    }
-    return messages;
-  },
-
   // Notifications
   getNotifications(): NotificationItem[] {
     return getItem<NotificationItem[]>(STORAGE_KEYS.NOTIFICATIONS, INITIAL_NOTIFICATIONS);
@@ -463,8 +406,6 @@ export const StorageService = {
         rehearsals: this.getRehearsals(),
         tasks: this.getTasks(),
         announcements: this.getAnnouncements(),
-        conversations: this.getConversations(),
-        messages: this.getMessages(),
         notifications: this.getNotifications(),
         activities: this.getActivities(),
         resources: this.getResources()
@@ -485,8 +426,6 @@ export const StorageService = {
       if (Array.isArray(data.rehearsals)) setItem(STORAGE_KEYS.REHEARSALS, data.rehearsals);
       if (Array.isArray(data.tasks)) setItem(STORAGE_KEYS.TASKS, data.tasks);
       if (Array.isArray(data.announcements)) setItem(STORAGE_KEYS.ANNOUNCEMENTS, data.announcements);
-      if (Array.isArray(data.conversations)) setItem(STORAGE_KEYS.CONVERSATIONS, data.conversations);
-      if (Array.isArray(data.messages)) setItem(STORAGE_KEYS.MESSAGES, data.messages);
       if (Array.isArray(data.notifications)) setItem(STORAGE_KEYS.NOTIFICATIONS, data.notifications);
       if (Array.isArray(data.activities)) setItem(STORAGE_KEYS.ACTIVITIES, data.activities);
       if (Array.isArray(data.resources)) setItem(STORAGE_KEYS.RESOURCES, data.resources);
@@ -505,8 +444,6 @@ export const StorageService = {
     setItem(STORAGE_KEYS.REHEARSALS, INITIAL_REHEARSALS);
     setItem(STORAGE_KEYS.TASKS, INITIAL_TASKS);
     setItem(STORAGE_KEYS.ANNOUNCEMENTS, INITIAL_ANNOUNCEMENTS);
-    setItem(STORAGE_KEYS.CONVERSATIONS, INITIAL_CONVERSATIONS);
-    setItem(STORAGE_KEYS.MESSAGES, INITIAL_MESSAGES);
     setItem(STORAGE_KEYS.NOTIFICATIONS, INITIAL_NOTIFICATIONS);
     setItem(STORAGE_KEYS.ACTIVITIES, INITIAL_ACTIVITIES);
     setItem(STORAGE_KEYS.RESOURCES, INITIAL_RESOURCES);

@@ -7,7 +7,7 @@ import {
   Play,
   ArrowRight,
   PlusCircle,
-  MessageCircle,
+  ListMusic,
   FileText,
   Clock,
   Sparkles,
@@ -137,9 +137,14 @@ export const DashboardView: React.FC = () => {
                   <span className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider block">
                     Next Service Lineup
                   </span>
-                  <span className="text-xs font-bold text-stone-900">
+                  <span className="text-xs font-bold text-stone-900 block">
                     {formatServiceDate(currentLineup.service_date, currentLineup.service_time)}
                   </span>
+                  {currentLineup.created_by && (
+                    <span className="text-[10px] text-amber-800 font-semibold block mt-0.5">
+                      Posted by {currentLineup.created_by}
+                    </span>
+                  )}
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-stone-400" />
@@ -314,11 +319,11 @@ export const DashboardView: React.FC = () => {
             </button>
 
             <button
-              onClick={() => setActiveModule('chat')}
+              onClick={() => setActiveModule('lineups')}
               className="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-[#E8E2D7] shadow-soft hover:bg-stone-50 transition-colors"
             >
-              <MessageCircle className="w-5 h-5 text-stone-800 mb-1.5" />
-              <span className="text-[11px] font-semibold text-stone-800 text-center">Team Chat</span>
+              <ListMusic className="w-5 h-5 text-stone-800 mb-1.5" />
+              <span className="text-[11px] font-semibold text-stone-800 text-center">Lineups</span>
             </button>
 
             <button
@@ -402,9 +407,16 @@ export const DashboardView: React.FC = () => {
                     <h2 className="text-base sm:text-lg font-bold text-stone-900 leading-tight">
                       {currentLineup.title}
                     </h2>
-                    <p className="text-xs text-stone-500 mt-0.5">
-                      {formatServiceDate(currentLineup.service_date, currentLineup.service_time)}
-                    </p>
+                    <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                      <p className="text-xs text-stone-500">
+                        {formatServiceDate(currentLineup.service_date, currentLineup.service_time)}
+                      </p>
+                      {currentLineup.created_by && (
+                        <span className="text-[10px] font-bold text-amber-800 px-2 py-0.5 rounded-full bg-amber-100/70 border border-amber-200/80">
+                          By {currentLineup.created_by}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -608,7 +620,7 @@ export const DashboardView: React.FC = () => {
                 <h3 className="text-sm font-bold text-stone-900">Recent Activity</h3>
               </div>
               <button
-                onClick={() => setActiveModule('chat')}
+                onClick={() => setActiveModule('announcements')}
                 className="text-xs font-semibold text-stone-500 hover:text-stone-900 flex items-center gap-1"
               >
                 <span>View All</span>
@@ -677,11 +689,11 @@ export const DashboardView: React.FC = () => {
         </button>
 
         <button
-          onClick={() => setActiveModule('chat')}
+          onClick={() => setActiveModule('vocalists')}
           className="flex flex-col items-center justify-center p-4 rounded-2xl bg-white border border-[#E8E2D7] shadow-soft hover:shadow-card hover:-translate-y-0.5 transition-all text-stone-800 group"
         >
-          <MessageCircle className="w-5 h-5 mb-2 text-stone-800 group-hover:scale-110 transition-transform" />
-          <span className="text-xs font-bold tracking-tight">Team Chat</span>
+          <Users className="w-5 h-5 mb-2 text-stone-800 group-hover:scale-110 transition-transform" />
+          <span className="text-xs font-bold tracking-tight">Team Directory</span>
         </button>
 
         <button
@@ -689,15 +701,15 @@ export const DashboardView: React.FC = () => {
           className="flex flex-col items-center justify-center p-4 rounded-2xl bg-white border border-[#E8E2D7] shadow-soft hover:shadow-card hover:-translate-y-0.5 transition-all text-stone-800 group"
         >
           <CheckSquare className="w-5 h-5 mb-2 text-stone-800 group-hover:scale-110 transition-transform" />
-          <span className="text-xs font-bold tracking-tight">Add Task</span>
+          <span className="text-xs font-bold tracking-tight">Tasks & Duties</span>
         </button>
 
         <button
-          onClick={() => setActiveModule('settings')}
+          onClick={() => setActiveModule('announcements')}
           className="flex flex-col items-center justify-center p-4 rounded-2xl bg-white border border-[#E8E2D7] shadow-soft hover:shadow-card hover:-translate-y-0.5 transition-all text-stone-800 group"
         >
-          <BarChart3 className="w-5 h-5 mb-2 text-stone-800 group-hover:scale-110 transition-transform" />
-          <span className="text-xs font-bold tracking-tight">View Reports</span>
+          <FileText className="w-5 h-5 mb-2 text-stone-800 group-hover:scale-110 transition-transform" />
+          <span className="text-xs font-bold tracking-tight">Announcements</span>
         </button>
       </div>
 

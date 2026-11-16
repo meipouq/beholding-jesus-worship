@@ -157,13 +157,13 @@ export const Header: React.FC = () => {
             )}
           </div>
 
-          {/* User Profile Switcher Button (Open Team Access) - Matches Reference Image */}
+          {/* User Profile / Auth Button */}
           <button
             onClick={() => setIsUserModalOpen(true)}
-            className="flex items-center gap-1.5 p-1 rounded-full hover:bg-stone-200/60 transition-colors"
-            title="Switch User / Account Settings"
+            className="flex items-center gap-2 py-1 px-1.5 sm:px-2.5 rounded-full hover:bg-stone-200/70 border border-stone-200/80 transition-all bg-white/70 shadow-2xs group"
+            title="Account Portal • Log In / Register"
           >
-            <div className="w-8 h-8 rounded-full bg-[#1E1D1B] text-white flex items-center justify-center text-xs font-bold tracking-wider shrink-0 overflow-hidden shadow-2xs">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#1E1D1B] text-white flex items-center justify-center text-xs font-bold tracking-wider shrink-0 overflow-hidden shadow-2xs">
               {currentUser.avatar && currentUser.avatar.includes('/') ? (
                 <img
                   src={currentUser.avatar}
@@ -177,7 +177,17 @@ export const Header: React.FC = () => {
                 userInitials
               )}
             </div>
-            <ChevronDown className="w-3.5 h-3.5 text-stone-600" />
+
+            <div className="hidden sm:block text-left min-w-0 pr-1">
+              <p className="text-xs font-bold text-stone-900 truncate leading-tight group-hover:text-amber-900 transition-colors">
+                {currentUser.name}
+              </p>
+              <p className="text-[10px] text-amber-800 font-semibold truncate">
+                {currentUser.username ? `@${currentUser.username}` : 'Worship Author'}
+              </p>
+            </div>
+
+            <ChevronDown className="w-3.5 h-3.5 text-stone-500 group-hover:text-stone-900 transition-colors shrink-0" />
           </button>
         </div>
       </div>

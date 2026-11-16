@@ -253,8 +253,13 @@ export const SongLibraryView: React.FC = () => {
                         <div className="font-bold text-stone-900 group-hover:text-amber-900 text-xs sm:text-sm">
                           {song.title}
                         </div>
-                        <div className="text-[11px] text-stone-500 font-medium">
-                          {song.artist}
+                        <div className="text-[11px] text-stone-500 font-medium flex items-center gap-2">
+                          <span>{song.artist}</span>
+                          {song.created_by && (
+                            <span className="text-[10px] text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200/50">
+                              Added by {song.created_by.split(' ')[0]}
+                            </span>
+                          )}
                         </div>
                       </td>
 
@@ -354,6 +359,11 @@ export const SongLibraryView: React.FC = () => {
                 <p className="text-xs text-stone-500 font-medium mt-0.5">
                   {song.artist}
                 </p>
+                {song.created_by && (
+                  <span className="inline-block mt-1 text-[10px] text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60 font-semibold">
+                    Added by {song.created_by.split(' ')[0]}
+                  </span>
+                )}
 
                 {song.song_notes && (
                   <p className="text-[11px] text-stone-600 mt-2 line-clamp-2 italic">

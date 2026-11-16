@@ -8,14 +8,13 @@ import {
   Rehearsal,
   Task,
   Announcement,
-  Conversation,
-  ChatMessage,
   NotificationItem,
   TeamActivity,
   WorshipResource
 } from '../types';
 import { StorageService } from '../services/storage';
 import { pullAllFromSupabase, syncRecordToSupabase, deleteRecordFromSupabase, getSupabase } from '../services/supabase';
+import { AuthService } from '../services/auth';
 
 export type AppModule = 
   | 'dashboard'
@@ -24,10 +23,8 @@ export type AppModule =
   | 'lineups'
   | 'rehearsals'
   | 'tasks'
-  | 'chat'
   | 'announcements'
-  | 'resources'
-  | 'settings';
+  | 'resources';
 
 interface WorshipContextType {
   // Navigation & View State
@@ -36,11 +33,24 @@ interface WorshipContextType {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 
-  // Active User / Access
+  // Active User / Auth Portal
   currentUser: TeamMember;
   setCurrentUser: (member: TeamMember) => void;
-  isUserModalOpen: boolean;
+  isAuthenticated: boolean;
+  isAuthModalOpen: boolean;
+  setIsAuthModalOpen: (open: boolean) => void;
+  isUserModalOpen: boolean; // Alias for backward compatibility
   setIsUserModalOpen: (open: boolean) => void;
+  loginUser: (username: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  registerUser: (data: {
+    username: string;
+    fullName: string;
+    password: string;
+    roleTitle?: string;
+    vocalRange?: TeamMember['vocal_range'];
+    instrument?: string;
+  }) => Promise<{ success: boolean; error?: string }>;
+  logoutUser: () => void;
 
   // Modals & Players
   activeVideo: { title: string; url: string } | null;
@@ -90,15 +100,6 @@ interface WorshipContextType {
   saveAnnouncement: (announcement: Announcement) => void;
   deleteAnnouncement: (id: string) => void;
 
-  // Team Chat
-  conversations: Conversation[];
-  messages: ChatMessage[];
-  activeConversationId: string;
-  setActiveConversationId: (id: string) => void;
-  saveConversation: (conv: Conversation) => void;
-  sendMessage: (content: string, attachments?: any[], replyTo?: any) => void;
-  toggleReaction: (messageId: string, emoji: string) => void;
-
   // Notifications & Activity
   notifications: NotificationItem[];
   unreadNotifCount: number;
@@ -110,11 +111,6 @@ interface WorshipContextType {
   resources: WorshipResource[];
   saveResource: (resource: WorshipResource) => void;
   deleteResource: (id: string) => void;
-
-  // Backup & Reset
-  exportBackup: () => void;
-  importBackup: (jsonStr: string) => boolean;
-  resetAllData: () => void;
 }
 
 const WorshipContext = createContext<WorshipContextType | undefined>(undefined);
@@ -122,9 +118,17 @@ const WorshipContext = createContext<WorshipContextType | undefined>(undefined);
 export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [activeModule, setActiveModule] = useState<AppModule>('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentUser, setCurrentUser] = useState<TeamMember>(StorageService.getCurrentUser());
-  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
 
+  // Authentication State
+  const [currentUser, setCurrentUser] = useState<TeamMember>(() => {
+    return AuthService.getSession() || StorageService.getCurrentUser();
+  });
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return !!AuthService.getSession();
+  });
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  // Modals
   const [activeVideo, setActiveVideo] = useState<{ title: string; url: string } | null>(null);
   const [activeSongChords, setActiveSongChords] = useState<Song | null>(null);
 
@@ -137,9 +141,6 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [rehearsals, setRehearsals] = useState<Rehearsal[]>(StorageService.getRehearsals());
   const [tasks, setTasks] = useState<Task[]>(StorageService.getTasks());
   const [announcements, setAnnouncements] = useState<Announcement[]>(StorageService.getAnnouncements());
-  const [conversations, setConversations] = useState<Conversation[]>(StorageService.getConversations());
-  const [messages, setMessages] = useState<ChatMessage[]>(StorageService.getMessages());
-  const [activeConversationId, setActiveConversationId] = useState<string>('conv-1');
   const [notifications, setNotifications] = useState<NotificationItem[]>(StorageService.getNotifications());
   const [activities, setActivities] = useState<TeamActivity[]>(StorageService.getActivities());
   const [resources, setResources] = useState<WorshipResource[]>(StorageService.getResources());
@@ -148,7 +149,7 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Multi-device real-time sync with Supabase
   useEffect(() => {
-    // 1. Initial pull
+    // 1. Initial & Continuous Pull
     const syncAll = () => {
       pullAllFromSupabase().then((res) => {
         if (res.success && res.count > 0) {
@@ -167,7 +168,7 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     syncAll();
 
-    // 2. Subscribe to Supabase Realtime for instant multi-device sync
+    // 2. Subscribe to Supabase Realtime channel for instant broadcast across devices
     const client = getSupabase();
     let channel: any = null;
     if (client) {
@@ -183,8 +184,8 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
       }
     }
 
-    // 3. Background periodic sync (every 6s) as rock-solid fallback across all devices
-    const interval = setInterval(syncAll, 6000);
+    // 3. Ultra-responsive 4-second auto-poll fallback
+    const interval = setInterval(syncAll, 4000);
 
     return () => {
       clearInterval(interval);
@@ -213,14 +214,52 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const handleSetCurrentUser = (member: TeamMember) => {
     setCurrentUser(member);
     StorageService.setCurrentUser(member);
+    AuthService.saveSession(member);
+  };
+
+  const loginUser = async (username: string, password: string) => {
+    const res = await AuthService.loginUser(username, password);
+    if (res.success && res.user) {
+      setCurrentUser(res.user);
+      setIsAuthenticated(true);
+      StorageService.setCurrentUser(res.user);
+      logActivity('logged in as author', `@${res.user.username}`);
+      confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+    }
+    return res;
+  };
+
+  const registerUser = async (data: {
+    username: string;
+    fullName: string;
+    password: string;
+    roleTitle?: string;
+    vocalRange?: TeamMember['vocal_range'];
+    instrument?: string;
+  }) => {
+    const res = await AuthService.registerUser(data);
+    if (res.success && res.user) {
+      setCurrentUser(res.user);
+      setIsAuthenticated(true);
+      StorageService.setCurrentUser(res.user);
+      setMembers(StorageService.saveMember(res.user));
+      logActivity('registered new worship member', `@${res.user.username}`);
+      confetti({ particleCount: 80, spread: 80, origin: { y: 0.5 } });
+    }
+    return res;
+  };
+
+  const logoutUser = () => {
+    AuthService.clearSession();
+    setIsAuthenticated(false);
   };
 
   const logActivity = (action: string, target?: string) => {
     const act: TeamActivity = {
       id: `act-${Date.now()}`,
-      user_name: `${currentUser.name.split(' ')[0]} ${action}`,
+      user_name: currentUser.name,
       user_avatar: currentUser.avatar,
-      action: `${currentUser.name.split(' ')[0]} ${action}`,
+      action,
       timestamp: 'Just now',
       target
     };
@@ -228,30 +267,45 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setActivities(updated);
   };
 
-  // Songs
+  // Songs & Categories
   const saveSong = (song: Song) => {
     const isNew = !songs.some(s => s.id === song.id);
     const updatedSong: Song = {
       ...song,
+      created_by: song.created_by || currentUser.name,
       updated_by: currentUser.name,
       updated_at: new Date().toISOString()
     };
     if (isNew) {
-      updatedSong.created_by = currentUser.name;
       updatedSong.created_at = new Date().toISOString();
     }
     const updated = StorageService.saveSong(updatedSong);
     setSongs(updated);
-    logActivity(isNew ? 'added a new song' : 'updated song', song.title);
+    logActivity(isNew ? 'added song' : 'updated song', updatedSong.title);
     syncRecordToSupabase('songs', updatedSong);
+
+    if (isNew) {
+      const notif: NotificationItem = {
+        id: `notif-${Date.now()}`,
+        title: 'New Song Added',
+        message: `${currentUser.name} added "${updatedSong.title}" by ${updatedSong.artist} (${updatedSong.category}).`,
+        type: 'song',
+        link_module: 'songs',
+        is_read: false,
+        created_at: 'Just now'
+      };
+      setNotifications(StorageService.addNotification(notif));
+    }
   };
 
   const deleteSong = (id: string) => {
     const song = songs.find(s => s.id === id);
     const updated = StorageService.deleteSong(id);
     setSongs(updated);
-    if (song) logActivity('deleted song', song.title);
-    deleteRecordFromSupabase('songs', id);
+    if (song) {
+      logActivity('deleted song', song.title);
+      deleteRecordFromSupabase('songs', id);
+    }
   };
 
   const saveCategory = (cat: SongCategory) => {
@@ -266,26 +320,21 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     deleteRecordFromSupabase('song_categories', id);
   };
 
-  const checkDuplicateSong = (title: string, artist: string, currentId?: string): Song | undefined => {
+  const checkDuplicateSong = (title: string, artist: string, currentId?: string) => {
     const cleanTitle = title.trim().toLowerCase();
     const cleanArtist = artist.trim().toLowerCase();
-    return songs.find(s => {
-      if (currentId && s.id === currentId) return false;
-      const sTitle = s.title.trim().toLowerCase();
-      const sArtist = s.artist.trim().toLowerCase();
-      return sTitle === cleanTitle && (sArtist === cleanArtist || sArtist.includes(cleanArtist) || cleanArtist.includes(sArtist));
-    });
+    return songs.find(s => 
+      s.id !== currentId &&
+      s.title.trim().toLowerCase() === cleanTitle &&
+      s.artist.trim().toLowerCase() === cleanArtist
+    );
   };
 
-  // Vocalists & Vocal Keys
+  // Team Members
   const saveMember = (member: TeamMember) => {
-    const isFirstMember = members.length === 0 || currentUser.id === 'member-me';
     const updated = StorageService.saveMember(member);
     setMembers(updated);
-    if (isFirstMember) {
-      handleSetCurrentUser(member);
-    }
-    logActivity('added vocalist to team', member.name);
+    logActivity('updated team member profile', member.name);
     syncRecordToSupabase('team_members', member);
   };
 
@@ -293,100 +342,62 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const updated = StorageService.deleteMember(id);
     setMembers(updated);
     deleteRecordFromSupabase('team_members', id);
-    if (currentUser.id === id) {
-      if (updated.length > 0) {
-        handleSetCurrentUser(updated[0]);
-      } else {
-        const guestUser: TeamMember = {
-          id: 'member-me',
-          name: 'Worship Member',
-          email: 'member@beholdingjesus.org',
-          avatar: 'WM',
-          role_title: 'Worship Team Member',
-          vocal_range: 'Alto',
-          instrument: 'Vocals',
-          availability: 'Available',
-          joined_at: new Date().toISOString().slice(0, 10)
-        };
-        handleSetCurrentUser(guestUser);
-      }
-    }
   };
 
   const updateVocalKey = (songId: string, vocalistId: string, key: string) => {
     const song = songs.find(s => s.id === songId);
     if (!song) return;
-    const updatedVocalKeys = {
-      ...song.vocal_keys,
-      [vocalistId]: key
-    };
-    saveSong({
-      ...song,
-      vocal_keys: updatedVocalKeys
-    });
+    const vocalKeys = { ...song.vocal_keys, [vocalistId]: key };
+    const updatedSong = { ...song, vocal_keys: vocalKeys, updated_by: currentUser.name, updated_at: new Date().toISOString() };
+    saveSong(updatedSong);
   };
 
-  // Lineups
+  // Service Lineups
   const saveLineup = (lineup: ServiceLineup, notify = false) => {
     const isNew = !lineups.some(l => l.id === lineup.id);
-    const historyItem = {
-      id: `h-${Date.now()}`,
-      action: isNew ? 'Created lineup' : (lineup.status === 'published' ? 'Published lineup update' : 'Saved lineup draft'),
-      user_name: currentUser.name,
-      timestamp: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
-    };
-
     const updatedLineup: ServiceLineup = {
       ...lineup,
+      created_by: lineup.created_by || currentUser.name,
       updated_by: currentUser.name,
       updated_at: new Date().toISOString(),
-      history: [historyItem, ...(lineup.history || [])]
+      history: [
+        ...(lineup.history || []),
+        {
+          id: `h-${Date.now()}`,
+          action: isNew ? 'Created worship set' : (lineup.status === 'published' ? 'Published worship set' : 'Updated lineup'),
+          user_name: currentUser.name,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]
     };
-
     if (isNew) {
-      updatedLineup.created_by = currentUser.name;
       updatedLineup.created_at = new Date().toISOString();
     }
-
     const updated = StorageService.saveLineup(updatedLineup);
     setLineups(updated);
-    logActivity(lineup.status === 'published' ? 'published the service lineup' : 'saved lineup draft', lineup.title);
+    logActivity(isNew ? 'created service lineup' : 'saved service lineup', updatedLineup.title);
     syncRecordToSupabase('service_lineups', updatedLineup);
 
-    if (lineup.status === 'published') {
-      confetti({
-        particleCount: 80,
-        spread: 60,
-        origin: { y: 0.7 },
-        colors: ['#A67C52', '#D4AF37', '#1F1E1D', '#EFE8DC']
-      });
-    }
-
-    if (notify || (lineup.status === 'published' && isNew)) {
+    if (notify || updatedLineup.status === 'published') {
       const notif: NotificationItem = {
         id: `notif-${Date.now()}`,
-        title: lineup.status === 'published' ? 'Lineup Published' : 'Lineup Updated',
-        message: `${currentUser.name} updated the lineup for ${lineup.title} (${lineup.service_date}).`,
+        title: updatedLineup.status === 'published' ? 'Service Lineup Published!' : 'Lineup Updated',
+        message: `${updatedLineup.title} for ${updatedLineup.service_date} (${updatedLineup.songs.length} songs) posted by ${currentUser.name}.`,
         type: 'lineup',
         link_module: 'lineups',
         is_read: false,
         created_at: 'Just now'
       };
-      const updatedNotifs = StorageService.addNotification(notif);
-      setNotifications(updatedNotifs);
+      setNotifications(StorageService.addNotification(notif));
     }
   };
 
   const deleteLineup = (id: string) => {
-    const lineupToDelete = lineups.find(l => l.id === id);
     const updated = StorageService.deleteLineup(id);
     setLineups(updated);
     deleteRecordFromSupabase('service_lineups', id);
     if (activeLineupId === id) {
       setActiveLineupId(updated[0]?.id || null);
-    }
-    if (lineupToDelete) {
-      logActivity('deleted service lineup', lineupToDelete.title);
     }
   };
 
@@ -418,21 +429,28 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Rehearsals & RSVP
   const saveRehearsal = (rehearsal: Rehearsal) => {
-    const updated = StorageService.saveRehearsal(rehearsal);
+    const isNew = !rehearsals.some(r => r.id === rehearsal.id);
+    const updatedRehearsal: Rehearsal = {
+      ...rehearsal,
+      created_by: rehearsal.created_by || currentUser.name
+    };
+    const updated = StorageService.saveRehearsal(updatedRehearsal);
     setRehearsals(updated);
     logActivity('scheduled rehearsal', rehearsal.title);
-    syncRecordToSupabase('rehearsals', rehearsal);
+    syncRecordToSupabase('rehearsals', updatedRehearsal);
 
-    const notif: NotificationItem = {
-      id: `notif-${Date.now()}`,
-      title: 'Rehearsal Scheduled',
-      message: `${rehearsal.title} on ${rehearsal.date} at ${rehearsal.start_time} (${rehearsal.venue}).`,
-      type: 'rehearsal',
-      link_module: 'rehearsals',
-      is_read: false,
-      created_at: 'Just now'
-    };
-    setNotifications(StorageService.addNotification(notif));
+    if (isNew) {
+      const notif: NotificationItem = {
+        id: `notif-${Date.now()}`,
+        title: 'Rehearsal Scheduled',
+        message: `${rehearsal.title} on ${rehearsal.date} at ${rehearsal.start_time} (${rehearsal.venue}) by ${currentUser.name}.`,
+        type: 'rehearsal',
+        link_module: 'rehearsals',
+        is_read: false,
+        created_at: 'Just now'
+      };
+      setNotifications(StorageService.addNotification(notif));
+    }
   };
 
   const deleteRehearsal = (id: string) => {
@@ -526,16 +544,22 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // Announcements
   const saveAnnouncement = (ann: Announcement) => {
     const isNew = !announcements.some(a => a.id === ann.id);
-    const updated = StorageService.saveAnnouncement(ann);
+    const updatedAnn: Announcement = {
+      ...ann,
+      author_id: ann.author_id || currentUser.id,
+      author_name: ann.author_name || currentUser.name,
+      author_avatar: ann.author_avatar || currentUser.avatar
+    };
+    const updated = StorageService.saveAnnouncement(updatedAnn);
     setAnnouncements(updated);
     logActivity(isNew ? 'published announcement' : 'updated announcement', ann.title);
-    syncRecordToSupabase('announcements', ann);
+    syncRecordToSupabase('announcements', updatedAnn);
 
     if (isNew) {
       const notif: NotificationItem = {
         id: `notif-${Date.now()}`,
         title: ann.is_important ? 'Important Announcement' : 'New Announcement',
-        message: `${ann.title} - posted by ${ann.author_name}`,
+        message: `${ann.title} - posted by ${currentUser.name}`,
         type: 'announcement',
         link_module: 'announcements',
         is_read: false,
@@ -551,55 +575,6 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     deleteRecordFromSupabase('announcements', id);
   };
 
-  // Chat
-  const saveConversation = (conv: Conversation) => {
-    const updated = StorageService.saveConversation(conv);
-    setConversations(updated);
-    setActiveConversationId(conv.id);
-    logActivity('created chat channel', conv.name);
-  };
-
-  const sendMessage = (content: string, attachments?: any[], replyTo?: any) => {
-    if (!content.trim() && (!attachments || attachments.length === 0)) return;
-    const newMsg: ChatMessage = {
-      id: `msg-${Date.now()}`,
-      conversation_id: activeConversationId,
-      sender_id: currentUser.id,
-      sender_name: currentUser.name,
-      sender_avatar: currentUser.avatar,
-      content,
-      attachments: attachments || [],
-      reply_to: replyTo,
-      reactions: {},
-      created_at: new Date().toISOString()
-    };
-    const updatedMsgs = StorageService.saveMessage(newMsg);
-    setMessages(updatedMsgs);
-    setConversations(StorageService.getConversations());
-    logActivity('posted a message', content.substring(0, 30));
-  };
-
-  const toggleReaction = (messageId: string, emoji: string) => {
-    const msg = messages.find(m => m.id === messageId);
-    if (!msg) return;
-    const currentReactions = { ...msg.reactions };
-    const userList = currentReactions[emoji] || [];
-    const hasReacted = userList.includes(currentUser.name);
-
-    if (hasReacted) {
-      currentReactions[emoji] = userList.filter(name => name !== currentUser.name);
-      if (currentReactions[emoji].length === 0) {
-        delete currentReactions[emoji];
-      }
-    } else {
-      currentReactions[emoji] = [...userList, currentUser.name];
-    }
-
-    const updatedMsg = { ...msg, reactions: currentReactions };
-    const updated = StorageService.updateMessage(updatedMsg);
-    setMessages([...updated]);
-  };
-
   // Notifications
   const markNotifRead = (id: string) => {
     const updated = StorageService.markNotificationRead(id);
@@ -613,63 +588,17 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Resources
   const saveResource = (res: WorshipResource) => {
-    const updated = StorageService.saveResource(res);
+    const updatedResource = {
+      ...res,
+      uploaded_by: res.uploaded_by || currentUser.name
+    };
+    const updated = StorageService.saveResource(updatedResource);
     setResources(updated);
   };
 
   const deleteResource = (id: string) => {
     const updated = StorageService.deleteResource(id);
     setResources(updated);
-  };
-
-  // Backups
-  const exportBackup = () => {
-    const jsonStr = StorageService.exportDatabaseJSON();
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `Beholding-Jesus-Worship-Backup-${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
-  const importBackup = (jsonStr: string): boolean => {
-    const ok = StorageService.importDatabaseJSON(jsonStr);
-    if (ok) {
-      setMembers(StorageService.getMembers());
-      setCategories(StorageService.getCategories());
-      setSongs(StorageService.getSongs());
-      setLineups(StorageService.getLineups());
-      setRehearsals(StorageService.getRehearsals());
-      setTasks(StorageService.getTasks());
-      setAnnouncements(StorageService.getAnnouncements());
-      setConversations(StorageService.getConversations());
-      setMessages(StorageService.getMessages());
-      setNotifications(StorageService.getNotifications());
-      setActivities(StorageService.getActivities());
-      setResources(StorageService.getResources());
-      return true;
-    }
-    return false;
-  };
-
-  const resetAllData = () => {
-    StorageService.resetToDefault();
-    setMembers(StorageService.getMembers());
-    setCategories(StorageService.getCategories());
-    setSongs(StorageService.getSongs());
-    setLineups(StorageService.getLineups());
-    setRehearsals(StorageService.getRehearsals());
-    setTasks(StorageService.getTasks());
-    setAnnouncements(StorageService.getAnnouncements());
-    setConversations(StorageService.getConversations());
-    setMessages(StorageService.getMessages());
-    setNotifications(StorageService.getNotifications());
-    setActivities(StorageService.getActivities());
-    setResources(StorageService.getResources());
   };
 
   return (
@@ -681,8 +610,14 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setSearchQuery,
         currentUser,
         setCurrentUser: handleSetCurrentUser,
-        isUserModalOpen,
-        setIsUserModalOpen,
+        isAuthenticated,
+        isAuthModalOpen,
+        setIsAuthModalOpen,
+        isUserModalOpen: isAuthModalOpen,
+        setIsUserModalOpen: setIsAuthModalOpen,
+        loginUser,
+        registerUser,
+        logoutUser,
         activeVideo,
         playVideo,
         closeVideo,
@@ -717,13 +652,6 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
         announcements,
         saveAnnouncement,
         deleteAnnouncement,
-        conversations,
-        messages,
-        activeConversationId,
-        setActiveConversationId,
-        saveConversation,
-        sendMessage,
-        toggleReaction,
         notifications,
         unreadNotifCount,
         markNotifRead,
@@ -731,10 +659,7 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
         activities,
         resources,
         saveResource,
-        deleteResource,
-        exportBackup,
-        importBackup,
-        resetAllData,
+        deleteResource
       }}
     >
       {children}

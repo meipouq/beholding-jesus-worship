@@ -5,7 +5,7 @@ import { Header } from './components/common/Header';
 import { MobileBottomNav } from './components/common/MobileBottomNav';
 import { YouTubePlayerModal } from './components/common/YouTubePlayerModal';
 import { ChordsTransposerModal } from './components/common/ChordsTransposerModal';
-import { UserSwitcherModal } from './components/common/UserSwitcherModal';
+import { AuthModal } from './components/auth/AuthModal';
 
 import { DashboardView } from './components/dashboard/DashboardView';
 import { SongLibraryView } from './components/songs/SongLibraryView';
@@ -13,10 +13,8 @@ import { VocalistsView } from './components/vocalists/VocalistsView';
 import { LineupsListView } from './components/lineups/LineupsListView';
 import { RehearsalsView } from './components/rehearsals/RehearsalsView';
 import { TasksView } from './components/tasks/TasksView';
-import { ChatView } from './components/chat/ChatView';
 import { AnnouncementsView } from './components/announcements/AnnouncementsView';
 import { ResourcesView } from './components/resources/ResourcesView';
-import { SettingsView } from './components/settings/SettingsView';
 
 const MainLayout: React.FC = () => {
   const { activeModule } = useWorship();
@@ -35,14 +33,10 @@ const MainLayout: React.FC = () => {
         return <RehearsalsView />;
       case 'tasks':
         return <TasksView />;
-      case 'chat':
-        return <ChatView />;
       case 'announcements':
         return <AnnouncementsView />;
       case 'resources':
         return <ResourcesView />;
-      case 'settings':
-        return <SettingsView />;
       default:
         return <DashboardView />;
     }
@@ -70,7 +64,7 @@ const MainLayout: React.FC = () => {
       {/* Global Modals */}
       <YouTubePlayerModal />
       <ChordsTransposerModal />
-      <UserSwitcherModal />
+      <AuthModal />
     </div>
   );
 };
