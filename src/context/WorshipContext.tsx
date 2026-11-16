@@ -15,7 +15,7 @@ import {
   WorshipResource
 } from '../types';
 import { StorageService } from '../services/storage';
-import { pullAllFromSupabase, syncRecordToSupabase, deleteRecordFromSupabase } from '../services/supabase';
+import { pullAllFromSupabase, syncRecordToSupabase, deleteRecordFromSupabase, getSupabase } from '../services/supabase';
 
 export type AppModule = 
   | 'dashboard'
@@ -146,21 +146,52 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const unreadNotifCount = notifications.filter(n => !n.is_read).length;
 
-  // On startup: check if Supabase is connected and pull shared team records
+  // Multi-device real-time sync with Supabase
   useEffect(() => {
-    pullAllFromSupabase().then((res) => {
-      if (res.success && res.count > 0) {
-        setMembers(StorageService.getMembers());
-        setCategories(StorageService.getCategories());
-        setSongs(StorageService.getSongs());
-        setLineups(StorageService.getLineups());
-        setRehearsals(StorageService.getRehearsals());
-        setTasks(StorageService.getTasks());
-        setAnnouncements(StorageService.getAnnouncements());
+    // 1. Initial pull
+    const syncAll = () => {
+      pullAllFromSupabase().then((res) => {
+        if (res.success && res.count > 0) {
+          setMembers(StorageService.getMembers());
+          setCategories(StorageService.getCategories());
+          setSongs(StorageService.getSongs());
+          setLineups(StorageService.getLineups());
+          setRehearsals(StorageService.getRehearsals());
+          setTasks(StorageService.getTasks());
+          setAnnouncements(StorageService.getAnnouncements());
+        }
+      }).catch((err) => {
+        console.warn('Supabase sync note:', err);
+      });
+    };
+
+    syncAll();
+
+    // 2. Subscribe to Supabase Realtime for instant multi-device sync
+    const client = getSupabase();
+    let channel: any = null;
+    if (client) {
+      try {
+        channel = client
+          .channel('worship-team-realtime')
+          .on('postgres_changes', { event: '*', schema: 'public' }, () => {
+            syncAll();
+          })
+          .subscribe();
+      } catch (e) {
+        console.warn('Realtime subscription error:', e);
       }
-    }).catch((err) => {
-      console.warn('Initial Supabase pull note:', err);
-    });
+    }
+
+    // 3. Background periodic sync (every 6s) as rock-solid fallback across all devices
+    const interval = setInterval(syncAll, 6000);
+
+    return () => {
+      clearInterval(interval);
+      if (client && channel) {
+        client.removeChannel(channel);
+      }
+    };
   }, []);
 
   const playVideo = (title: string, url: string) => {

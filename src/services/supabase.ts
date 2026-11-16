@@ -166,12 +166,30 @@ export async function pullAllFromSupabase(): Promise<{ success: boolean; count: 
   }
 }
 
-// Asynchronous single-record sync helpers
+// Asynchronous single-record sync helpers with foreign key resilience
 export async function syncRecordToSupabase(table: string, record: any): Promise<void> {
   const client = getSupabase();
   if (!client) return;
   try {
-    await client.from(table).upsert(record);
+    const { error } = await client.from(table).upsert(record);
+    if (error) {
+      console.warn(`Supabase initial upsert on ${table} error:`, error);
+      // If foreign key constraint failed (Postgres code 23503), sanitize foreign key references and retry
+      if (error.code === '23503') {
+        const sanitized = { ...record };
+        if ('worship_leader_id' in sanitized) sanitized.worship_leader_id = null;
+        if ('assigned_to_id' in sanitized) sanitized.assigned_to_id = null;
+        if ('author_id' in sanitized) sanitized.author_id = null;
+        if ('sender_id' in sanitized) sanitized.sender_id = null;
+        if ('lineup_id' in sanitized) sanitized.lineup_id = null;
+        const retry = await client.from(table).upsert(sanitized);
+        if (retry.error) {
+          console.error(`Retry sync on ${table} failed:`, retry.error);
+        } else {
+          console.log(`Successfully synced ${table} with sanitized foreign keys!`);
+        }
+      }
+    }
   } catch (err) {
     console.warn(`Background sync to ${table} failed:`, err);
   }

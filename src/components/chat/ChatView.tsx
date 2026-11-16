@@ -15,7 +15,8 @@ import {
   X,
   Users,
   Hash,
-  Plus
+  Plus,
+  ChevronLeft
 } from 'lucide-react';
 import { useWorship } from '../../context/WorshipContext';
 import { ChatMessage, Conversation } from '../../types';
@@ -41,6 +42,7 @@ export const ChatView: React.FC = () => {
   const [showEmojiPickerFor, setShowEmojiPickerFor] = useState<string | null>(null);
   const [selectedAttachment, setSelectedAttachment] = useState<{ url: string; name: string; type: 'image' | 'file' } | null>(null);
   const [isCreatingChannel, setIsCreatingChannel] = useState(false);
+  const [mobileShowSidebar, setMobileShowSidebar] = useState(false);
   const [newChannelName, setNewChannelName] = useState('');
   const [newChannelDesc, setNewChannelDesc] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -126,9 +128,11 @@ export const ChatView: React.FC = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-140px)] md:h-[calc(100vh-120px)] bg-white rounded-3xl border border-[#E8E2D7] shadow-soft overflow-hidden flex max-w-7xl mx-auto">
+    <div className="h-[calc(100dvh-155px)] md:h-[calc(100vh-120px)] bg-white rounded-3xl border border-[#E8E2D7] shadow-soft overflow-hidden flex max-w-7xl mx-auto">
       {/* Left Sidebar: Conversations List */}
-      <div className="w-72 sm:w-80 border-r border-stone-200 bg-[#FAF6F0] flex flex-col shrink-0">
+      <div className={`w-full md:w-80 border-r border-stone-200 bg-[#FAF6F0] flex flex-col shrink-0 ${
+        mobileShowSidebar ? 'flex' : 'hidden md:flex'
+      }`}>
         <div className="p-4 border-b border-stone-200">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
@@ -165,7 +169,10 @@ export const ChatView: React.FC = () => {
               return (
                 <button
                   key={c.id}
-                  onClick={() => setActiveConversationId(c.id)}
+                  onClick={() => {
+                    setActiveConversationId(c.id);
+                    setMobileShowSidebar(false);
+                  }}
                   className={`w-full text-left p-3 rounded-2xl transition-all flex items-start gap-3 ${
                     isActive
                       ? 'bg-white shadow-soft border border-stone-200/90 text-stone-900 font-bold'
@@ -194,19 +201,32 @@ export const ChatView: React.FC = () => {
       </div>
 
       {/* Right Main Chat Panel */}
-      <div className="flex-1 flex flex-col bg-white">
+      <div className={`flex-1 flex flex-col bg-white min-w-0 ${
+        mobileShowSidebar ? 'hidden md:flex' : 'flex'
+      }`}>
         {/* Chat Header */}
-        <div className="px-5 py-3.5 border-b border-stone-100 flex items-center justify-between bg-white z-10">
-          <div>
-            <h3 className="text-sm font-bold text-stone-900 flex items-center gap-1.5">
-              <span>{activeConv?.name}</span>
-            </h3>
-            <p className="text-[11px] text-stone-400 mt-0.5 truncate max-w-md">
-              {activeConv?.description || 'Active Worship Team Channel'}
-            </p>
+        <div className="px-3.5 sm:px-5 py-3 border-b border-stone-100 flex items-center justify-between bg-white z-10 shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
+            {/* Mobile Channel Switcher Button */}
+            <button
+              onClick={() => setMobileShowSidebar(true)}
+              className="md:hidden p-1.5 -ml-1 rounded-xl text-stone-700 hover:text-stone-900 bg-stone-100 hover:bg-stone-200 flex items-center gap-1 shrink-0 text-xs font-bold transition-colors"
+              title="View all channels"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span className="text-[11px]">Channels</span>
+            </button>
+            <div className="min-w-0">
+              <h3 className="text-xs sm:text-sm font-bold text-stone-900 flex items-center gap-1.5 truncate">
+                <span>{activeConv?.name}</span>
+              </h3>
+              <p className="text-[10px] sm:text-[11px] text-stone-400 mt-0.5 truncate max-w-[170px] sm:max-w-md">
+                {activeConv?.description || 'Active Worship Team Channel'}
+              </p>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <span className="text-[10px] text-stone-400 px-2 py-1 rounded-full bg-stone-100">
               {convMessages.length} Messages
             </span>
@@ -405,11 +425,11 @@ export const ChatView: React.FC = () => {
             accept="image/*,.pdf,.doc,.docx,.txt"
           />
 
-          <form onSubmit={handleSend} className="flex items-center gap-2">
+          <form onSubmit={handleSend} className="flex items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="p-2.5 rounded-2xl hover:bg-stone-100 text-stone-500 hover:text-stone-800 transition-colors"
+              className="p-2 sm:p-2.5 rounded-2xl hover:bg-stone-100 text-stone-500 hover:text-stone-800 transition-colors shrink-0"
               title="Attach File or Image"
             >
               <Paperclip className="w-4 h-4" />
@@ -419,14 +439,14 @@ export const ChatView: React.FC = () => {
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder={`Message ${activeConv?.name}... (paste YouTube links for instant video preview)`}
-              className="flex-1 text-xs py-3 px-4 rounded-2xl border border-stone-200/90 bg-[#F8F5EE]/60 focus:bg-white focus:outline-none focus:ring-2 focus:ring-stone-400 transition-all placeholder:text-stone-400"
+              placeholder={`Message ${activeConv?.name || 'channel'}...`}
+              className="flex-1 min-w-0 text-xs py-2.5 sm:py-3 px-3 sm:px-4 rounded-2xl border border-stone-200/90 bg-[#F8F5EE]/60 focus:bg-white focus:outline-none focus:ring-2 focus:ring-stone-400 transition-all placeholder:text-stone-400"
             />
 
             <button
               type="submit"
               disabled={!inputText.trim() && !selectedAttachment}
-              className="p-3 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white disabled:opacity-30 disabled:pointer-events-none transition-all shadow-xs"
+              className="p-2.5 sm:p-3 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white disabled:opacity-30 disabled:pointer-events-none transition-all shadow-xs shrink-0"
             >
               <Send className="w-4 h-4" />
             </button>

@@ -59,7 +59,7 @@ const MainLayout: React.FC = () => {
       <div className="flex-1 flex flex-col min-w-0 min-h-screen">
         <Header />
 
-        <main className="flex-1 px-4 sm:px-6 md:px-8 py-5 md:py-6 overflow-x-hidden">
+        <main className="flex-1 px-3 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 pb-24 md:pb-6 overflow-x-hidden">
           {renderModuleView()}
         </main>
 

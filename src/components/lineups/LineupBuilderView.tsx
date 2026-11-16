@@ -477,62 +477,83 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                   key={item.id}
                   className="rounded-2xl border border-stone-200 bg-[#FAF6F0]/70 hover:bg-[#FAF6F0] transition-colors p-3.5 sm:p-4 space-y-3"
                 >
-                  {/* Song Row Main Bar */}
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 flex-1">
-                      {/* Order and Move Controls */}
-                      <div className="flex items-center gap-1 shrink-0">
-                        <div className="flex flex-col gap-0.5">
-                          <button
-                            onClick={() => moveSong(index, 'up')}
-                            disabled={index === 0}
-                            className="p-1 rounded hover:bg-white text-stone-500 disabled:opacity-30 disabled:pointer-events-none"
-                            title="Move Up"
-                          >
-                            <ArrowUp className="w-3 h-3" />
-                          </button>
-                          <button
-                            onClick={() => moveSong(index, 'down')}
-                            disabled={index === lineupSongs.length - 1}
-                            className="p-1 rounded hover:bg-white text-stone-500 disabled:opacity-30 disabled:pointer-events-none"
-                            title="Move Down"
-                          >
-                            <ArrowDown className="w-3 h-3" />
-                          </button>
+                  {/* Song Row Main Bar - Responsive & Non-overlapping */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+                    {/* Song Details (Order, Title, Category, Artist) */}
+                    <div className="flex items-start sm:items-center justify-between gap-2.5 min-w-0 flex-1">
+                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                        {/* Order and Move Controls */}
+                        <div className="flex items-center gap-1 shrink-0">
+                          <div className="flex flex-col gap-0.5">
+                            <button
+                              onClick={() => moveSong(index, 'up')}
+                              disabled={index === 0}
+                              className="p-1 rounded hover:bg-white text-stone-500 disabled:opacity-30 disabled:pointer-events-none"
+                              title="Move Up"
+                            >
+                              <ArrowUp className="w-3 h-3" />
+                            </button>
+                            <button
+                              onClick={() => moveSong(index, 'down')}
+                              disabled={index === lineupSongs.length - 1}
+                              className="p-1 rounded hover:bg-white text-stone-500 disabled:opacity-30 disabled:pointer-events-none"
+                              title="Move Down"
+                            >
+                              <ArrowDown className="w-3 h-3" />
+                            </button>
+                          </div>
+                          <span className="w-6 h-6 rounded-full bg-[#1E1D1B] text-white flex items-center justify-center font-bold text-xs shrink-0">
+                            {item.order}
+                          </span>
                         </div>
-                        <span className="w-6 h-6 rounded-full bg-[#1E1D1B] text-white flex items-center justify-center font-bold text-xs">
-                          {item.order}
-                        </span>
+
+                        {/* Title and Category */}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h4 className="text-xs sm:text-sm font-bold text-stone-900 leading-snug">
+                              {item.title}
+                            </h4>
+                            {/* Inline Category Select */}
+                            <select
+                              value={item.category}
+                              onChange={(e) => updateSongItem(item.id, { category: e.target.value })}
+                              className="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-[#EFE8DC] text-stone-800 border-none focus:outline-none cursor-pointer shrink-0"
+                            >
+                              {CATEGORIES.map(c => (
+                                <option key={c} value={c}>{c}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <p className="text-[11px] text-stone-500 truncate mt-0.5">
+                            {item.artist} • Original Key: <strong>{item.original_key}</strong>
+                          </p>
+                        </div>
                       </div>
 
-                      {/* Song Details */}
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <h4 className="text-xs sm:text-sm font-bold text-stone-900 truncate">
-                            {item.title}
-                          </h4>
-                          {/* Inline Category Select */}
-                          <select
-                            value={item.category}
-                            onChange={(e) => updateSongItem(item.id, { category: e.target.value })}
-                            className="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-[#EFE8DC] text-stone-800 border-none focus:outline-none cursor-pointer"
-                          >
-                            {CATEGORIES.map(c => (
-                              <option key={c} value={c}>{c}</option>
-                            ))}
-                          </select>
-                        </div>
-                        <p className="text-[11px] text-stone-500 truncate">
-                          {item.artist} • Original Key: <strong>{item.original_key}</strong>
-                        </p>
+                      {/* Mobile-only toggle & remove buttons */}
+                      <div className="flex sm:hidden items-center gap-1 shrink-0">
+                        <button
+                          onClick={() => setExpandedSongId(isExpanded ? null : item.id)}
+                          className="p-1.5 rounded-xl hover:bg-stone-200/70 text-stone-500"
+                          title="Toggle Details"
+                        >
+                          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                        </button>
+                        <button
+                          onClick={() => removeSong(item.id)}
+                          className="p-1.5 rounded-xl text-stone-400 hover:text-red-600 hover:bg-red-50"
+                          title="Remove"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
                     </div>
 
-                    {/* Key & Vocalist Selectors */}
-                    <div className="flex items-center gap-2 shrink-0">
+                    {/* Key & Media Actions Bar (Clean wrapped row on mobile, right-aligned on desktop) */}
+                    <div className="flex items-center justify-between sm:justify-end gap-2 pt-1.5 sm:pt-0 border-t sm:border-t-0 border-stone-200/60 shrink-0 flex-wrap">
                       {/* Selected Key Dropdown */}
-                      <div className="flex items-center gap-1 bg-white px-2 py-1 rounded-xl border border-stone-200">
-                        <span className="text-[10px] font-bold text-stone-500 hidden sm:inline">Key:</span>
+                      <div className="flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-xl border border-stone-200 shadow-2xs">
+                        <span className="text-[10px] font-bold text-stone-500">Key:</span>
                         <select
                           value={item.selected_key}
                           onChange={(e) => updateSongItem(item.id, { selected_key: e.target.value })}
@@ -544,45 +565,50 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                         </select>
                       </div>
 
-                      {/* Play Reference */}
-                      {item.youtube_url && (
-                        <button
-                          onClick={() => playVideo(item.title, item.youtube_url!)}
-                          className="w-7 h-7 rounded-full bg-red-600/10 hover:bg-red-600 text-red-600 hover:text-white flex items-center justify-center transition-colors shadow-2xs"
-                          title="Play YouTube Video"
-                        >
-                          <Play className="w-3 h-3 fill-current ml-0.5" />
-                        </button>
-                      )}
+                      <div className="flex items-center gap-1.5">
+                        {/* Play Reference */}
+                        {item.youtube_url && (
+                          <button
+                            onClick={() => playVideo(item.title, item.youtube_url!)}
+                            className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-red-600/10 hover:bg-red-600 text-red-600 hover:text-white text-[11px] font-bold transition-colors shadow-2xs"
+                            title="Play YouTube Video"
+                          >
+                            <Play className="w-3 h-3 fill-current" />
+                            <span className="sm:hidden text-[10px]">Video</span>
+                          </button>
+                        )}
 
-                      {/* View Chords */}
-                      {originalSong && (
-                        <button
-                          onClick={() => openChords(originalSong)}
-                          className="w-7 h-7 rounded-full bg-stone-100 hover:bg-[#1E1D1B] text-stone-600 hover:text-white flex items-center justify-center transition-colors shadow-2xs"
-                          title="Open Chords & Lyrics"
-                        >
-                          <FileMusic className="w-3.5 h-3.5" />
-                        </button>
-                      )}
+                        {/* View Chords */}
+                        {originalSong && (
+                          <button
+                            onClick={() => openChords(originalSong)}
+                            className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-stone-100 hover:bg-[#1E1D1B] text-stone-600 hover:text-white text-[11px] font-bold transition-colors shadow-2xs"
+                            title="Open Chords & Lyrics"
+                          >
+                            <FileMusic className="w-3.5 h-3.5" />
+                            <span className="sm:hidden text-[10px]">Chords</span>
+                          </button>
+                        )}
 
-                      {/* Expand Details */}
-                      <button
-                        onClick={() => setExpandedSongId(isExpanded ? null : item.id)}
-                        className="p-1.5 rounded-xl hover:bg-stone-200/70 text-stone-500"
-                        title="Toggle Details & Notes"
-                      >
-                        {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                      </button>
+                        {/* Desktop-only toggle & remove buttons */}
+                        <div className="hidden sm:flex items-center gap-1 ml-1">
+                          <button
+                            onClick={() => setExpandedSongId(isExpanded ? null : item.id)}
+                            className="p-1.5 rounded-xl hover:bg-stone-200/70 text-stone-500"
+                            title="Toggle Details & Notes"
+                          >
+                            {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                          </button>
 
-                      {/* Delete */}
-                      <button
-                        onClick={() => removeSong(item.id)}
-                        className="p-1.5 rounded-xl text-stone-400 hover:text-red-600 hover:bg-red-50"
-                        title="Remove from Lineup"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                          <button
+                            onClick={() => removeSong(item.id)}
+                            className="p-1.5 rounded-xl text-stone-400 hover:text-red-600 hover:bg-red-50"
+                            title="Remove from Lineup"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
