@@ -12,7 +12,8 @@ import {
   List,
   Sparkles,
   ExternalLink,
-  Mic
+  Mic,
+  Trash2
 } from 'lucide-react';
 import { Song } from '../../types';
 import { useWorship } from '../../context/WorshipContext';
@@ -325,6 +326,19 @@ export const SongLibraryView: React.FC = () => {
                           >
                             <PlusCircle className="w-3.5 h-3.5" />
                           </button>
+
+                          {/* Delete Song */}
+                          <button
+                            onClick={() => {
+                              if (window.confirm(`Are you sure you want to delete "${song.title}" from the song library?`)) {
+                                deleteSong(song.id);
+                              }
+                            }}
+                            className="w-7 h-7 rounded-full bg-red-50 hover:bg-red-600 text-red-600 hover:text-white flex items-center justify-center transition-all border border-red-200/80 shadow-2xs"
+                            title="Delete Song from Library"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -403,6 +417,19 @@ export const SongLibraryView: React.FC = () => {
                     title="Add to Lineup"
                   >
                     <PlusCircle className="w-3.5 h-3.5" />
+                  </button>
+
+                  {/* Delete Song */}
+                  <button
+                    onClick={() => {
+                      if (window.confirm(`Are you sure you want to delete "${song.title}" from the song library?`)) {
+                        deleteSong(song.id);
+                      }
+                    }}
+                    className="p-1.5 rounded-full bg-red-50 hover:bg-red-600 text-red-600 hover:text-white transition-all shadow-2xs border border-red-200/60"
+                    title="Delete Song from Library"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
