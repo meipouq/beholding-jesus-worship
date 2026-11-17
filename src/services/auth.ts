@@ -307,23 +307,4 @@ export class AuthService {
       return { success: false, error: err.message || 'Password update failed.' };
     }
   }
-
-  // 10. Fetch all registered church team members for quick switcher
-  static async fetchRegisteredMembers(): Promise<Array<{ id: string; username: string; name: string; role_title: string; avatar: string }>> {
-    const client = getSupabase();
-    if (!client) return [];
-    try {
-      const { data, error } = await client
-        .from('church_members_auth')
-        .select('id, username, name, role_title, avatar')
-        .order('created_at', { ascending: true });
-
-      if (!error && data) {
-        return data;
-      }
-    } catch (err) {
-      console.warn('Failed to fetch registered members:', err);
-    }
-    return [];
-  }
 }
