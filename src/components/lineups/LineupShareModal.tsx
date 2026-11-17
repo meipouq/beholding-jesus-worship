@@ -3,12 +3,15 @@ import {
   X,
   Share2,
   Download,
-  Copy,
   Check,
   Image as ImageIcon,
   MessageCircle,
-  Calendar,
-  Loader2
+  Loader2,
+  Mic,
+  Music2,
+  Users,
+  Clock,
+  Sparkles
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { ServiceLineup } from '../../types';
@@ -20,6 +23,7 @@ interface LineupShareModalProps {
 }
 
 export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onClose }) => {
+  const [orientation, setOrientation] = useState<'landscape' | 'portrait'>('landscape');
   const [themeMode, setThemeMode] = useState<'dark' | 'warm'>('dark');
   const [isExporting, setIsExporting] = useState(false);
   const [copiedText, setCopiedText] = useState(false);
@@ -27,6 +31,9 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
   const [shareSuccess, setShareSuccess] = useState(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const isLandscape = orientation === 'landscape';
+  const isDark = themeMode === 'dark';
 
   // Group songs by category
   const songsByCategory = (lineup.songs || []).reduce((acc, song) => {
@@ -124,7 +131,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
       scale: 3, // Ultra-sharp 3x resolution for high-DPI clarity
       useCORS: true,
       allowTaint: true,
-      backgroundColor: themeMode === 'dark' ? '#141312' : '#FAF6F0',
+      backgroundColor: isDark ? '#141312' : '#FAF6F0',
       logging: false,
       scrollX: 0,
       scrollY: 0,
@@ -141,7 +148,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
       if (!canvas) return;
 
       const image = canvas.toDataURL('image/png');
-      const filename = `Beholding_Jesus_Setlist_${lineup.service_date.replace(/-/g, '_')}.png`;
+      const filename = `Beholding_Jesus_Setlist_${isLandscape ? 'Landscape_' : ''}${lineup.service_date.replace(/-/g, '_')}.png`;
 
       const link = document.createElement('a');
       link.href = image;
@@ -223,21 +230,19 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
     }
   };
 
-  const isDark = themeMode === 'dark';
-
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5 animate-fade-in overflow-y-auto"
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 animate-fade-in overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl max-w-4xl w-full max-h-[94vh] flex flex-col shadow-modal border border-stone-200 animate-slide-up overflow-hidden my-auto"
+        className="bg-white rounded-3xl max-w-6xl w-full max-h-[94vh] flex flex-col shadow-modal border border-stone-200 animate-slide-up overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar */}
-        <div className="p-4 sm:p-5 border-b border-stone-200 bg-[#FAF6F0] flex flex-wrap items-center justify-between gap-3">
+        <div className="p-3.5 sm:p-5 border-b border-stone-200 bg-[#FAF6F0] flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#1E1D1B] text-white flex items-center justify-center shadow-2xs">
+            <div className="w-10 h-10 rounded-2xl bg-[#1E1D1B] text-white flex items-center justify-center shadow-2xs shrink-0">
               <Share2 className="w-5 h-5 text-amber-200" />
             </div>
             <div>
@@ -245,17 +250,49 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                 Share Lineup & Save as Photo
               </h2>
               <p className="text-xs text-stone-500 mt-0.5">
-                Download a high-resolution photo card or copy formatted text for Messenger
+                Download a high-resolution landscape photo card or copy formatted text for Messenger
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Orientation Toggle: Landscape / Portrait */}
+            <div className="flex items-center p-1 bg-stone-200/70 rounded-xl">
+              <button
+                onClick={() => setOrientation('landscape')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  isLandscape
+                    ? 'bg-[#1E1D1B] text-white shadow-2xs'
+                    : 'text-stone-600 hover:text-stone-900'
+                }`}
+                title="Landscape (Recommended for presentation & widescreen)"
+              >
+                <svg viewBox="0 0 20 14" className="w-3.5 h-2.5 fill-current">
+                  <rect width="20" height="14" rx="2" fill="none" stroke="currentColor" strokeWidth="2" />
+                </svg>
+                <span>Landscape</span>
+              </button>
+              <button
+                onClick={() => setOrientation('portrait')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  !isLandscape
+                    ? 'bg-[#1E1D1B] text-white shadow-2xs'
+                    : 'text-stone-600 hover:text-stone-900'
+                }`}
+                title="Portrait (Mobile story format)"
+              >
+                <svg viewBox="0 0 14 20" className="w-2.5 h-3.5 fill-current">
+                  <rect width="14" height="20" rx="2" fill="none" stroke="currentColor" strokeWidth="2" />
+                </svg>
+                <span>Portrait</span>
+              </button>
+            </div>
+
             {/* Theme Toggle */}
             <div className="flex items-center p-1 bg-stone-200/70 rounded-xl">
               <button
                 onClick={() => setThemeMode('dark')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   isDark ? 'bg-[#1E1D1B] text-white shadow-2xs' : 'text-stone-600 hover:text-stone-900'
                 }`}
                 title="Sleek Dark Theme"
@@ -264,7 +301,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               </button>
               <button
                 onClick={() => setThemeMode('warm')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   !isDark ? 'bg-white text-stone-900 shadow-2xs' : 'text-stone-600 hover:text-stone-900'
                 }`}
                 title="Warm Beige Theme"
@@ -296,7 +333,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               ) : (
                 <Download className="w-4 h-4 text-amber-300" />
               )}
-              <span>Save as Photo (PNG)</span>
+              <span>Save as Photo ({isLandscape ? 'Landscape PNG' : 'Portrait PNG'})</span>
             </button>
 
             {/* Copy Image to Clipboard */}
@@ -361,31 +398,43 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
           </div>
         </div>
 
+        {/* Small Screen Landscape Hint */}
+        {isLandscape && (
+          <div className="px-4 py-1.5 bg-[#EFE8DC] border-b border-stone-200 text-[11px] text-stone-600 font-semibold flex items-center justify-between xl:hidden">
+            <span>↔️ Swipe horizontally to preview entire landscape card</span>
+            <span className="text-[10px] text-amber-900 font-bold bg-amber-100 px-2 py-0.5 rounded-md">
+              Export format: 1040px Landscape HD
+            </span>
+          </div>
+        )}
+
         {/* Card Preview Container */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-[#EBE4D8] flex justify-center items-start">
+        <div className="flex-1 overflow-x-auto overflow-y-auto p-3 sm:p-6 md:p-8 bg-[#EBE4D8] flex justify-center items-start">
           {/* THE EXPORTABLE GRAPHIC CARD */}
           <div
             ref={cardRef}
             style={{
-              width: '100%',
-              maxWidth: '540px',
+              width: isLandscape ? '1040px' : '100%',
+              minWidth: isLandscape ? '1040px' : 'auto',
+              maxWidth: isLandscape ? '1040px' : '540px',
               backgroundColor: isDark ? '#141312' : '#FAF6F0',
               color: isDark ? '#F5F2EB' : '#1C1917',
               border: isDark ? '1px solid #2B2824' : '1px solid #E6DFD3',
-              borderRadius: '28px',
-              padding: '32px 28px',
+              borderRadius: '26px',
+              padding: isLandscape ? '28px 32px' : '32px 28px',
               boxShadow: isDark
                 ? '0 25px 50px -12px rgba(0, 0, 0, 0.45)'
-                : '0 20px 40px -10px rgba(120, 53, 15, 0.08)'
+                : '0 20px 40px -10px rgba(120, 53, 15, 0.08)',
+              boxSizing: 'border-box'
             }}
           >
-            {/* Top Emblem & Header */}
+            {/* Top Emblem & Header Banner */}
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                paddingBottom: '18px',
+                paddingBottom: '16px',
                 borderBottom: isDark ? '1px solid #282522' : '1px solid #EAE3D7'
               }}
             >
@@ -413,77 +462,92 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                       marginTop: '2px'
                     }}
                   >
-                    Worship Team Lineup
+                    Worship Ministry Service Setlist
                   </div>
                 </div>
               </div>
 
-              <div
-                style={{
-                  padding: '5px 14px',
-                  borderRadius: '9999px',
-                  backgroundColor: lineup.status === 'published'
-                    ? (isDark ? '#064E3B' : '#DCFCE7')
-                    : (isDark ? '#78350F' : '#FEF3C7'),
-                  border: lineup.status === 'published'
-                    ? (isDark ? '1px solid #059669' : '1px solid #86EFAC')
-                    : (isDark ? '1px solid #D97706' : '1px solid #FCD34D'),
-                  color: lineup.status === 'published'
-                    ? (isDark ? '#A7F3D0' : '#166534')
-                    : (isDark ? '#FDE68A' : '#92400E'),
-                  fontSize: '11px',
-                  fontWeight: '800',
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase'
-                }}
-              >
-                {lineup.status === 'published' ? 'OFFICIAL LINEUP' : 'DRAFT SETLIST'}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div
+                  style={{
+                    padding: '5px 12px',
+                    borderRadius: '9999px',
+                    backgroundColor: isDark ? '#262320' : '#EFE8DC',
+                    border: isDark ? '1px solid #3F3B36' : '1px solid #D6CEBE',
+                    color: isDark ? '#D6D3D1' : '#57534E',
+                    fontSize: '11px',
+                    fontWeight: '700',
+                    letterSpacing: '0.04em'
+                  }}
+                >
+                  {lineup.songs?.length || 0} {(lineup.songs?.length || 0) === 1 ? 'Song' : 'Songs'}
+                </div>
+
+                <div
+                  style={{
+                    padding: '5px 14px',
+                    borderRadius: '9999px',
+                    backgroundColor: lineup.status === 'published'
+                      ? (isDark ? '#064E3B' : '#DCFCE7')
+                      : (isDark ? '#78350F' : '#FEF3C7'),
+                    border: lineup.status === 'published'
+                      ? (isDark ? '1px solid #059669' : '1px solid #86EFAC')
+                      : (isDark ? '1px solid #D97706' : '1px solid #FCD34D'),
+                    color: lineup.status === 'published'
+                      ? (isDark ? '#A7F3D0' : '#166534')
+                      : (isDark ? '#FDE68A' : '#92400E'),
+                    fontSize: '11px',
+                    fontWeight: '800',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase'
+                  }}
+                >
+                  {lineup.status === 'published' ? 'OFFICIAL LINEUP' : 'DRAFT SETLIST'}
+                </div>
               </div>
             </div>
 
-            {/* Service Title & Date Banner */}
-            <div style={{ textAlign: 'center', paddingTop: '24px', paddingBottom: '20px' }}>
+            {/* Service Title & Date Headline */}
+            <div style={{ textAlign: 'center', paddingTop: '16px', paddingBottom: '18px' }}>
               <h1
                 style={{
-                  fontSize: '24px',
+                  fontSize: isLandscape ? '24px' : '22px',
                   fontWeight: '900',
-                  letterSpacing: '0.02em',
+                  letterSpacing: '0.03em',
                   textTransform: 'uppercase',
                   color: isDark ? '#FFFFFF' : '#1C1917',
-                  lineHeight: '1.25'
+                  lineHeight: '1.25',
+                  margin: 0
                 }}
               >
                 {lineup.title}
               </h1>
 
-              {/* Exact explicit inline styling for Date & Time Badge */}
-              <div style={{ textAlign: 'center', marginTop: '10px' }}>
+              <div style={{ textAlign: 'center', marginTop: '8px' }}>
                 <div
                   style={{
-                    display: 'inline-block',
-                    padding: '7px 20px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    padding: '6px 18px',
                     borderRadius: '9999px',
                     backgroundColor: isDark ? '#262320' : '#EFE8DC',
                     border: isDark ? '1px solid #3F3B36' : '1px solid #D6CEBE',
                     color: isDark ? '#FDE68A' : '#78350F',
-                    fontSize: '13px',
+                    fontSize: '12px',
                     fontWeight: '700',
-                    lineHeight: '20px',
-                    textAlign: 'center'
+                    lineHeight: '18px'
                   }}
                 >
                   <svg
                     viewBox="0 0 24 24"
                     style={{
-                      width: '15px',
-                      height: '15px',
+                      width: '14px',
+                      height: '14px',
                       stroke: isDark ? '#FDE68A' : '#78350F',
                       fill: 'none',
                       strokeWidth: '2.2',
                       strokeLinecap: 'round',
                       strokeLinejoin: 'round',
-                      display: 'inline-block',
-                      verticalAlign: '-2px',
                       marginRight: '6px'
                     }}
                   >
@@ -492,7 +556,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                     <line x1="8" y1="2" x2="8" y2="6"></line>
                     <line x1="3" y1="10" x2="21" y2="10"></line>
                   </svg>
-                  <span style={{ color: isDark ? '#FDE68A' : '#78350F', fontWeight: '700' }}>
+                  <span>
                     {formattedDate || lineup.service_date} • {lineup.service_time}
                   </span>
                 </div>
@@ -501,10 +565,10 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               {lineup.theme && (
                 <div
                   style={{
-                    marginTop: '10px',
+                    marginTop: '6px',
                     fontSize: '12px',
                     fontStyle: 'italic',
-                    color: isDark ? '#A8A29E' : '#78716C'
+                    color: isDark ? '#D6D3D1' : '#57534E'
                   }}
                 >
                   Theme: "{lineup.theme}"
@@ -512,45 +576,35 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               )}
             </div>
 
-            {/* Ministry Team Roster Box */}
+            {/* Main Organized Content Layout */}
             <div
               style={{
-                backgroundColor: isDark ? '#1C1A18' : '#FFFFFF',
-                border: isDark ? '1px solid #2B2824' : '1px solid #E5DFD5',
-                borderRadius: '18px',
-                padding: '16px 20px',
-                marginBottom: '20px',
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '16px'
+                display: isLandscape ? 'grid' : 'block',
+                gridTemplateColumns: isLandscape ? '330px 1fr' : '1fr',
+                gap: '20px',
+                alignItems: 'start'
               }}
             >
-              <div>
+              {/* LEFT COLUMN: Service Roster & Key Information */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                  marginBottom: isLandscape ? '0' : '20px'
+                }}
+              >
+                {/* Worship Leader & Vocal Team Card */}
                 <div
                   style={{
-                    fontSize: '10px',
-                    fontWeight: '800',
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    color: isDark ? '#FBBF24' : '#92400E',
-                    marginBottom: '3px'
+                    backgroundColor: isDark ? '#1C1A18' : '#FFFFFF',
+                    border: isDark ? '1px solid #2B2824' : '1px solid #E5DFD5',
+                    borderRadius: '18px',
+                    padding: '16px 18px'
                   }}
                 >
-                  WORSHIP LEADER
-                </div>
-                <div
-                  style={{
-                    fontSize: '14px',
-                    fontWeight: '700',
-                    color: isDark ? '#FFFFFF' : '#1C1917',
-                    lineHeight: '1.3'
-                  }}
-                >
-                  {lineup.worship_leader_name || 'TBA'}
-                </div>
-
-                {lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0 && (
-                  <div style={{ marginTop: '10px' }}>
+                  {/* Worship Leader */}
+                  <div style={{ marginBottom: '14px' }}>
                     <div
                       style={{
                         fontSize: '10px',
@@ -558,27 +612,78 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
                         color: isDark ? '#FBBF24' : '#92400E',
-                        marginBottom: '3px'
+                        marginBottom: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px'
                       }}
                     >
-                      VOCAL TEAM
+                      <svg viewBox="0 0 24 24" style={{ width: '12px', height: '12px', stroke: 'currentColor', fill: 'none', strokeWidth: '2.5' }}>
+                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                        <line x1="12" x2="12" y1="19" y2="22" />
+                      </svg>
+                      <span>WORSHIP LEADER</span>
+                    </div>
+                    <div
+                      style={{
+                        fontSize: '15px',
+                        fontWeight: '800',
+                        color: isDark ? '#FFFFFF' : '#1C1917',
+                        lineHeight: '1.3'
+                      }}
+                    >
+                      {lineup.worship_leader_name || 'TBA'}
+                    </div>
+                  </div>
+
+                  {/* Vocal Team */}
+                  <div>
+                    <div
+                      style={{
+                        fontSize: '10px',
+                        fontWeight: '800',
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        color: isDark ? '#FBBF24' : '#92400E',
+                        marginBottom: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px'
+                      }}
+                    >
+                      <svg viewBox="0 0 24 24" style={{ width: '12px', height: '12px', stroke: 'currentColor', fill: 'none', strokeWidth: '2.5' }}>
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                      </svg>
+                      <span>VOCAL TEAM</span>
                     </div>
                     <div
                       style={{
                         fontSize: '12px',
                         fontWeight: '500',
                         color: isDark ? '#D6D3D1' : '#44403C',
-                        lineHeight: '1.4'
+                        lineHeight: '1.5'
                       }}
                     >
-                      {lineup.assigned_vocalists.map(v => v.name).join(', ')}
+                      {lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0
+                        ? lineup.assigned_vocalists.map(v => v.name).join(', ')
+                        : 'Worship Team Vocalists'}
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
 
-              <div>
-                <div>
+                {/* Band & Musicians Card */}
+                <div
+                  style={{
+                    backgroundColor: isDark ? '#1C1A18' : '#FFFFFF',
+                    border: isDark ? '1px solid #2B2824' : '1px solid #E5DFD5',
+                    borderRadius: '18px',
+                    padding: '16px 18px'
+                  }}
+                >
                   <div
                     style={{
                       fontSize: '10px',
@@ -586,17 +691,23 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
                       color: isDark ? '#FBBF24' : '#92400E',
-                      marginBottom: '3px'
+                      marginBottom: '4px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px'
                     }}
                   >
-                    BAND & MUSICIANS
+                    <svg viewBox="0 0 24 24" style={{ width: '12px', height: '12px', stroke: 'currentColor', fill: 'none', strokeWidth: '2.5' }}>
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <span>BAND & MUSICIANS</span>
                   </div>
                   <div
                     style={{
                       fontSize: '12px',
                       fontWeight: '500',
                       color: isDark ? '#D6D3D1' : '#44403C',
-                      lineHeight: '1.4'
+                      lineHeight: '1.5'
                     }}
                   >
                     {lineup.assigned_musicians && lineup.assigned_musicians.length > 0
@@ -605,8 +716,16 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                   </div>
                 </div>
 
+                {/* Call Time & Notes Card */}
                 {lineup.notes && (
-                  <div style={{ marginTop: '10px' }}>
+                  <div
+                    style={{
+                      backgroundColor: isDark ? '#1C1A18' : '#FFFFFF',
+                      border: isDark ? '1px solid #2B2824' : '1px solid #E5DFD5',
+                      borderRadius: '18px',
+                      padding: '16px 18px'
+                    }}
+                  >
                     <div
                       style={{
                         fontSize: '10px',
@@ -614,180 +733,248 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
                         color: isDark ? '#FBBF24' : '#92400E',
-                        marginBottom: '3px'
+                        marginBottom: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px'
                       }}
                     >
-                      CALL TIME / REMINDERS
+                      <svg viewBox="0 0 24 24" style={{ width: '12px', height: '12px', stroke: 'currentColor', fill: 'none', strokeWidth: '2.5' }}>
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      <span>CALL TIME & REMINDERS</span>
                     </div>
                     <div
                       style={{
                         fontSize: '11px',
                         fontStyle: 'italic',
-                        color: isDark ? '#A8A29E' : '#78716C',
-                        lineHeight: '1.3'
+                        color: isDark ? '#D6D3D1' : '#57534E',
+                        lineHeight: '1.4',
+                        whiteSpace: 'pre-line'
                       }}
                     >
                       {lineup.notes}
                     </div>
                   </div>
                 )}
+
+                {/* Scripture Verse Box */}
+                <div
+                  style={{
+                    backgroundColor: isDark ? '#231F1B' : '#F4EEE4',
+                    border: isDark ? '1px solid #363029' : '1px solid #E6DDD0',
+                    borderRadius: '16px',
+                    padding: '14px 16px',
+                    textAlign: 'center'
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: '11px',
+                      fontStyle: 'italic',
+                      color: isDark ? '#FDE68A' : '#78350F',
+                      lineHeight: '1.4'
+                    }}
+                  >
+                    "Let everything that has breath praise the LORD."
+                  </div>
+                  <div
+                    style={{
+                      fontSize: '10px',
+                      fontWeight: '700',
+                      letterSpacing: '0.06em',
+                      color: isDark ? '#A8A29E' : '#78716C',
+                      marginTop: '3px'
+                    }}
+                  >
+                    — PSALM 150:6
+                  </div>
+                </div>
+              </div>
+
+              {/* RIGHT COLUMN: Worship Songs Setlist */}
+              <div>
+                {Object.keys(songsByCategory).length === 0 ? (
+                  <div
+                    style={{
+                      padding: '40px 20px',
+                      textAlign: 'center',
+                      fontSize: '13px',
+                      color: isDark ? '#78716C' : '#A8A29E',
+                      backgroundColor: isDark ? '#1C1A18' : '#FFFFFF',
+                      borderRadius: '18px',
+                      border: isDark ? '1px solid #2B2824' : '1px solid #E5DFD5'
+                    }}
+                  >
+                    No songs added to this service lineup yet.
+                  </div>
+                ) : (
+                  Object.entries(songsByCategory).map(([categoryName, songItems]) => (
+                    <div key={categoryName} style={{ marginBottom: '14px' }}>
+                      {/* Category Label */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '6px 14px',
+                          borderRadius: '10px',
+                          backgroundColor: isDark ? '#262320' : '#EFE8DC',
+                          border: isDark ? '1px solid #36322D' : '1px solid #E2D9CB',
+                          marginBottom: '8px'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span
+                            style={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              backgroundColor: isDark ? '#FBBF24' : '#B45309'
+                            }}
+                          />
+                          <span
+                            style={{
+                              fontSize: '11px',
+                              fontWeight: '800',
+                              letterSpacing: '0.1em',
+                              textTransform: 'uppercase',
+                              color: isDark ? '#FDE68A' : '#78350F'
+                            }}
+                          >
+                            {categoryName}
+                          </span>
+                        </div>
+                        <span
+                          style={{
+                            fontSize: '10px',
+                            fontWeight: '700',
+                            color: isDark ? '#A8A29E' : '#78716C'
+                          }}
+                        >
+                          {songItems.length} {songItems.length === 1 ? 'SONG' : 'SONGS'}
+                        </span>
+                      </div>
+
+                      {/* Song Items Grid */}
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns:
+                            isLandscape && (lineup.songs?.length || 0) > 4 ? '1fr 1fr' : '1fr',
+                          gap: '8px'
+                        }}
+                      >
+                        {songItems.map((song, i) => (
+                          <div
+                            key={song.id}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: '12px',
+                              padding: '10px 14px',
+                              borderRadius: '14px',
+                              backgroundColor: isDark ? '#1C1A18' : '#FFFFFF',
+                              border: isDark ? '1px solid #2B2824' : '1px solid #E7E1D6'
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: 0 }}>
+                              {/* Order Number Circle */}
+                              <div
+                                style={{
+                                  width: '26px',
+                                  height: '26px',
+                                  minWidth: '26px',
+                                  borderRadius: '50%',
+                                  backgroundColor: isDark ? '#282420' : '#F5EFE6',
+                                  color: isDark ? '#FBBF24' : '#78350F',
+                                  border: isDark ? '1px solid #443F38' : '1px solid #DDD5C7',
+                                  fontSize: '12px',
+                                  fontWeight: '800',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  lineHeight: '1'
+                                }}
+                              >
+                                {song.order || i + 1}
+                              </div>
+
+                              <div style={{ flex: 1, minWidth: 0 }}>
+                                <div
+                                  style={{
+                                    fontSize: '14px',
+                                    fontWeight: '800',
+                                    color: isDark ? '#FFFFFF' : '#1C1917',
+                                    lineHeight: '1.3',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                  }}
+                                >
+                                  {song.title}
+                                </div>
+                                {(song.artist || song.assigned_vocalist_name) && (
+                                  <div
+                                    style={{
+                                      fontSize: '11px',
+                                      color: isDark ? '#A8A29E' : '#78716C',
+                                      lineHeight: '1.3',
+                                      marginTop: '2px',
+                                      overflow: 'hidden',
+                                      textOverflow: 'ellipsis',
+                                      whiteSpace: 'nowrap'
+                                    }}
+                                  >
+                                    {song.artist && <span>{song.artist}</span>}
+                                    {song.artist && song.assigned_vocalist_name && <span> • </span>}
+                                    {song.assigned_vocalist_name && (
+                                      <span style={{ color: isDark ? '#FDE68A' : '#92400E', fontWeight: '700' }}>
+                                        Lead: {song.assigned_vocalist_name}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Key Tag */}
+                            <div style={{ flexShrink: 0 }}>
+                              <div
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  padding: '4px 10px',
+                                  borderRadius: '10px',
+                                  backgroundColor: isDark ? '#2E2012' : '#FEF3C7',
+                                  border: isDark ? '1px solid #78350F' : '1px solid #FCD34D',
+                                  color: isDark ? '#FDE68A' : '#92400E',
+                                  fontSize: '12px',
+                                  fontWeight: '800',
+                                  letterSpacing: '0.04em',
+                                  lineHeight: '1'
+                                }}
+                              >
+                                Key {song.selected_key || song.original_key || 'C'}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 
-            {/* Song Setlist Sections */}
-            <div>
-              {Object.keys(songsByCategory).length === 0 ? (
-                <div
-                  style={{
-                    padding: '32px 0',
-                    textAlign: 'center',
-                    fontSize: '12px',
-                    color: isDark ? '#78716C' : '#A8A29E'
-                  }}
-                >
-                  No songs in this service lineup yet.
-                </div>
-              ) : (
-                Object.entries(songsByCategory).map(([categoryName, songItems]) => (
-                  <div key={categoryName} style={{ marginBottom: '14px' }}>
-                    {/* Category Label */}
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '6px 14px',
-                        borderRadius: '10px',
-                        backgroundColor: isDark ? '#262320' : '#EFE8DC',
-                        border: isDark ? '1px solid #36322D' : '1px solid #E2D9CB',
-                        marginBottom: '8px'
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: '11px',
-                          fontWeight: '800',
-                          letterSpacing: '0.1em',
-                          textTransform: 'uppercase',
-                          color: isDark ? '#FDE68A' : '#78350F'
-                        }}
-                      >
-                        {categoryName}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: '10px',
-                          fontWeight: '700',
-                          color: isDark ? '#A8A29E' : '#78716C'
-                        }}
-                      >
-                        {songItems.length} {songItems.length === 1 ? 'SONG' : 'SONGS'}
-                      </span>
-                    </div>
-
-                    {/* Song Cards */}
-                    <div>
-                      {songItems.map((song, i) => (
-                        <div
-                          key={song.id}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            gap: '14px',
-                            padding: '12px 18px',
-                            borderRadius: '16px',
-                            backgroundColor: isDark ? '#1C1A18' : '#FFFFFF',
-                            border: isDark ? '1px solid #2B2824' : '1px solid #E7E1D6',
-                            marginBottom: '8px'
-                          }}
-                        >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flex: 1, minWidth: 0 }}>
-                            <div
-                              style={{
-                                width: '28px',
-                                height: '28px',
-                                minWidth: '28px',
-                                borderRadius: '50%',
-                                backgroundColor: isDark ? '#282420' : '#F5EFE6',
-                                color: isDark ? '#FBBF24' : '#78350F',
-                                border: isDark ? '1px solid #443F38' : '1px solid #DDD5C7',
-                                fontSize: '13px',
-                                fontWeight: '800',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                lineHeight: '1'
-                              }}
-                            >
-                              {song.order || i + 1}
-                            </div>
-
-                            <div style={{ flex: 1, minWidth: 0 }}>
-                              <div
-                                style={{
-                                  fontSize: '15px',
-                                  fontWeight: '800',
-                                  color: isDark ? '#FFFFFF' : '#1C1917',
-                                  lineHeight: '1.4'
-                                }}
-                              >
-                                {song.title}
-                              </div>
-                              {(song.artist || song.assigned_vocalist_name) && (
-                                <div
-                                  style={{
-                                    fontSize: '12px',
-                                    color: isDark ? '#A8A29E' : '#78716C',
-                                    lineHeight: '1.3',
-                                    marginTop: '2px'
-                                  }}
-                                >
-                                  {song.artist && <span>{song.artist}</span>}
-                                  {song.artist && song.assigned_vocalist_name && <span> • </span>}
-                                  {song.assigned_vocalist_name && (
-                                    <span style={{ color: isDark ? '#FDE68A' : '#92400E', fontWeight: '700' }}>
-                                      Lead: {song.assigned_vocalist_name}
-                                    </span>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-
-                          <div style={{ flexShrink: 0 }}>
-                            <div
-                              style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                padding: '5px 14px',
-                                borderRadius: '12px',
-                                backgroundColor: isDark ? '#2E2012' : '#FEF3C7',
-                                border: isDark ? '1px solid #78350F' : '1px solid #FCD34D',
-                                color: isDark ? '#FDE68A' : '#92400E',
-                                fontSize: '13px',
-                                fontWeight: '800',
-                                letterSpacing: '0.04em',
-                                lineHeight: '1'
-                              }}
-                            >
-                              Key {song.selected_key || song.original_key || 'C'}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-
-            {/* Bottom Footer & Scripture */}
+            {/* Bottom Footer & Signature */}
             <div
               style={{
-                marginTop: '28px',
-                paddingTop: '18px',
+                marginTop: '24px',
+                paddingTop: '16px',
                 borderTop: isDark ? '1px solid #282522' : '1px solid #EAE3D7',
                 display: 'flex',
                 alignItems: 'center',
@@ -800,11 +987,10 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                   fontSize: '11px',
                   color: isDark ? '#A8A29E' : '#78716C',
                   fontStyle: 'italic',
-                  lineHeight: '1.4',
-                  maxWidth: '320px'
+                  lineHeight: '1.4'
                 }}
               >
-                "Let everything that has breath praise the LORD." — Psalm 150:6
+                Beholding Jesus Church • Worship Ministry Lineup
               </div>
 
               <div
