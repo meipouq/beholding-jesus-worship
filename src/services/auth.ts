@@ -1,4 +1,4 @@
-import { getSupabase } from './supabase';
+import { getSupabase, sanitizeRecordForSupabase } from './supabase';
 import { TeamMember } from '../types';
 
 export interface AuthAccount {
@@ -188,7 +188,8 @@ export class AuthService {
         }
 
         // 2. Also save to team_members table so member can be assigned to sets
-        await client.from('team_members').upsert([newMember]);
+        const sanitizedMember = sanitizeRecordForSupabase('team_members', newMember);
+        await client.from('team_members').upsert([sanitizedMember]);
       } catch (err: any) {
         console.error('Registration cloud sync failed:', err);
       }

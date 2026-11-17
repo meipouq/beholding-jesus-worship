@@ -68,7 +68,7 @@ initializeCleanSlate();
 function getItem<T>(key: string, defaultValue: T): T {
   try {
     const raw = localStorage.getItem(key);
-    if (!raw) return defaultValue;
+    if (raw === null || raw === undefined || raw === '') return defaultValue;
     return JSON.parse(raw) as T;
   } catch (err) {
     console.error(`Error reading ${key} from localStorage:`, err);

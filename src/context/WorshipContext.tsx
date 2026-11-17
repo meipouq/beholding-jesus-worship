@@ -152,7 +152,7 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     // 1. Initial & Continuous Pull
     const syncAll = () => {
       pullAllFromSupabase().then((res) => {
-        if (res.success && res.count > 0) {
+        if (res.success) {
           setMembers(StorageService.getMembers());
           setCategories(StorageService.getCategories());
           setSongs(StorageService.getSongs());
@@ -304,8 +304,8 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setSongs(updated);
     if (song) {
       logActivity('deleted song', song.title);
-      deleteRecordFromSupabase('songs', id);
     }
+    deleteRecordFromSupabase('songs', id);
   };
 
   const saveCategory = (cat: SongCategory) => {
@@ -339,8 +339,12 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteMember = (id: string) => {
+    const member = members.find(m => m.id === id);
     const updated = StorageService.deleteMember(id);
     setMembers(updated);
+    if (member) {
+      logActivity('removed team member', member.name);
+    }
     deleteRecordFromSupabase('team_members', id);
   };
 
