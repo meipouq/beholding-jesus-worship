@@ -22,6 +22,7 @@ import {
 import { useWorship } from '../../context/WorshipContext';
 import { ServiceLineup } from '../../types';
 import { LineupShareModal } from '../lineups/LineupShareModal';
+import { FullLineupCard } from './FullLineupCard';
 
 function formatServiceDate(dateStr?: string, timeStr?: string): string {
   if (!dateStr) return '';
@@ -60,18 +61,6 @@ export const DashboardView: React.FC = () => {
   // Find the primary upcoming lineup (or the first published/draft lineup)
   const currentLineup = lineups.find(l => l.status === 'published') || lineups[0];
   const [sharingLineup, setSharingLineup] = useState<ServiceLineup | null>(null);
-
-  // Group songs in lineup by category
-  const categorizedSongs: { [category: string]: typeof currentLineup.songs } = {};
-  if (currentLineup && currentLineup.songs) {
-    currentLineup.songs.forEach((song) => {
-      const cat = (song.category || 'GENERAL').toUpperCase();
-      if (!categorizedSongs[cat]) {
-        categorizedSongs[cat] = [];
-      }
-      categorizedSongs[cat].push(song);
-    });
-  }
 
   // Next upcoming rehearsal / schedule
   const nextRehearsal = rehearsals[0];
@@ -125,54 +114,21 @@ export const DashboardView: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Next Service Card - Dynamic Based on Database State */}
+        {/* Mobile Next Service Card - Full View with YouTube Play Links & Details */}
         {currentLineup ? (
-          <div className="bg-white rounded-3xl p-4 border border-[#E8E2D7] shadow-soft">
-            <div className="flex items-center justify-between pb-3">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-2xl bg-[#F8F5EE] border border-[#E8E2D7] text-stone-800">
-                  <Calendar className="w-5 h-5 text-amber-800" />
-                </div>
-                <div>
-                  <span className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider block">
-                    Next Service Lineup
-                  </span>
-                  <span className="text-xs font-bold text-stone-900 block">
-                    {formatServiceDate(currentLineup.service_date, currentLineup.service_time)}
-                  </span>
-                  {currentLineup.created_by && (
-                    <span className="text-[10px] text-amber-800 font-semibold block mt-0.5">
-                      Posted by {currentLineup.created_by}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <ChevronRight className="w-4 h-4 text-stone-400" />
-            </div>
-
-            <div className="flex items-center gap-2 mt-2">
-              <button
-                onClick={() => {
-                  setActiveLineupId(currentLineup.id);
-                  setActiveModule('lineups');
-                }}
-                className="flex-1 py-3 px-3 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
-              >
-                <span>View Lineup</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-              <button
-                onClick={() => setSharingLineup(currentLineup)}
-                className="py-3 px-3.5 rounded-2xl bg-[#FAF6F0] hover:bg-stone-200/80 text-stone-800 border border-stone-200 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
-                title="Share Lineup / Save as Photo"
-              >
-                <Share2 className="w-3.5 h-3.5 text-amber-800" />
-                <span>Share</span>
-              </button>
-            </div>
-          </div>
+          <FullLineupCard
+            lineup={currentLineup}
+            songs={songs}
+            onViewLineup={(lineupId) => {
+              setActiveLineupId(lineupId);
+              setActiveModule('lineups');
+            }}
+            onShareLineup={(l) => setSharingLineup(l)}
+            onPlayVideo={playVideo}
+            onOpenChords={openChords}
+          />
         ) : (
-          <div className="bg-white rounded-3xl p-4 border border-[#E8E2D7] shadow-soft flex items-center justify-between">
+          <div className="bg-white rounded-3xl p-5 border border-[#E8E2D7] shadow-soft flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-2xl bg-[#F8F5EE] border border-[#E8E2D7] text-stone-400">
                 <Calendar className="w-5 h-5" />
@@ -393,162 +349,46 @@ export const DashboardView: React.FC = () => {
           TWO-COLUMN MAIN SECTION (Lineup Card & Right Column)
          ========================================================================= */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
-        {/* LEFT COLUMN: ACTIVE LINEUP CARD OR EMPTY STATE */}
-        {currentLineup ? (
-          <div className="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-6 border border-[#E8E2D7] shadow-soft flex flex-col justify-between">
-            <div>
-              {/* Lineup Card Header - Dynamic from database record */}
-              <div className="flex items-center justify-between pb-4 border-b border-stone-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-[#1E1D1B] text-white flex items-center justify-center shrink-0 shadow-2xs">
-                    <Calendar className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-base sm:text-lg font-bold text-stone-900 leading-tight">
-                      {currentLineup.title}
-                    </h2>
-                    <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                      <p className="text-xs text-stone-500">
-                        {formatServiceDate(currentLineup.service_date, currentLineup.service_time)}
-                      </p>
-                      {currentLineup.created_by && (
-                        <span className="text-[10px] font-bold text-amber-800 px-2 py-0.5 rounded-full bg-amber-100/70 border border-amber-200/80">
-                          By {currentLineup.created_by}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setSharingLineup(currentLineup)}
-                    className="p-1.5 px-3 rounded-xl bg-[#FAF6F0] hover:bg-stone-200/80 text-stone-700 text-xs font-bold border border-stone-200 flex items-center gap-1.5 transition-all shadow-2xs"
-                    title="Share Lineup & Save as Photo"
-                  >
-                    <Share2 className="w-3.5 h-3.5 text-amber-800" />
-                    <span>Share / Photo</span>
-                  </button>
-
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wide border ${
-                    currentLineup.status === 'published'
-                      ? 'bg-[#E2F7E5] text-[#2E7D32] border-[#C8E6C9]'
-                      : 'bg-amber-100 text-amber-800 border-amber-200'
-                  }`}>
-                    {currentLineup.status === 'published' ? 'Published' : 'Draft'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Categorized Songs List */}
-              <div className="mt-4 space-y-4">
-                {Object.keys(categorizedSongs).length === 0 ? (
-                  <div className="py-8 text-center text-xs text-stone-400">
-                    No songs in this lineup yet. Click "View Full Lineup" to add songs.
-                  </div>
-                ) : (
-                  Object.entries(categorizedSongs).map(([categoryName, songItems]) => (
-                    <div key={categoryName} className="space-y-1.5">
-                      {/* Category Label Bar */}
-                      <div className="px-3 py-1.5 rounded-lg bg-[#EFE8DC] text-stone-800 text-[11px] font-bold tracking-wider uppercase">
-                        {categoryName}
-                      </div>
-
-                      {/* Song Rows */}
-                      <div className="space-y-1 pl-1">
-                        {songItems.map((item) => {
-                          const originalSong = songs.find(s => s.id === item.song_id);
-
-                          return (
-                            <div
-                              key={item.id}
-                              className="flex items-center justify-between p-2 rounded-xl hover:bg-stone-50 transition-colors group"
-                            >
-                              <div className="flex items-center gap-3 min-w-0 pr-2">
-                                <span className="text-xs font-bold text-stone-400 w-3 text-center">
-                                  {item.order}
-                                </span>
-                                <Music2 className="w-3.5 h-3.5 text-stone-500 shrink-0" />
-                                <button
-                                  onClick={() => {
-                                    if (originalSong) openChords(originalSong);
-                                  }}
-                                  className="text-xs font-medium text-stone-800 hover:text-amber-800 truncate text-left"
-                                  title="Click to view Chords & Lyrics"
-                                >
-                                  {item.title}
-                                </button>
-                              </div>
-
-                              <div className="flex items-center gap-3 shrink-0">
-                                <span className="text-xs font-bold text-stone-700 min-w-4 text-center">
-                                  {item.selected_key || item.original_key}
-                                </span>
-
-                                {/* Play Video Button - Outline Circle matching Reference Image */}
-                                <button
-                                  onClick={() => {
-                                    if (item.youtube_url) {
-                                      playVideo(item.title, item.youtube_url);
-                                    } else if (originalSong?.youtube_url) {
-                                      playVideo(originalSong.title, originalSong.youtube_url);
-                                    }
-                                  }}
-                                  className="w-6 h-6 rounded-full border border-stone-800 hover:border-[#1E1D1B] text-stone-800 hover:bg-[#1E1D1B] hover:text-white flex items-center justify-center transition-all shadow-2xs"
-                                  title="Play YouTube Reference"
-                                >
-                                  <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
-                                </button>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            {/* Bottom "View Full Lineup" Button */}
-            <div className="pt-5 mt-4 border-t border-stone-100">
-              <button
-                onClick={() => {
-                  setActiveLineupId(currentLineup.id);
-                  setActiveModule('lineups');
-                }}
-                className="w-full py-3.5 px-4 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold flex items-center justify-center gap-2 transition-colors shadow-sm"
-              >
-                <Play className="w-3.5 h-3.5 fill-current" />
-                <span>View Full Lineup</span>
-              </button>
-            </div>
-          </div>
-        ) : (
-          /* Empty State when Lineup is Deleted */
-          <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-[#E8E2D7] shadow-soft flex flex-col justify-center items-center text-center py-14">
-            <div className="w-14 h-14 rounded-2xl bg-[#F8F5EE] border border-stone-200 text-stone-400 flex items-center justify-center mb-3">
-              <Calendar className="w-7 h-7 text-amber-900" />
-            </div>
-            <h3 className="text-base font-bold text-stone-900">No Service Lineup Scheduled</h3>
-            <p className="text-xs text-stone-500 mt-1 max-w-sm">
-              All previous lineups have been deleted. You can create a new worship service lineup for any date with songs, vocal keys, and team assignments.
-            </p>
-            <button
-              onClick={() => {
-                setActiveLineupId(null);
+        {/* LEFT COLUMN: ACTIVE LINEUP FULL CARD OR EMPTY STATE (Desktop) */}
+        <div className="hidden md:block lg:col-span-7">
+          {currentLineup ? (
+            <FullLineupCard
+              lineup={currentLineup}
+              songs={songs}
+              onViewLineup={(lineupId) => {
+                setActiveLineupId(lineupId);
                 setActiveModule('lineups');
               }}
-              className="mt-5 py-3 px-5 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold flex items-center gap-2 shadow-xs transition-colors"
-            >
-              <PlusCircle className="w-4 h-4" />
-              <span>Create New Service Lineup</span>
-            </button>
-          </div>
-        )}
+              onShareLineup={(l) => setSharingLineup(l)}
+              onPlayVideo={playVideo}
+              onOpenChords={openChords}
+            />
+          ) : (
+            /* Empty State when Lineup is Deleted */
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E8E2D7] shadow-soft flex flex-col justify-center items-center text-center py-14">
+              <div className="w-14 h-14 rounded-2xl bg-[#F8F5EE] border border-stone-200 text-stone-400 flex items-center justify-center mb-3">
+                <Calendar className="w-7 h-7 text-amber-900" />
+              </div>
+              <h3 className="text-base font-bold text-stone-900">No Service Lineup Scheduled</h3>
+              <p className="text-xs text-stone-500 mt-1 max-w-sm">
+                All previous lineups have been deleted. You can create a new worship service lineup for any date with songs, vocal keys, and team assignments.
+              </p>
+              <button
+                onClick={() => {
+                  setActiveLineupId(null);
+                  setActiveModule('lineups');
+                }}
+                className="mt-5 py-3 px-5 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold flex items-center gap-2 shadow-xs transition-colors"
+              >
+                <PlusCircle className="w-4 h-4" />
+                <span>Create New Service Lineup</span>
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* RIGHT COLUMN: UPCOMING EVENTS & RECENT ACTIVITY */}
-        <div className="lg:col-span-5 space-y-5 sm:space-y-6">
+        <div className="col-span-1 lg:col-span-5 space-y-5 sm:space-y-6">
           {/* Upcoming Events Card */}
           <div className="bg-white rounded-3xl p-5 border border-[#E8E2D7] shadow-soft">
             <div className="flex items-center justify-between pb-3.5 border-b border-stone-100">
