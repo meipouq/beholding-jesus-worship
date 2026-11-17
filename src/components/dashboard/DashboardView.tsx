@@ -245,50 +245,62 @@ export const DashboardView: React.FC = () => {
           <div className="grid grid-cols-3 gap-2.5">
             <button
               onClick={() => setActiveModule('songs')}
-              className="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-[#E8E2D7] shadow-soft hover:bg-stone-50 transition-colors"
+              className="group flex flex-col items-center justify-center p-3 sm:p-3.5 rounded-2xl bg-white hover:bg-stone-50/80 border border-[#E8E2D7] hover:border-[#D4A359]/50 shadow-soft hover:shadow-card transition-all duration-200 active:scale-95"
             >
-              <Music2 className="w-5 h-5 text-stone-800 mb-1.5" />
-              <span className="text-[11px] font-semibold text-stone-800 text-center">Song Library</span>
+              <div className="w-9 h-9 rounded-xl bg-[#FAF6F0] group-hover:bg-[#1E1D1B] text-stone-800 group-hover:text-[#FDE68A] flex items-center justify-center transition-all duration-200 mb-1.5 shadow-2xs">
+                <Music2 className="w-4.5 h-4.5" />
+              </div>
+              <span className="text-[11px] font-bold text-stone-800 group-hover:text-stone-950 text-center tracking-tight">Song Library</span>
             </button>
 
             <button
               onClick={() => setActiveModule('vocalists')}
-              className="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-[#E8E2D7] shadow-soft hover:bg-stone-50 transition-colors"
+              className="group flex flex-col items-center justify-center p-3 sm:p-3.5 rounded-2xl bg-white hover:bg-stone-50/80 border border-[#E8E2D7] hover:border-[#D4A359]/50 shadow-soft hover:shadow-card transition-all duration-200 active:scale-95"
             >
-              <Users className="w-5 h-5 text-stone-800 mb-1.5" />
-              <span className="text-[11px] font-semibold text-stone-800 text-center">Vocalists</span>
+              <div className="w-9 h-9 rounded-xl bg-[#FAF6F0] group-hover:bg-[#1E1D1B] text-stone-800 group-hover:text-[#FDE68A] flex items-center justify-center transition-all duration-200 mb-1.5 shadow-2xs">
+                <Users className="w-4.5 h-4.5" />
+              </div>
+              <span className="text-[11px] font-bold text-stone-800 group-hover:text-stone-950 text-center tracking-tight">Vocalists</span>
             </button>
 
             <button
               onClick={() => setActiveModule('rehearsals')}
-              className="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-[#E8E2D7] shadow-soft hover:bg-stone-50 transition-colors"
+              className="group flex flex-col items-center justify-center p-3 sm:p-3.5 rounded-2xl bg-white hover:bg-stone-50/80 border border-[#E8E2D7] hover:border-[#D4A359]/50 shadow-soft hover:shadow-card transition-all duration-200 active:scale-95"
             >
-              <Calendar className="w-5 h-5 text-stone-800 mb-1.5" />
-              <span className="text-[11px] font-semibold text-stone-800 text-center">Rehearsal</span>
+              <div className="w-9 h-9 rounded-xl bg-[#FAF6F0] group-hover:bg-[#1E1D1B] text-stone-800 group-hover:text-[#FDE68A] flex items-center justify-center transition-all duration-200 mb-1.5 shadow-2xs">
+                <Calendar className="w-4.5 h-4.5" />
+              </div>
+              <span className="text-[11px] font-bold text-stone-800 group-hover:text-stone-950 text-center tracking-tight">Rehearsal</span>
             </button>
 
             <button
               onClick={() => setActiveModule('tasks')}
-              className="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-[#E8E2D7] shadow-soft hover:bg-stone-50 transition-colors"
+              className="group flex flex-col items-center justify-center p-3 sm:p-3.5 rounded-2xl bg-white hover:bg-stone-50/80 border border-[#E8E2D7] hover:border-[#D4A359]/50 shadow-soft hover:shadow-card transition-all duration-200 active:scale-95"
             >
-              <CheckSquare className="w-5 h-5 text-stone-800 mb-1.5" />
-              <span className="text-[11px] font-semibold text-stone-800 text-center">Tasks</span>
+              <div className="w-9 h-9 rounded-xl bg-[#FAF6F0] group-hover:bg-[#1E1D1B] text-stone-800 group-hover:text-[#FDE68A] flex items-center justify-center transition-all duration-200 mb-1.5 shadow-2xs">
+                <CheckSquare className="w-4.5 h-4.5" />
+              </div>
+              <span className="text-[11px] font-bold text-stone-800 group-hover:text-stone-950 text-center tracking-tight">Tasks</span>
             </button>
 
             <button
               onClick={() => setActiveModule('lineups')}
-              className="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-[#E8E2D7] shadow-soft hover:bg-stone-50 transition-colors"
+              className="group flex flex-col items-center justify-center p-3 sm:p-3.5 rounded-2xl bg-white hover:bg-stone-50/80 border border-[#E8E2D7] hover:border-[#D4A359]/50 shadow-soft hover:shadow-card transition-all duration-200 active:scale-95"
             >
-              <ListMusic className="w-5 h-5 text-stone-800 mb-1.5" />
-              <span className="text-[11px] font-semibold text-stone-800 text-center">Lineups</span>
+              <div className="w-9 h-9 rounded-xl bg-[#FAF6F0] group-hover:bg-[#1E1D1B] text-stone-800 group-hover:text-[#FDE68A] flex items-center justify-center transition-all duration-200 mb-1.5 shadow-2xs">
+                <ListMusic className="w-4.5 h-4.5" />
+              </div>
+              <span className="text-[11px] font-bold text-stone-800 group-hover:text-stone-950 text-center tracking-tight">Lineups</span>
             </button>
 
             <button
               onClick={() => setActiveModule('announcements')}
-              className="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-[#E8E2D7] shadow-soft hover:bg-stone-50 transition-colors"
+              className="group flex flex-col items-center justify-center p-3 sm:p-3.5 rounded-2xl bg-white hover:bg-stone-50/80 border border-[#E8E2D7] hover:border-[#D4A359]/50 shadow-soft hover:shadow-card transition-all duration-200 active:scale-95"
             >
-              <FileText className="w-5 h-5 text-stone-800 mb-1.5" />
-              <span className="text-[11px] font-semibold text-stone-800 text-center">Announce</span>
+              <div className="w-9 h-9 rounded-xl bg-[#FAF6F0] group-hover:bg-[#1E1D1B] text-stone-800 group-hover:text-[#FDE68A] flex items-center justify-center transition-all duration-200 mb-1.5 shadow-2xs">
+                <FileText className="w-4.5 h-4.5" />
+              </div>
+              <span className="text-[11px] font-bold text-stone-800 group-hover:text-stone-950 text-center tracking-tight">Announce</span>
             </button>
           </div>
         </div>

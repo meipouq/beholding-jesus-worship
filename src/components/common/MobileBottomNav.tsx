@@ -126,7 +126,7 @@ export const MobileBottomNav: React.FC = () => {
       )}
 
       {/* Fixed Bottom Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-[#E8E2D7] md:hidden px-3 py-2 flex items-center justify-around shadow-lg no-print">
+      <nav className="fixed bottom-0 left-0 right-0 z-30 bg-[#FAF7F2]/95 backdrop-blur-xl border-t border-[#E8E1D5]/90 md:hidden px-3 py-2 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.03)] no-print">
         {navTabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeModule === tab.id;
@@ -138,19 +138,19 @@ export const MobileBottomNav: React.FC = () => {
                 setActiveModule(tab.id);
                 setIsMoreMenuOpen(false);
               }}
-              className={`flex flex-col items-center justify-center flex-1 py-1 transition-colors relative ${
-                isActive ? 'text-[#1E1D1B] font-semibold' : 'text-stone-400 hover:text-stone-600'
+              className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 ${
+                isActive ? 'text-[#1E1D1B] font-extrabold' : 'text-stone-400 hover:text-stone-700'
               }`}
             >
               <div className="relative">
-                <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.4]' : 'stroke-[1.8]'}`} />
+                <Icon className={`w-5 h-5 transition-transform ${isActive ? 'stroke-[2.5] text-[#1E1D1B] scale-110' : 'stroke-[1.8]'}`} />
                 {tab.badge && tab.badge > 0 ? (
-                  <span className="absolute -top-1.5 -right-2 bg-red-500 text-white text-[9px] font-bold px-1 rounded-full min-w-3.5 text-center leading-3">
+                  <span className="absolute -top-1.5 -right-2 bg-gradient-to-r from-rose-500 to-red-600 text-white text-[9px] font-black px-1 rounded-full min-w-3.5 text-center leading-3 shadow-2xs">
                     {tab.badge}
                   </span>
                 ) : null}
               </div>
-              <span className="text-[10px] mt-1 font-medium">{tab.label}</span>
+              <span className={`text-[10px] mt-1 transition-colors ${isActive ? 'font-black text-[#1E1D1B]' : 'font-medium'}`}>{tab.label}</span>
             </button>
           );
         })}
@@ -158,14 +158,14 @@ export const MobileBottomNav: React.FC = () => {
         {/* More Button */}
         <button
           onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
-          className={`flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
+          className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 ${
             isMoreActive || isMoreMenuOpen
-              ? 'text-[#1E1D1B] font-semibold'
-              : 'text-stone-400 hover:text-stone-600'
+              ? 'text-[#1E1D1B] font-extrabold'
+              : 'text-stone-400 hover:text-stone-700'
           }`}
         >
-          <MoreHorizontal className="w-5 h-5 stroke-[1.8]" />
-          <span className="text-[10px] mt-1 font-medium">More</span>
+          <MoreHorizontal className={`w-5 h-5 transition-transform ${isMoreActive || isMoreMenuOpen ? 'stroke-[2.5] text-[#1E1D1B] scale-110' : 'stroke-[1.8]'}`} />
+          <span className={`text-[10px] mt-1 transition-colors ${isMoreActive || isMoreMenuOpen ? 'font-black text-[#1E1D1B]' : 'font-medium'}`}>More</span>
         </button>
       </nav>
     </>

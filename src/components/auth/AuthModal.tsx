@@ -202,7 +202,7 @@ export const AuthModal: React.FC = () => {
                 setLoginUsername('');
                 setLoginPassword('');
               }}
-              className="px-2.5 py-1 rounded-xl text-[11px] font-semibold text-stone-600 hover:text-red-600 hover:bg-red-50 border border-stone-200 transition-all shrink-0"
+              className="px-3 py-1.5 rounded-xl text-xs font-bold text-stone-600 hover:text-rose-700 hover:bg-rose-50 border border-stone-200/90 shadow-2xs hover:shadow-soft active:scale-95 transition-all shrink-0"
             >
               Sign Out
             </button>
@@ -220,17 +220,17 @@ export const AuthModal: React.FC = () => {
         </div>
 
         {/* Tab Selector: Sign In vs Create Account */}
-        <div className="flex items-center bg-[#F2ECE1] p-1 rounded-2xl mb-4">
+        <div className="flex items-center bg-[#F0E9DC] p-1.5 rounded-2xl mb-4 border border-[#E4DCD0]">
           <button
             type="button"
             onClick={() => {
               setMode('login');
               setLoginError(null);
             }}
-            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
+            className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all ${
               mode === 'login'
-                ? 'bg-white text-stone-900 shadow-xs'
-                : 'text-stone-600 hover:text-stone-900'
+                ? 'bg-white text-stone-900 shadow-soft'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-white/50'
             }`}
           >
             Sign In with Username
@@ -241,10 +241,10 @@ export const AuthModal: React.FC = () => {
               setMode('register');
               setRegError(null);
             }}
-            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
+            className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all ${
               mode === 'register'
-                ? 'bg-white text-stone-900 shadow-xs'
-                : 'text-stone-600 hover:text-stone-900'
+                ? 'bg-white text-stone-900 shadow-soft'
+                : 'text-stone-600 hover:text-stone-900 hover:bg-white/50'
             }`}
           >
             Create New Account
@@ -313,14 +313,14 @@ export const AuthModal: React.FC = () => {
             <button
               type="submit"
               disabled={loginLoading || !loginUsername.trim() || !loginPassword.trim()}
-              className="w-full py-3 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold tracking-wide shadow-soft flex items-center justify-center gap-2 transition-all disabled:opacity-40"
+              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#18181B] to-[#27272A] hover:from-[#222225] hover:to-[#323237] text-white text-xs font-black tracking-wide shadow-soft hover:shadow-md ring-1 ring-white/10 flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40 group"
             >
               {loginLoading ? (
                 <span>Signing in to live account...</span>
               ) : (
                 <>
                   <span>Sign In as Worship Author</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 text-[#FDE68A] group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </button>
@@ -484,13 +484,13 @@ export const AuthModal: React.FC = () => {
                 regPassword !== regConfirmPassword ||
                 usernameStatus.available === false
               }
-              className="w-full py-3 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold tracking-wide shadow-soft flex items-center justify-center gap-2 transition-all disabled:opacity-40"
+              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#18181B] to-[#27272A] hover:from-[#222225] hover:to-[#323237] text-white text-xs font-black tracking-wide shadow-soft hover:shadow-md ring-1 ring-white/10 flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40 group"
             >
               {regLoading ? (
                 <span>Registering to Supabase Cloud...</span>
               ) : (
                 <>
-                  <Sparkles className="w-4 h-4 text-amber-300" />
+                  <Sparkles className="w-4 h-4 text-[#FDE68A] group-hover:rotate-12 transition-transform" />
                   <span>Create Account & Start Serving</span>
                 </>
               )}

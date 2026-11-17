@@ -84,17 +84,17 @@ export const SongLibraryView: React.FC = () => {
         <div className="flex items-center flex-wrap gap-2.5">
           <button
             onClick={() => setIsManagingCats(true)}
-            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-white hover:bg-stone-50 text-stone-700 text-xs font-semibold border border-stone-200/90 shadow-soft transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white hover:bg-stone-50 text-stone-800 text-xs font-extrabold border border-stone-200/90 shadow-2xs hover:shadow-soft active:scale-[0.98] transition-all group"
           >
-            <Tag className="w-3.5 h-3.5 text-stone-500" />
+            <Tag className="w-4 h-4 text-stone-500 group-hover:text-amber-800 transition-colors" />
             <span>Categories</span>
           </button>
 
           <button
             onClick={() => setIsAddingSong(true)}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold shadow-soft transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#18181B] to-[#27272A] hover:from-[#222225] hover:to-[#323237] text-white text-xs font-black shadow-soft hover:shadow-md ring-1 ring-white/10 active:scale-[0.98] transition-all group"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-4 h-4 text-[#FDE68A] group-hover:rotate-90 transition-transform duration-200" />
             <span>Add Song</span>
           </button>
         </div>

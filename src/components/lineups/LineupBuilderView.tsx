@@ -213,14 +213,15 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
     <div className="space-y-6 pb-20 md:pb-8 max-w-7xl mx-auto">
       {/* Top Header & Organized Action Buttons Panel */}
       <div className="bg-white rounded-3xl p-4 sm:p-5 border border-[#E8E2D7] shadow-soft space-y-4">
-        {/* Top Header Row: Back Button, Title, Status & Share */}
-        <div className="flex items-center justify-between gap-3 flex-wrap">
-          <div className="flex items-center gap-2.5 min-w-0">
+        {/* Top Header Row: Back Button, Title & Status */}
+        <div className="flex items-start sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={onBack}
-              className="px-3 py-2 rounded-2xl bg-[#FAF6F0] hover:bg-[#EFE8DC] text-stone-700 text-xs font-bold border border-stone-200/90 flex items-center gap-1.5 shrink-0 transition-colors shadow-2xs"
+              className="px-3.5 py-2 rounded-2xl bg-white hover:bg-stone-50 text-stone-800 text-xs font-black border border-stone-200/90 shadow-2xs hover:shadow-soft active:scale-[0.98] transition-all flex items-center gap-1.5 shrink-0 group"
             >
-              <span>← Back</span>
+              <span className="group-hover:-translate-x-0.5 transition-transform text-sm">←</span>
+              <span>Back</span>
             </button>
             <div className="min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
@@ -242,29 +243,18 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
               </p>
             </div>
           </div>
-
-          {/* Share & Photo Button */}
-          <button
-            type="button"
-            onClick={() => setIsShareOpen(true)}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 text-xs font-bold transition-all shadow-2xs ml-auto sm:ml-0"
-            title="Share Lineup / Save as Landscape Photo"
-          >
-            <Share2 className="w-3.5 h-3.5 text-amber-800" />
-            <span>Share & Photo</span>
-          </button>
         </div>
 
-        {/* Symmetrical Action Buttons Row */}
+        {/* Action Buttons Toolbar (Responsive: Balanced grid on mobile, sleek inline row on desktop) */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-stone-100">
           {/* Utility Tools (History, Print, Duplicate, Delete) */}
-          <div className="flex items-center gap-1.5 order-2 sm:order-1 flex-wrap">
+          <div className="flex items-center gap-2 order-2 sm:order-1 flex-wrap">
             {existingLineup && (
               <>
                 <button
                   type="button"
                   onClick={() => setIsHistoryOpen(true)}
-                  className="p-2 rounded-xl bg-[#FAF6F0] hover:bg-stone-100 text-stone-600 border border-stone-200/80 transition-colors"
+                  className="p-2.5 rounded-2xl bg-white hover:bg-stone-50 text-stone-600 hover:text-stone-900 border border-stone-200/90 shadow-2xs hover:shadow-soft active:scale-95 transition-all"
                   title="View Change History"
                 >
                   <History className="w-4 h-4" />
@@ -272,7 +262,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                 <button
                   type="button"
                   onClick={() => setIsPrintOpen(true)}
-                  className="p-2 rounded-xl bg-[#FAF6F0] hover:bg-stone-100 text-stone-600 border border-stone-200/80 transition-colors"
+                  className="p-2.5 rounded-2xl bg-white hover:bg-stone-50 text-stone-600 hover:text-stone-900 border border-stone-200/90 shadow-2xs hover:shadow-soft active:scale-95 transition-all"
                   title="Print Setlist"
                 >
                   <Printer className="w-4 h-4" />
@@ -283,7 +273,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                     const dup = duplicateLineup(existingLineup.id);
                     alert(`Lineup duplicated as "${dup.title}"`);
                   }}
-                  className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[#FAF6F0] hover:bg-stone-100 text-stone-700 border border-stone-200/80 text-xs font-semibold transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-2.5 rounded-2xl bg-white hover:bg-stone-50 text-stone-700 hover:text-stone-900 border border-stone-200/90 text-xs font-bold shadow-2xs hover:shadow-soft active:scale-95 transition-all"
                   title="Duplicate Lineup"
                 >
                   <Copy className="w-3.5 h-3.5" />
@@ -297,7 +287,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                       onBack();
                     }
                   }}
-                  className="p-2 rounded-xl bg-[#FAF6F0] hover:bg-red-50 text-stone-400 hover:text-red-600 border border-stone-200/80 transition-colors"
+                  className="p-2.5 rounded-2xl bg-white hover:bg-rose-50 text-stone-400 hover:text-rose-600 border border-stone-200/90 hover:border-rose-200 shadow-2xs hover:shadow-soft active:scale-95 transition-all"
                   title="Delete Entire Lineup"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -306,23 +296,37 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
             )}
           </div>
 
-          {/* Symmetrical Primary Actions (Save Draft & Publish Lineup) */}
-          <div className="grid grid-cols-2 gap-2.5 order-1 sm:order-2 w-full sm:w-auto">
-            <button
-              type="button"
-              onClick={() => handleSave('draft')}
-              className="py-2.5 px-4 rounded-2xl bg-white hover:bg-stone-50 text-stone-800 text-xs font-bold border border-stone-300 shadow-2xs flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
-            >
-              <Save className="w-4 h-4 text-stone-600" />
-              <span>Save Draft</span>
-            </button>
+          {/* Primary Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 order-1 sm:order-2 w-full sm:w-auto">
+            {/* On Mobile: Share & Save Draft side-by-side */}
+            <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5">
+              <button
+                type="button"
+                onClick={() => setIsShareOpen(true)}
+                className="py-2.5 px-3.5 sm:px-4 rounded-2xl bg-gradient-to-r from-amber-50 via-amber-100/70 to-amber-100 hover:from-amber-100 hover:to-amber-200 text-amber-950 border border-amber-300/80 text-xs font-black shadow-2xs hover:shadow-soft active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 sm:gap-2 group"
+                title="Share Lineup / Save as Landscape Photo"
+              >
+                <Share2 className="w-4 h-4 text-amber-800 group-hover:scale-110 transition-transform shrink-0" />
+                <span className="truncate">Share & Photo</span>
+              </button>
 
+              <button
+                type="button"
+                onClick={() => handleSave('draft')}
+                className="py-2.5 px-3.5 sm:px-4 rounded-2xl bg-white hover:bg-stone-50 text-stone-800 text-xs font-black border border-stone-300/90 shadow-2xs hover:shadow-soft flex items-center justify-center gap-1.5 sm:gap-2 active:scale-[0.98] transition-all group"
+              >
+                <Save className="w-4 h-4 text-stone-600 group-hover:text-stone-900 transition-colors shrink-0" />
+                <span className="truncate">Save Draft</span>
+              </button>
+            </div>
+
+            {/* Publish Lineup (Full-width on mobile, side-by-side on desktop) */}
             <button
               type="button"
               onClick={() => handleSave('published')}
-              className="py-2.5 px-5 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold shadow-soft flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+              className="py-2.5 px-5 rounded-2xl bg-gradient-to-r from-[#18181B] to-[#27272A] hover:from-[#222225] hover:to-[#323237] text-white text-xs font-black shadow-soft hover:shadow-md ring-1 ring-white/10 flex items-center justify-center gap-2 active:scale-[0.98] transition-all group"
             >
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform shrink-0" />
               <span>Publish Lineup</span>
             </button>
           </div>
