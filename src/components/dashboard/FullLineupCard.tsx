@@ -12,14 +12,16 @@ import {
   Sparkles,
   ChevronDown,
   ChevronUp,
-  Tag,
-  Radio
+  Award,
+  Star,
+  CheckCircle2
 } from 'lucide-react';
-import { ServiceLineup, Song } from '../../types';
+import { ServiceLineup, Song, TeamMember } from '../../types';
 
 interface FullLineupCardProps {
   lineup: ServiceLineup;
   songs: Song[];
+  members?: TeamMember[];
   onViewLineup: (lineupId: string) => void;
   onShareLineup: (lineup: ServiceLineup) => void;
   onPlayVideo: (title: string, url: string) => void;
@@ -45,15 +47,103 @@ function formatServiceDate(dateStr?: string, timeStr?: string): string {
   }
 }
 
+// Helper: Vocal range color badges
+function getVocalRangeBadge(range?: string) {
+  const r = (range || '').toLowerCase();
+  if (r.includes('soprano') && !r.includes('mezzo')) {
+    return {
+      bg: 'bg-rose-50 text-rose-800 border-rose-200/90',
+      dot: 'bg-rose-500',
+      label: 'Soprano'
+    };
+  }
+  if (r.includes('mezzo')) {
+    return {
+      bg: 'bg-purple-50 text-purple-800 border-purple-200/90',
+      dot: 'bg-purple-500',
+      label: 'Mezzo-Soprano'
+    };
+  }
+  if (r.includes('alto')) {
+    return {
+      bg: 'bg-amber-50 text-amber-900 border-amber-200/90',
+      dot: 'bg-amber-500',
+      label: 'Alto'
+    };
+  }
+  if (r.includes('tenor')) {
+    return {
+      bg: 'bg-sky-50 text-sky-800 border-sky-200/90',
+      dot: 'bg-sky-500',
+      label: 'Tenor'
+    };
+  }
+  if (r.includes('baritone')) {
+    return {
+      bg: 'bg-indigo-50 text-indigo-800 border-indigo-200/90',
+      dot: 'bg-indigo-500',
+      label: 'Baritone'
+    };
+  }
+  if (r.includes('bass')) {
+    return {
+      bg: 'bg-emerald-50 text-emerald-800 border-emerald-200/90',
+      dot: 'bg-emerald-500',
+      label: 'Bass'
+    };
+  }
+  return {
+    bg: 'bg-stone-100 text-stone-700 border-stone-200',
+    dot: 'bg-stone-400',
+    label: range || 'Vocalist'
+  };
+}
+
+// Helper: Instrument emoji/icon
+function getInstrumentBadge(inst?: string) {
+  const i = (inst || '').toLowerCase();
+  if (i.includes('key') || i.includes('piano') || i.includes('synth')) {
+    return { icon: '🎹', title: 'Keyboards / Piano' };
+  }
+  if (i.includes('drum') || i.includes('percussion') || i.includes('beat')) {
+    return { icon: '🥁', title: 'Drums & Percussion' };
+  }
+  if (i.includes('bass')) {
+    return { icon: '🎸', title: 'Bass Guitar' };
+  }
+  if (i.includes('guitar') || i.includes('acoustic') || i.includes('lead') || i.includes('electric')) {
+    return { icon: '🎸', title: 'Acoustic / Electric Guitar' };
+  }
+  return { icon: '🎵', title: inst || 'Instrumentalist' };
+}
+
+// Helper: Generate Initials
+function getInitials(name?: string): string {
+  if (!name) return 'W';
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
 export const FullLineupCard: React.FC<FullLineupCardProps> = ({
   lineup,
   songs,
+  members = [],
   onViewLineup,
   onShareLineup,
   onPlayVideo,
   onOpenChords
 }) => {
   const [isRosterExpanded, setIsRosterExpanded] = useState(true);
+
+  // Helper to resolve full member info by id or name
+  const findMember = (idOrName?: string) => {
+    if (!idOrName || !members || members.length === 0) return undefined;
+    const clean = idOrName.trim().toLowerCase();
+    return members.find(
+      (m) => m.id === idOrName || m.name.trim().toLowerCase() === clean
+    );
+  };
 
   // Group songs by category
   const categorizedSongs: { [category: string]: typeof lineup.songs } = {};
@@ -69,6 +159,19 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
 
   const isPublished = lineup.status === 'published';
   const totalSongsCount = lineup.songs?.length || 0;
+
+  // Resolve Worship Leader info
+  const leaderMember = findMember(lineup.worship_leader_id) || findMember(lineup.worship_leader_name);
+  const leaderName = lineup.worship_leader_name || leaderMember?.name || 'TBA';
+  const leaderVocalRange = leaderMember?.vocal_range || 'Lead Vocalist';
+  const leaderAvatar = leaderMember?.avatar;
+
+  // Resolve Vocal Team
+  const assignedVocalists = lineup.assigned_vocalists || [];
+  const assignedMusicians = lineup.assigned_musicians || [];
+
+  // Total Team Members Count
+  const totalServants = (leaderName && leaderName !== 'TBA' ? 1 : 0) + assignedVocalists.length + (assignedMusicians.length || 4);
 
   return (
     <div className="bg-white rounded-3xl p-4 sm:p-6 border border-[#E8E2D7] shadow-soft space-y-4 sm:space-y-5 transition-all">
@@ -136,76 +239,298 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
       </div>
 
       {/* =========================================================================
-          2. MINISTRY TEAM ROSTER STRIP: Worship Leader, Vocals, Band & Reminders
+          2. UPGRADED HIGH-AESTHETIC MINISTRY TEAM ROSTER (MAIN APP HIGHLIGHT)
          ========================================================================= */}
-      <div className="bg-[#FAF6F0] rounded-2xl p-3.5 sm:p-4 border border-[#EAE3D7] space-y-3">
-        <div className="flex items-center justify-between pb-1">
-          <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-amber-800" />
-            <span className="text-xs font-bold text-stone-800 uppercase tracking-wider">
-              Ministry Team on Duty
-            </span>
+      <div className="bg-gradient-to-br from-[#FAF7F2] via-[#F5EEE4] to-[#FAF7F2] rounded-3xl p-4 sm:p-5 border border-[#E5DDD0] shadow-2xs space-y-4">
+        {/* Roster Title Bar */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-xl bg-[#1E1D1B] text-amber-300 flex items-center justify-center shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-xs sm:text-sm font-black text-stone-900 uppercase tracking-wider">
+                  Ministry Team Roster
+                </h3>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100/90 text-amber-900 border border-amber-300/80">
+                  {totalServants} Servants on Duty
+                </span>
+              </div>
+              <p className="text-[11px] text-stone-500 font-medium hidden sm:block">
+                Sanctuary team appointed for praise, adoration & musical excellence
+              </p>
+            </div>
           </div>
+
           <button
             onClick={() => setIsRosterExpanded(!isRosterExpanded)}
-            className="text-[11px] font-semibold text-stone-500 hover:text-stone-900 flex items-center gap-1"
+            className="text-[11px] font-bold text-stone-600 hover:text-stone-900 flex items-center gap-1 bg-white/70 hover:bg-white px-2.5 py-1 rounded-xl border border-stone-200 transition-colors"
           >
-            <span>{isRosterExpanded ? 'Hide Details' : 'Show Details'}</span>
+            <span>{isRosterExpanded ? 'Collapse' : 'Expand Roster'}</span>
             {isRosterExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
           </button>
         </div>
 
         {isRosterExpanded && (
-          <div className="space-y-3 pt-1 border-t border-stone-200/60 animate-fade-in">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {/* Worship Leader */}
-              <div className="bg-white/80 rounded-xl p-2.5 border border-stone-200/60">
-                <div className="flex items-center gap-1.5 text-[10px] font-bold text-amber-800 uppercase tracking-wider mb-0.5">
-                  <Mic className="w-3 h-3" />
-                  <span>Worship Leader</span>
-                </div>
-                <div className="text-xs font-bold text-stone-900 truncate">
-                  {lineup.worship_leader_name || 'TBA'}
-                </div>
-              </div>
+          <div className="space-y-4 pt-1 border-t border-stone-200/80 animate-fade-in">
+            {/* ---------------------------------------------------------------------
+                A. FEATURED WORSHIP LEADER SPOTLIGHT CARD
+               --------------------------------------------------------------------- */}
+            <div className="bg-gradient-to-r from-[#1E1D1B] via-[#2A2723] to-[#1E1D1B] text-white rounded-2xl p-3.5 sm:p-4 border border-amber-500/30 shadow-md relative overflow-hidden">
+              <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-amber-500/10 rounded-full blur-xl pointer-events-none" />
 
-              {/* Vocal Team */}
-              <div className="bg-white/80 rounded-xl p-2.5 border border-stone-200/60">
-                <div className="flex items-center gap-1.5 text-[10px] font-bold text-amber-800 uppercase tracking-wider mb-0.5">
-                  <Users className="w-3 h-3" />
-                  <span>Vocal Team ({lineup.assigned_vocalists?.length || 0})</span>
-                </div>
-                <div className="text-xs font-medium text-stone-800 line-clamp-2">
-                  {lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0
-                    ? lineup.assigned_vocalists.map(v => v.name).join(', ')
-                    : 'Worship Team Vocalists'}
-                </div>
-              </div>
+              <div className="flex items-center justify-between gap-3 relative z-10">
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                  {/* Leader Avatar / Initials with Gold Halo */}
+                  <div className="relative shrink-0">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl ring-2 ring-amber-400 ring-offset-2 ring-offset-[#1E1D1B] overflow-hidden bg-gradient-to-br from-amber-400 to-amber-600 text-[#1E1D1B] font-black text-base sm:text-lg flex items-center justify-center shadow-md">
+                      {leaderAvatar ? (
+                        <img
+                          src={leaderAvatar}
+                          alt={leaderName}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            // fallback to initials on error
+                            (e.target as HTMLElement).style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <span>{getInitials(leaderName)}</span>
+                      )}
+                    </div>
+                    <div
+                      className="absolute -bottom-1 -right-1 bg-amber-400 text-stone-950 p-1 rounded-full shadow-2xs border border-[#1E1D1B]"
+                      title="Worship Leader"
+                    >
+                      <Star className="w-2.5 h-2.5 fill-current" />
+                    </div>
+                  </div>
 
-              {/* Band & Musicians */}
-              <div className="bg-white/80 rounded-xl p-2.5 border border-stone-200/60">
-                <div className="flex items-center gap-1.5 text-[10px] font-bold text-amber-800 uppercase tracking-wider mb-0.5">
-                  <Music2 className="w-3 h-3" />
-                  <span>Band & Musicians</span>
+                  {/* Leader Info */}
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5 text-[10px] font-black text-amber-300 uppercase tracking-widest">
+                      <Award className="w-3 h-3" />
+                      <span>Worship Leader & Service Host</span>
+                    </div>
+                    <h4 className="text-sm sm:text-base font-extrabold text-white tracking-tight leading-snug truncate mt-0.5">
+                      {leaderName}
+                    </h4>
+                    <div className="flex items-center gap-2 mt-1 flex-wrap text-xs text-stone-300">
+                      <span className="px-2 py-0.5 rounded-lg bg-white/10 text-amber-200 font-bold text-[10px] border border-amber-300/20">
+                        {leaderVocalRange}
+                      </span>
+                      <span className="text-[11px] text-stone-300 italic hidden sm:inline">
+                        Leading sanctuary into His holy presence
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xs font-medium text-stone-800 line-clamp-2">
-                  {lineup.assigned_musicians && lineup.assigned_musicians.length > 0
-                    ? lineup.assigned_musicians.map(m => `${m.name} (${m.instrument})`).join(', ')
-                    : 'Worship Band'}
+
+                {/* Right Badge */}
+                <div className="hidden sm:flex flex-col items-end justify-center shrink-0">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 bg-amber-400/15 px-3 py-1.5 rounded-xl border border-amber-400/30 flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-amber-400" />
+                    <span>Platform Lead</span>
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Call Time & Service Notes */}
-            {lineup.notes && (
-              <div className="flex items-start gap-2 bg-amber-50/80 p-2.5 rounded-xl border border-amber-200/70 text-xs">
-                <Clock className="w-4 h-4 text-amber-800 shrink-0 mt-0.5" />
-                <div className="text-stone-700 leading-snug">
-                  <strong className="text-amber-950 font-bold block mb-0.5">Call Time & Reminders:</strong>
-                  <span className="italic whitespace-pre-line">{lineup.notes}</span>
+            {/* ---------------------------------------------------------------------
+                B. INDIVIDUAL VOCAL TEAM CARDS
+               --------------------------------------------------------------------- */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between px-1">
+                <div className="flex items-center gap-2">
+                  <Mic className="w-3.5 h-3.5 text-amber-800" />
+                  <span className="text-xs font-black text-stone-900 uppercase tracking-wider">
+                    Vocal Team
+                  </span>
+                  <span className="text-[10px] font-bold text-stone-500">
+                    ({assignedVocalists.length} {assignedVocalists.length === 1 ? 'Voice' : 'Voices'})
+                  </span>
+                </div>
+                <span className="text-[10px] font-semibold text-stone-500 italic hidden sm:inline">
+                  Harmonies & Leading Voices
+                </span>
+              </div>
+
+              {assignedVocalists.length === 0 ? (
+                <div className="p-3 bg-white/80 rounded-2xl border border-stone-200/70 text-center text-xs text-stone-500">
+                  No vocalists assigned yet • Vocal team will be listed here.
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                  {assignedVocalists.map((v) => {
+                    const mInfo = findMember(v.id) || findMember(v.name);
+                    const vocalRange = v.vocal_range || mInfo?.vocal_range || 'Vocalist';
+                    const avatarUrl = v.avatar || mInfo?.avatar;
+                    const rangeStyle = getVocalRangeBadge(vocalRange);
+
+                    // Check if this vocalist leads any song in this lineup
+                    const leadingSongs = lineup.songs.filter(
+                      (s) =>
+                        (s.assigned_vocalist_id && s.assigned_vocalist_id === v.id) ||
+                        (s.assigned_vocalist_name &&
+                          s.assigned_vocalist_name.toLowerCase() === v.name.toLowerCase())
+                    );
+
+                    return (
+                      <div
+                        key={v.id || v.name}
+                        className="bg-white rounded-2xl p-3 border border-stone-200/90 shadow-2xs hover:shadow-soft hover:border-amber-300/80 transition-all flex items-center justify-between gap-2.5"
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          {/* Avatar / Initials */}
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#EFE8DC] to-[#DFD6C7] text-stone-800 font-bold text-xs flex items-center justify-center shrink-0 border border-stone-200 overflow-hidden">
+                            {avatarUrl ? (
+                              <img
+                                src={avatarUrl}
+                                alt={v.name}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLElement).style.display = 'none';
+                                }}
+                              />
+                            ) : (
+                              <span>{getInitials(v.name)}</span>
+                            )}
+                          </div>
+
+                          {/* Vocalist Name & Lead Song indicator */}
+                          <div className="min-w-0">
+                            <h5 className="text-xs font-bold text-stone-900 leading-tight truncate">
+                              {v.name}
+                            </h5>
+                            {leadingSongs.length > 0 ? (
+                              <div className="flex items-center gap-1 text-[10px] font-bold text-amber-800 mt-0.5 truncate">
+                                <Mic className="w-2.5 h-2.5 shrink-0" />
+                                <span className="truncate">Lead: "{leadingSongs[0].title}"</span>
+                              </div>
+                            ) : (
+                              <span className="text-[10px] text-stone-400 block mt-0.5">
+                                Sanctuary Harmony
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Vocal Range Pill */}
+                        <div
+                          className={`px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-wider border shrink-0 flex items-center gap-1 ${rangeStyle.bg}`}
+                        >
+                          <span className={`w-1.5 h-1.5 rounded-full ${rangeStyle.dot}`} />
+                          <span>{rangeStyle.label}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* ---------------------------------------------------------------------
+                C. INDIVIDUAL BAND & MUSICIANS CARDS
+               --------------------------------------------------------------------- */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between px-1">
+                <div className="flex items-center gap-2">
+                  <Music2 className="w-3.5 h-3.5 text-amber-800" />
+                  <span className="text-xs font-black text-stone-900 uppercase tracking-wider">
+                    Band & Instrumentalists
+                  </span>
+                  <span className="text-[10px] font-bold text-stone-500">
+                    ({assignedMusicians.length > 0 ? assignedMusicians.length : '4'} Instruments)
+                  </span>
+                </div>
+                <span className="text-[10px] font-semibold text-stone-500 italic hidden sm:inline">
+                  Sanctuary Rhythm & Melody
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
+                {assignedMusicians.length > 0 ? (
+                  assignedMusicians.map((m) => {
+                    const badge = getInstrumentBadge(m.instrument);
+                    return (
+                      <div
+                        key={m.id || `${m.name}-${m.instrument}`}
+                        className="bg-white rounded-2xl p-3 border border-stone-200/90 shadow-2xs flex items-center gap-2.5"
+                      >
+                        <div className="w-8 h-8 rounded-xl bg-amber-50 text-base flex items-center justify-center shrink-0 border border-amber-200/60">
+                          {badge.icon}
+                        </div>
+                        <div className="min-w-0">
+                          <h5 className="text-xs font-bold text-stone-900 truncate leading-tight">
+                            {m.name}
+                          </h5>
+                          <span className="text-[10px] text-stone-500 block truncate">
+                            {badge.title}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  // Elegant sanctuary standard band layout if no custom musicians specified
+                  [
+                    { icon: '🎹', role: 'Keyboards / Piano', status: 'Worship Band' },
+                    { icon: '🎸', role: 'Acoustic / Lead Guitar', status: 'Worship Band' },
+                    { icon: '🎸', role: 'Bass Guitar', status: 'Worship Band' },
+                    { icon: '🥁', role: 'Drums & Percussion', status: 'Worship Band' }
+                  ].map((inst) => (
+                    <div
+                      key={inst.role}
+                      className="bg-white/90 rounded-2xl p-2.5 border border-stone-200/80 shadow-2xs flex items-center gap-2.5"
+                    >
+                      <div className="w-8 h-8 rounded-xl bg-stone-100 text-base flex items-center justify-center shrink-0 border border-stone-200">
+                        {inst.icon}
+                      </div>
+                      <div className="min-w-0">
+                        <h5 className="text-xs font-bold text-stone-800 truncate leading-tight">
+                          {inst.role}
+                        </h5>
+                        <span className="text-[10px] text-stone-400 block">
+                          {inst.status}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* ---------------------------------------------------------------------
+                D. CALL TIME & STAGE PREPARATION SCHEDULE
+               --------------------------------------------------------------------- */}
+            <div className="bg-amber-50/90 rounded-2xl p-3.5 border border-amber-200/80 shadow-2xs">
+              <div className="flex items-start gap-2.5">
+                <div className="p-1.5 rounded-xl bg-amber-200/80 text-amber-900 shrink-0 mt-0.5">
+                  <Clock className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 flex-1 space-y-1">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <h5 className="text-xs font-black text-amber-950 uppercase tracking-wider">
+                      Stage Prep & Service Schedule
+                    </h5>
+                    <span className="text-[10px] font-bold text-amber-800 bg-amber-200/60 px-2 py-0.5 rounded-md">
+                      Praise & Prayer Prior to Service
+                    </span>
+                  </div>
+
+                  {lineup.notes ? (
+                    <p className="text-xs text-stone-700 whitespace-pre-line leading-relaxed italic pt-0.5">
+                      "{lineup.notes}"
+                    </p>
+                  ) : (
+                    <p className="text-xs text-stone-600 leading-relaxed pt-0.5">
+                      Call time for soundcheck and prayer: <strong>45 minutes prior to service start</strong>. Please ensure all instruments and vocal harmonies are rehearsed.
+                    </p>
+                  )}
                 </div>
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>
@@ -250,7 +575,7 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
                 {/* Song Rows */}
                 <div className="space-y-2 pl-0.5">
                   {songItems.map((item, idx) => {
-                    const originalSong = songs.find(s => s.id === item.song_id);
+                    const originalSong = songs.find((s) => s.id === item.song_id);
                     const videoUrl = item.youtube_url || originalSong?.youtube_url;
 
                     return (

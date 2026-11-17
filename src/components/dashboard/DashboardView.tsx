@@ -119,6 +119,7 @@ export const DashboardView: React.FC = () => {
           <FullLineupCard
             lineup={currentLineup}
             songs={songs}
+            members={members}
             onViewLineup={(lineupId) => {
               setActiveLineupId(lineupId);
               setActiveModule('lineups');
@@ -355,6 +356,7 @@ export const DashboardView: React.FC = () => {
             <FullLineupCard
               lineup={currentLineup}
               songs={songs}
+              members={members}
               onViewLineup={(lineupId) => {
                 setActiveLineupId(lineupId);
                 setActiveModule('lineups');

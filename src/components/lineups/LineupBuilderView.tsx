@@ -176,7 +176,13 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
   const handleSave = (newStatus: 'draft' | 'published') => {
     const assignedVocalists = members
       .filter(m => selectedVocalistIds.includes(m.id))
-      .map(m => ({ id: m.id, name: m.name, role: m.role_title }));
+      .map(m => ({
+        id: m.id,
+        name: m.name,
+        role: m.role_title,
+        vocal_range: m.vocal_range,
+        avatar: m.avatar
+      }));
 
     const savedLineup: ServiceLineup = {
       id: existingLineup?.id || `lineup-${Date.now()}`,

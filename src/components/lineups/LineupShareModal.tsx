@@ -14,7 +14,8 @@ import {
   Sparkles
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
-import { ServiceLineup } from '../../types';
+import { ServiceLineup, TeamMember } from '../../types';
+import { useWorship } from '../../context/WorshipContext';
 import { Logo } from '../common/Logo';
 
 interface LineupShareModalProps {
@@ -30,10 +31,102 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
   const [copiedImage, setCopiedImage] = useState(false);
   const [shareSuccess, setShareSuccess] = useState(false);
 
+  const { members } = useWorship();
+
   const cardRef = useRef<HTMLDivElement>(null);
 
   const isLandscape = orientation === 'landscape';
   const isDark = themeMode === 'dark';
+
+  // Helper to resolve full member info by id or name
+  const findMember = (idOrName?: string) => {
+    if (!idOrName || !members || members.length === 0) return undefined;
+    const clean = idOrName.trim().toLowerCase();
+    return members.find(
+      (m) => m.id === idOrName || m.name.trim().toLowerCase() === clean
+    );
+  };
+
+  const getInitials = (name?: string): string => {
+    if (!name) return 'W';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+
+  const getVocalRangeStyleShare = (range?: string, dark?: boolean) => {
+    const r = (range || '').toLowerCase();
+    if (r.includes('soprano') && !r.includes('mezzo')) {
+      return {
+        bg: dark ? '#38161E' : '#FDF2F8',
+        text: dark ? '#F472B6' : '#9D174D',
+        border: dark ? '#831843' : '#FBCFE8',
+        dot: '#EC4899',
+        label: 'Soprano'
+      };
+    }
+    if (r.includes('mezzo')) {
+      return {
+        bg: dark ? '#28153A' : '#FAF5FF',
+        text: dark ? '#C084FC' : '#7E22CE',
+        border: dark ? '#6B21A8' : '#E9D5FF',
+        dot: '#A855F7',
+        label: 'Mezzo'
+      };
+    }
+    if (r.includes('alto')) {
+      return {
+        bg: dark ? '#342111' : '#FFFBEB',
+        text: dark ? '#FBBF24' : '#92400E',
+        border: dark ? '#78350F' : '#FDE68A',
+        dot: '#F59E0B',
+        label: 'Alto'
+      };
+    }
+    if (r.includes('tenor')) {
+      return {
+        bg: dark ? '#102336' : '#F0F9FF',
+        text: dark ? '#38BDF8' : '#0369A1',
+        border: dark ? '#075985' : '#BAE6FD',
+        dot: '#0EA5E9',
+        label: 'Tenor'
+      };
+    }
+    if (r.includes('baritone')) {
+      return {
+        bg: dark ? '#1C1635' : '#F5F3FF',
+        text: dark ? '#A78BFA' : '#5B21B6',
+        border: dark ? '#4C1D95' : '#DDD6FE',
+        dot: '#8B5CF6',
+        label: 'Baritone'
+      };
+    }
+    if (r.includes('bass')) {
+      return {
+        bg: dark ? '#0E281F' : '#ECFDF5',
+        text: dark ? '#34D399' : '#065F46',
+        border: dark ? '#065F46' : '#A7F3D0',
+        dot: '#10B981',
+        label: 'Bass'
+      };
+    }
+    return {
+      bg: dark ? '#242220' : '#F5F5F4',
+      text: dark ? '#D6D3D1' : '#57534E',
+      border: dark ? '#3F3B36' : '#E7E5E4',
+      dot: '#78716C',
+      label: range || 'Vocalist'
+    };
+  };
+
+  const getInstrumentEmoji = (inst?: string) => {
+    const i = (inst || '').toLowerCase();
+    if (i.includes('key') || i.includes('piano') || i.includes('synth')) return '🎹';
+    if (i.includes('drum') || i.includes('percussion')) return '🥁';
+    if (i.includes('bass')) return '🎸';
+    if (i.includes('guitar')) return '🎸';
+    return '🎵';
+  };
 
   // Group songs by category
   const songsByCategory = (lineup.songs || []).reduce((acc, song) => {
@@ -594,94 +687,96 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                   marginBottom: isLandscape ? '0' : '20px'
                 }}
               >
-                {/* Worship Leader & Vocal Team Card */}
+                {/* 1. Worship Leader Spotlight Card */}
+                {(() => {
+                  const leaderMem = findMember(lineup.worship_leader_id) || findMember(lineup.worship_leader_name);
+                  const leaderTitle = lineup.worship_leader_name || leaderMem?.name || 'TBA';
+                  const leaderVocal = leaderMem?.vocal_range || 'Lead Vocalist';
+
+                  return (
+                    <div
+                      style={{
+                        backgroundColor: isDark ? '#221E1B' : '#FAF6F0',
+                        border: isDark ? '1px solid #78350F' : '1px solid #E6DBC9',
+                        borderRadius: '18px',
+                        padding: '14px 16px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px'
+                      }}
+                    >
+                      {/* Leader Initials Badge with Gold Ring */}
+                      <div
+                        style={{
+                          width: '42px',
+                          height: '42px',
+                          borderRadius: '14px',
+                          backgroundColor: '#F59E0B',
+                          color: '#1C1917',
+                          fontWeight: '900',
+                          fontSize: '15px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+                        }}
+                      >
+                        {getInitials(leaderTitle)}
+                      </div>
+
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div
+                          style={{
+                            fontSize: '9px',
+                            fontWeight: '800',
+                            letterSpacing: '0.08em',
+                            textTransform: 'uppercase',
+                            color: isDark ? '#FBBF24' : '#92400E',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            marginBottom: '2px'
+                          }}
+                        >
+                          <span>⭐</span>
+                          <span>WORSHIP LEADER & HOST</span>
+                        </div>
+                        <div
+                          style={{
+                            fontSize: '14px',
+                            fontWeight: '800',
+                            color: isDark ? '#FFFFFF' : '#1C1917',
+                            lineHeight: '1.25',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                          }}
+                        >
+                          {leaderTitle}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: '10px',
+                            fontWeight: '600',
+                            color: isDark ? '#D6D3D1' : '#78716C',
+                            marginTop: '2px'
+                          }}
+                        >
+                          {leaderVocal} • Platform Ministry Lead
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* 2. Vocal Team Section */}
                 <div
                   style={{
                     backgroundColor: isDark ? '#1C1A18' : '#FFFFFF',
                     border: isDark ? '1px solid #2B2824' : '1px solid #E5DFD5',
                     borderRadius: '18px',
-                    padding: '16px 18px'
-                  }}
-                >
-                  {/* Worship Leader */}
-                  <div style={{ marginBottom: '14px' }}>
-                    <div
-                      style={{
-                        fontSize: '10px',
-                        fontWeight: '800',
-                        letterSpacing: '0.08em',
-                        textTransform: 'uppercase',
-                        color: isDark ? '#FBBF24' : '#92400E',
-                        marginBottom: '4px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '5px'
-                      }}
-                    >
-                      <svg viewBox="0 0 24 24" style={{ width: '12px', height: '12px', stroke: 'currentColor', fill: 'none', strokeWidth: '2.5' }}>
-                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                        <line x1="12" x2="12" y1="19" y2="22" />
-                      </svg>
-                      <span>WORSHIP LEADER</span>
-                    </div>
-                    <div
-                      style={{
-                        fontSize: '15px',
-                        fontWeight: '800',
-                        color: isDark ? '#FFFFFF' : '#1C1917',
-                        lineHeight: '1.3'
-                      }}
-                    >
-                      {lineup.worship_leader_name || 'TBA'}
-                    </div>
-                  </div>
-
-                  {/* Vocal Team */}
-                  <div>
-                    <div
-                      style={{
-                        fontSize: '10px',
-                        fontWeight: '800',
-                        letterSpacing: '0.08em',
-                        textTransform: 'uppercase',
-                        color: isDark ? '#FBBF24' : '#92400E',
-                        marginBottom: '4px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '5px'
-                      }}
-                    >
-                      <svg viewBox="0 0 24 24" style={{ width: '12px', height: '12px', stroke: 'currentColor', fill: 'none', strokeWidth: '2.5' }}>
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                        <circle cx="9" cy="7" r="4" />
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                      </svg>
-                      <span>VOCAL TEAM</span>
-                    </div>
-                    <div
-                      style={{
-                        fontSize: '12px',
-                        fontWeight: '500',
-                        color: isDark ? '#D6D3D1' : '#44403C',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0
-                        ? lineup.assigned_vocalists.map(v => v.name).join(', ')
-                        : 'Worship Team Vocalists'}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Band & Musicians Card */}
-                <div
-                  style={{
-                    backgroundColor: isDark ? '#1C1A18' : '#FFFFFF',
-                    border: isDark ? '1px solid #2B2824' : '1px solid #E5DFD5',
-                    borderRadius: '18px',
-                    padding: '16px 18px'
+                    padding: '14px 16px'
                   }}
                 >
                   <div
@@ -691,7 +786,148 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
                       color: isDark ? '#FBBF24' : '#92400E',
-                      marginBottom: '4px',
+                      marginBottom: '10px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <svg viewBox="0 0 24 24" style={{ width: '12px', height: '12px', stroke: 'currentColor', fill: 'none', strokeWidth: '2.5' }}>
+                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                        <line x1="12" x2="12" y1="19" y2="22" />
+                      </svg>
+                      <span>VOCAL TEAM</span>
+                    </div>
+                    <span style={{ fontSize: '9px', fontWeight: '700', color: isDark ? '#A8A29E' : '#78716C' }}>
+                      {lineup.assigned_vocalists?.length || 0} VOICES
+                    </span>
+                  </div>
+
+                  {lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0 ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      {lineup.assigned_vocalists.map((v) => {
+                        const mInfo = findMember(v.id) || findMember(v.name);
+                        const vocalRange = v.vocal_range || mInfo?.vocal_range || 'Vocalist';
+                        const styleRange = getVocalRangeStyleShare(vocalRange, isDark);
+
+                        // Check lead songs
+                        const leadSong = (lineup.songs || []).find(
+                          (s) =>
+                            (s.assigned_vocalist_id && s.assigned_vocalist_id === v.id) ||
+                            (s.assigned_vocalist_name &&
+                              s.assigned_vocalist_name.toLowerCase() === v.name.toLowerCase())
+                        );
+
+                        return (
+                          <div
+                            key={v.id || v.name}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              padding: '5px 8px',
+                              borderRadius: '10px',
+                              backgroundColor: isDark ? '#262320' : '#FAF7F2',
+                              border: isDark ? '1px solid #332F2A' : '1px solid #EAE3D7'
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+                              <div
+                                style={{
+                                  width: '24px',
+                                  height: '24px',
+                                  borderRadius: '8px',
+                                  backgroundColor: isDark ? '#3D3833' : '#E5DFD5',
+                                  color: isDark ? '#F5F5F4' : '#1C1917',
+                                  fontSize: '10px',
+                                  fontWeight: '800',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0
+                                }}
+                              >
+                                {getInitials(v.name)}
+                              </div>
+                              <div style={{ minWidth: 0 }}>
+                                <div
+                                  style={{
+                                    fontSize: '11px',
+                                    fontWeight: '700',
+                                    color: isDark ? '#FFFFFF' : '#1C1917',
+                                    lineHeight: '1.2',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                  }}
+                                >
+                                  {v.name}
+                                </div>
+                                {leadSong && (
+                                  <div
+                                    style={{
+                                      fontSize: '9px',
+                                      fontWeight: '700',
+                                      color: isDark ? '#FBBF24' : '#92400E',
+                                      lineHeight: '1.2',
+                                      overflow: 'hidden',
+                                      textOverflow: 'ellipsis',
+                                      whiteSpace: 'nowrap'
+                                    }}
+                                  >
+                                    Lead: "{leadSong.title}"
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Range Badge */}
+                            <div
+                              style={{
+                                fontSize: '9px',
+                                fontWeight: '800',
+                                padding: '2px 6px',
+                                borderRadius: '6px',
+                                backgroundColor: styleRange.bg,
+                                color: styleRange.text,
+                                border: `1px solid ${styleRange.border}`,
+                                textTransform: 'uppercase',
+                                flexShrink: 0,
+                                marginLeft: '6px'
+                              }}
+                            >
+                              {styleRange.label}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div style={{ fontSize: '11px', color: isDark ? '#A8A29E' : '#78716C', fontStyle: 'italic' }}>
+                      Worship Team Vocalists
+                    </div>
+                  )}
+                </div>
+
+                {/* 3. Band & Musicians Card */}
+                <div
+                  style={{
+                    backgroundColor: isDark ? '#1C1A18' : '#FFFFFF',
+                    border: isDark ? '1px solid #2B2824' : '1px solid #E5DFD5',
+                    borderRadius: '18px',
+                    padding: '14px 16px'
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: '10px',
+                      fontWeight: '800',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      color: isDark ? '#FBBF24' : '#92400E',
+                      marginBottom: '8px',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '5px'
@@ -702,33 +938,75 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                     </svg>
                     <span>BAND & MUSICIANS</span>
                   </div>
-                  <div
-                    style={{
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      color: isDark ? '#D6D3D1' : '#44403C',
-                      lineHeight: '1.5'
-                    }}
-                  >
-                    {lineup.assigned_musicians && lineup.assigned_musicians.length > 0
-                      ? lineup.assigned_musicians.map(m => `${m.name} (${m.instrument})`).join(', ')
-                      : 'Worship Band'}
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
+                    {lineup.assigned_musicians && lineup.assigned_musicians.length > 0 ? (
+                      lineup.assigned_musicians.map((m) => (
+                        <div
+                          key={m.id || `${m.name}-${m.instrument}`}
+                          style={{
+                            padding: '6px 8px',
+                            borderRadius: '10px',
+                            backgroundColor: isDark ? '#262320' : '#FAF7F2',
+                            border: isDark ? '1px solid #332F2A' : '1px solid #EAE3D7',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px'
+                          }}
+                        >
+                          <span style={{ fontSize: '13px' }}>{getInstrumentEmoji(m.instrument)}</span>
+                          <div style={{ minWidth: 0, flex: 1 }}>
+                            <div style={{ fontSize: '10px', fontWeight: '800', color: isDark ? '#FFFFFF' : '#1C1917', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {m.name}
+                            </div>
+                            <div style={{ fontSize: '9px', color: isDark ? '#A8A29E' : '#78716C', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {m.instrument}
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      [
+                        { icon: '🎹', title: 'Keyboards' },
+                        { icon: '🎸', title: 'Acoustic / Lead' },
+                        { icon: '🎸', title: 'Bass Guitar' },
+                        { icon: '🥁', title: 'Drums' }
+                      ].map((item) => (
+                        <div
+                          key={item.title}
+                          style={{
+                            padding: '6px 8px',
+                            borderRadius: '10px',
+                            backgroundColor: isDark ? '#262320' : '#FAF7F2',
+                            border: isDark ? '1px solid #332F2A' : '1px solid #EAE3D7',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px'
+                          }}
+                        >
+                          <span style={{ fontSize: '13px' }}>{item.icon}</span>
+                          <div style={{ fontSize: '10px', fontWeight: '700', color: isDark ? '#D6D3D1' : '#44403C' }}>
+                            {item.title}
+                          </div>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
 
-                {/* Call Time & Notes Card */}
+                {/* 4. Call Time & Reminders Card */}
                 {lineup.notes && (
                   <div
                     style={{
                       backgroundColor: isDark ? '#1C1A18' : '#FFFFFF',
                       border: isDark ? '1px solid #2B2824' : '1px solid #E5DFD5',
                       borderRadius: '18px',
-                      padding: '16px 18px'
+                      padding: '12px 16px'
                     }}
                   >
                     <div
                       style={{
-                        fontSize: '10px',
+                        fontSize: '9px',
                         fontWeight: '800',
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
@@ -739,15 +1017,15 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                         gap: '5px'
                       }}
                     >
-                      <svg viewBox="0 0 24 24" style={{ width: '12px', height: '12px', stroke: 'currentColor', fill: 'none', strokeWidth: '2.5' }}>
+                      <svg viewBox="0 0 24 24" style={{ width: '11px', height: '11px', stroke: 'currentColor', fill: 'none', strokeWidth: '2.5' }}>
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12 6 12 12 16 14" />
                       </svg>
-                      <span>CALL TIME & REMINDERS</span>
+                      <span>STAGE PREP & CALL TIME</span>
                     </div>
                     <div
                       style={{
-                        fontSize: '11px',
+                        fontSize: '10px',
                         fontStyle: 'italic',
                         color: isDark ? '#D6D3D1' : '#57534E',
                         lineHeight: '1.4',

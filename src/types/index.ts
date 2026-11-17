@@ -74,11 +74,14 @@ export interface ServiceLineup {
     id: string;
     name: string;
     role?: string;
+    vocal_range?: string;
+    avatar?: string;
   }>;
   assigned_musicians: Array<{
     id: string;
     name: string;
     instrument: string;
+    avatar?: string;
   }>;
   status: 'draft' | 'published';
   songs: LineupSongItem[];
