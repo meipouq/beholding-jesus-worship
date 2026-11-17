@@ -618,9 +618,47 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                     </div>
                   </div>
 
-                  {/* Expanded Section: Vocalist Assignment & Transition Notes */}
+                  {/* Expanded Section: Vocalist Assignment, YouTube URL & Transition Notes */}
                   {isExpanded && (
                     <div className="pt-3 border-t border-stone-200/70 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs animate-slide-up">
+                      <div>
+                        <label className="text-[10px] font-bold text-stone-600 uppercase tracking-wider block mb-1">
+                          Song Title:
+                        </label>
+                        <input
+                          type="text"
+                          value={item.title}
+                          onChange={(e) => updateSongItem(item.id, { title: e.target.value })}
+                          placeholder="Song Title"
+                          className="w-full text-xs p-2 rounded-xl border border-stone-300 bg-white font-bold"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] font-bold text-stone-600 uppercase tracking-wider block mb-1">
+                          YouTube Video / Reference URL:
+                        </label>
+                        <div className="flex items-center gap-1.5">
+                          <input
+                            type="url"
+                            value={item.youtube_url || ''}
+                            onChange={(e) => updateSongItem(item.id, { youtube_url: e.target.value })}
+                            placeholder="https://www.youtube.com/watch?v=..."
+                            className="w-full text-xs p-2 rounded-xl border border-stone-300 bg-white"
+                          />
+                          {item.youtube_url && (
+                            <button
+                              type="button"
+                              onClick={() => playVideo(item.title, item.youtube_url!)}
+                              className="p-2 rounded-xl bg-red-600 text-white shrink-0 hover:bg-red-700 transition-colors"
+                              title="Test Play Video"
+                            >
+                              <Play className="w-3.5 h-3.5 fill-current" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
                       <div>
                         <label className="text-[10px] font-bold text-stone-600 uppercase tracking-wider block mb-1">
                           Assigned Lead Singer for this Song:
