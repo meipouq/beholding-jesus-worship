@@ -128,15 +128,11 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
   const generateCanvas = async () => {
     if (!cardRef.current) return null;
     return await html2canvas(cardRef.current, {
-      scale: 3, // Ultra-sharp 3x resolution for high-DPI clarity
+      scale: 2, // 2x gives crystal-clear 1280px / 2080px resolution
       useCORS: true,
       allowTaint: true,
       backgroundColor: isDark ? '#18181B' : '#FAF6F0',
-      logging: false,
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: cardRef.current.scrollWidth,
-      windowHeight: cardRef.current.scrollHeight
+      logging: false
     });
   };
 
@@ -155,7 +151,9 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
       link.download = filename;
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
+      if (link.parentNode) {
+        link.parentNode.removeChild(link);
+      }
     } catch (err) {
       console.error('Error generating photo:', err);
       alert('Failed to generate image. Please try again.');
@@ -398,15 +396,13 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
           </div>
         </div>
 
-        {/* Small Screen Landscape Hint */}
-        {isLandscape && (
-          <div className="px-4 py-1.5 bg-[#EFE8DC] border-b border-stone-200 text-[11px] text-stone-600 font-semibold flex items-center justify-between xl:hidden">
-            <span>↔️ Swipe horizontally to preview entire landscape card</span>
-            <span className="text-[10px] text-amber-900 font-bold bg-amber-100 px-2 py-0.5 rounded-md">
-              Export format: 1040px Landscape HD
-            </span>
-          </div>
-        )}
+        {/* Small Screen HD Hint */}
+        <div className="px-4 py-1.5 bg-[#EFE8DC] border-b border-stone-200 text-[11px] text-stone-600 font-semibold flex items-center justify-between">
+          <span>↔️ Swipe horizontally to preview full card</span>
+          <span className="text-[10px] text-amber-900 font-bold bg-amber-100 px-2 py-0.5 rounded-md">
+            HD Output: {isLandscape ? '1040px Landscape' : '640px Portrait'}
+          </span>
+        </div>
 
         {/* Card Preview Container */}
         <div className="flex-1 overflow-x-auto overflow-y-auto p-3 sm:p-6 md:p-8 bg-[#EBE4D8] flex justify-center items-start">
@@ -414,14 +410,14 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
           <div
             ref={cardRef}
             style={{
-              width: isLandscape ? '1040px' : '100%',
-              minWidth: isLandscape ? '1040px' : 'auto',
-              maxWidth: isLandscape ? '1040px' : '600px',
+              width: isLandscape ? '1040px' : '640px',
+              minWidth: isLandscape ? '1040px' : '640px',
+              maxWidth: isLandscape ? '1040px' : '640px',
               backgroundColor: isDark ? '#18181B' : '#FAF6F0',
               color: isDark ? '#FFFFFF' : '#1C1917',
               border: isDark ? '1px solid #27272A' : '1px solid #E6DFD3',
               borderRadius: '24px',
-              padding: isLandscape ? '32px 36px' : '28px 24px',
+              padding: isLandscape ? '32px 36px' : '32px 32px',
               boxShadow: isDark
                 ? '0 25px 50px -12px rgba(0, 0, 0, 0.55)'
                 : '0 20px 40px -10px rgba(120, 53, 15, 0.08)',
@@ -438,16 +434,18 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  marginBottom: '6px'
+                  marginBottom: '8px',
+                  lineHeight: '16px'
                 }}
               >
                 <span
                   style={{
                     fontSize: '11px',
                     fontWeight: '800',
-                    letterSpacing: '0.2em',
+                    letterSpacing: '0.15em',
                     textTransform: 'uppercase',
-                    color: isDark ? '#E5A93C' : '#B45309'
+                    color: isDark ? '#E5A93C' : '#B45309',
+                    whiteSpace: 'nowrap'
                   }}
                 >
                   WORSHIP • {lineup.title ? lineup.title.toUpperCase() : 'SUNDAY SERVICE'}
@@ -458,7 +456,8 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                     fontWeight: '700',
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
-                    color: isDark ? '#71717A' : '#78716C'
+                    color: isDark ? '#71717A' : '#78716C',
+                    whiteSpace: 'nowrap'
                   }}
                 >
                   BEHOLDING JESUS CHURCH
@@ -477,12 +476,13 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               >
                 <h1
                   style={{
-                    fontSize: isLandscape ? '26px' : '22px',
+                    fontSize: isLandscape ? '26px' : '24px',
                     fontWeight: '800',
                     color: isDark ? '#FFFFFF' : '#1C1917',
                     letterSpacing: '-0.02em',
-                    lineHeight: '1.2',
-                    margin: 0
+                    lineHeight: '32px',
+                    margin: 0,
+                    whiteSpace: 'nowrap'
                   }}
                 >
                   {lineup.title || 'Sunday Lineup'}
@@ -512,29 +512,18 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                 </span>
               </div>
 
-              {/* Subtitle: Date • Count of Songs */}
+              {/* Subtitle: Date • Count of Songs • Service Time (Single clean string, no wrapping) */}
               <div
                 style={{
                   fontSize: '13px',
                   fontWeight: '500',
                   color: isDark ? '#A1A1AA' : '#78716C',
                   marginTop: '6px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
+                  lineHeight: '20px',
+                  whiteSpace: 'nowrap'
                 }}
               >
-                <span>{formattedDate}</span>
-                <span>•</span>
-                <span>
-                  {totalSongsCount} {totalSongsCount === 1 ? 'song' : 'songs'}
-                </span>
-                {lineup.service_time && (
-                  <>
-                    <span>•</span>
-                    <span>{lineup.service_time}</span>
-                  </>
-                )}
+                {`${formattedDate} • ${totalSongsCount} ${totalSongsCount === 1 ? 'song' : 'songs'}${lineup.service_time ? ` • ${lineup.service_time}` : ''}`}
               </div>
             </div>
 
@@ -786,41 +775,34 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                               </span>
                             </div>
 
-                            {/* Center: Song Title & Subtitle */}
-                            <div style={{ flex: 1, minWidth: 0 }}>
+                            {/* Center: Song Title & Subtitle (Clean block typography, zero slicing) */}
+                            <div style={{ flex: 1, minWidth: 0, padding: '0 14px' }}>
                               <div
                                 style={{
-                                  fontSize: '15px',
+                                  fontSize: '16px',
                                   fontWeight: '700',
                                   color: isDark ? '#FFFFFF' : '#1C1917',
-                                  lineHeight: '1.25',
-                                  overflow: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                  whiteSpace: 'nowrap'
+                                  lineHeight: '24px',
+                                  marginBottom: '2px',
+                                  display: 'block'
                                 }}
                               >
                                 {song.title}
                               </div>
                               <div
                                 style={{
-                                  fontSize: '11px',
+                                  fontSize: '12px',
                                   fontWeight: '500',
                                   color: isDark ? '#A1A1AA' : '#78716C',
-                                  lineHeight: '1.25',
-                                  marginTop: '3px',
-                                  overflow: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                  whiteSpace: 'nowrap'
+                                  lineHeight: '18px',
+                                  display: 'block'
                                 }}
                               >
                                 <span>{hasVideo ? 'YouTube video' : 'YouTube reference'}</span>
                                 {song.assigned_vocalist_name && (
-                                  <>
-                                    <span style={{ margin: '0 5px', color: isDark ? '#52525B' : '#A8A29E' }}>•</span>
-                                    <span style={{ color: isDark ? '#FDE68A' : '#92400E', fontWeight: '600' }}>
-                                      Lead: {song.assigned_vocalist_name}
-                                    </span>
-                                  </>
+                                  <span style={{ color: isDark ? '#FDE68A' : '#92400E', fontWeight: '600', marginLeft: '6px' }}>
+                                    • Lead: {song.assigned_vocalist_name}
+                                  </span>
                                 )}
                               </div>
                             </div>
