@@ -27,7 +27,8 @@ import {
   ChevronUp,
   FileSpreadsheet,
   Share2,
-  Send
+  Send,
+  Check
 } from 'lucide-react';
 import { ServiceLineup, LineupSongItem, Song, TeamMember } from '../../types';
 import { useWorship } from '../../context/WorshipContext';
@@ -71,7 +72,25 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
   const [title, setTitle] = useState(existingLineup?.title || 'Sunday Worship Service');
   const [serviceDate, setServiceDate] = useState(existingLineup?.service_date || new Date().toISOString().slice(0, 10));
   const [serviceTime, setServiceTime] = useState(existingLineup?.service_time || '9:00 AM');
-  const [worshipLeaderId, setWorshipLeaderId] = useState(existingLineup?.worship_leader_id || currentUser.id);
+  // Helper to format multiple leaders into a readable string
+  const formatLeaderNames = (ids: string[]): string => {
+    const list = members.filter(m => ids.includes(m.id));
+    if (list.length === 0) return currentUser.name;
+    if (list.length === 1) return list[0].name;
+    if (list.length === 2) return `${list[0].name} & ${list[1].name}`;
+    return `${list[0].name}, ${list[1].name} & ${list[2].name}`;
+  };
+
+  const [selectedLeaderIds, setSelectedLeaderIds] = useState<string[]>(() => {
+    if (existingLineup?.worship_leaders && existingLineup.worship_leaders.length > 0) {
+      return existingLineup.worship_leaders.map(l => l.id).slice(0, 3);
+    }
+    if (existingLineup?.worship_leader_id) {
+      return [existingLineup.worship_leader_id];
+    }
+    return [currentUser.id];
+  });
+  const worshipLeaderId = selectedLeaderIds[0] || currentUser.id;
   const [theme, setTheme] = useState(existingLineup?.theme || '');
   const [notes, setNotes] = useState(existingLineup?.notes || '');
   const [status, setStatus] = useState<ServiceLineup['status']>(existingLineup?.status || 'draft');
@@ -102,7 +121,11 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
         setTitle(existingLineup.title);
         setServiceDate(existingLineup.service_date);
         setServiceTime(existingLineup.service_time);
-        setWorshipLeaderId(existingLineup.worship_leader_id);
+        if (existingLineup.worship_leaders && existingLineup.worship_leaders.length > 0) {
+          setSelectedLeaderIds(existingLineup.worship_leaders.map(l => l.id).slice(0, 3));
+        } else if (existingLineup.worship_leader_id) {
+          setSelectedLeaderIds([existingLineup.worship_leader_id]);
+        }
         setTheme(existingLineup.theme || '');
         setNotes(existingLineup.notes || '');
         setStatus(existingLineup.status);
@@ -131,13 +154,24 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
         avatar: m.avatar
       }));
 
+    const worshipLeadersData = members
+      .filter(m => selectedLeaderIds.includes(m.id))
+      .slice(0, 3)
+      .map(m => ({
+        id: m.id,
+        name: m.name,
+        role: m.role_title,
+        avatar: m.avatar
+      }));
+
     return {
       id: currentLineupId,
       title: title.trim() || 'Sunday Worship Service',
       service_date: serviceDate,
       service_time: serviceTime,
-      worship_leader_id: worshipLeaderId,
-      worship_leader_name: leader.name,
+      worship_leader_id: selectedLeaderIds[0] || currentUser.id,
+      worship_leader_name: formatLeaderNames(selectedLeaderIds),
+      worship_leaders: worshipLeadersData,
       assigned_vocalists: assignedVocalists,
       assigned_musicians: existingLineup?.assigned_musicians || [],
       status,
@@ -157,7 +191,9 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
 
   // Add existing song from library
   const handleAddSongFromLibrary = (song: Song) => {
-    const defaultVocalKey = song.vocal_keys?.[worshipLeaderId] || song.original_key;
+    const primaryLeaderId = selectedLeaderIds[0] || currentUser.id;
+    const defaultVocalKey = song.vocal_keys?.[primaryLeaderId] || song.original_key;
+    const primaryLeader = members.find(m => m.id === primaryLeaderId) || currentUser;
     const newItem: LineupSongItem = {
       id: `ls-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
       song_id: song.id,
@@ -166,8 +202,8 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
       category: (song.category || 'JOYFUL').toUpperCase(),
       original_key: song.original_key,
       selected_key: defaultVocalKey,
-      assigned_vocalist_id: worshipLeaderId,
-      assigned_vocalist_name: leader.name,
+      assigned_vocalist_id: primaryLeaderId,
+      assigned_vocalist_name: primaryLeader.name,
       youtube_url: song.youtube_url,
       order: lineupSongs.length + 1
     };
@@ -241,13 +277,40 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
     saveLineup(saved, false);
   };
 
-  // Handle Worship Leader change
-  const handleLeaderChange = (newLeaderId: string) => {
-    setWorshipLeaderId(newLeaderId);
-    const newLeader = members.find(m => m.id === newLeaderId) || currentUser;
+  // Toggle worship leader selection (minimum 1, maximum 3)
+  const toggleLeader = (id: string) => {
+    let nextLeaderIds: string[];
+    if (selectedLeaderIds.includes(id)) {
+      if (selectedLeaderIds.length <= 1) {
+        // Keep at least 1 leader
+        return;
+      }
+      nextLeaderIds = selectedLeaderIds.filter(lId => lId !== id);
+    } else {
+      if (selectedLeaderIds.length >= 3) {
+        // Enforce maximum 3 worship leaders
+        return;
+      }
+      nextLeaderIds = [...selectedLeaderIds, id];
+    }
+    setSelectedLeaderIds(nextLeaderIds);
+
+    const worshipLeadersData = members
+      .filter(m => nextLeaderIds.includes(m.id))
+      .slice(0, 3)
+      .map(m => ({
+        id: m.id,
+        name: m.name,
+        role: m.role_title,
+        avatar: m.avatar
+      }));
+
+    const formattedName = formatLeaderNames(nextLeaderIds);
+
     const saved = getWorkingLineup(lineupSongs, {
-      worship_leader_id: newLeaderId,
-      worship_leader_name: newLeader.name
+      worship_leader_id: nextLeaderIds[0] || currentUser.id,
+      worship_leader_name: formattedName,
+      worship_leaders: worshipLeadersData
     });
     saveLineup(saved, false);
   };
@@ -370,30 +433,54 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
           />
         </div>
 
-        {/* Worship Leader */}
+        {/* Worship Leaders (Max 3) */}
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
-            <Users className="w-4 h-4 text-[#B88746]" />
-            <label className="text-xs font-bold text-stone-800">
-              Worship Leader *
-            </label>
-          </div>
-          <div className="relative">
-            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-stone-700">
-              <User className="w-4 h-4 stroke-[2.2]" />
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <Users className="w-4 h-4 text-[#B88746]" />
+              <label className="text-xs font-bold text-stone-800">
+                Worship Leaders * <span className="text-[#8A5828] font-semibold text-[11px]">({selectedLeaderIds.length}/3 selected)</span>
+              </label>
             </div>
-            <select
-              value={worshipLeaderId}
-              onChange={(e) => handleLeaderChange(e.target.value)}
-              className="w-full text-xs font-semibold pl-10 pr-9 py-3 rounded-2xl border border-[#E8E2D7] bg-white text-stone-900 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#C4A467]/20 focus:border-[#C4A467] appearance-none cursor-pointer"
-            >
-              {members.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.name} ({m.role_title})
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-4 h-4 text-stone-600 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <span className="text-[10px] text-stone-500 font-medium">
+              {selectedLeaderIds.length >= 3 ? 'Max 3 reached' : 'Select up to 3 leaders'}
+            </span>
+          </div>
+          <div className="flex items-center gap-2.5 flex-wrap">
+            {members.map((m) => {
+              const isSelected = selectedLeaderIds.includes(m.id);
+              const isMaxReached = selectedLeaderIds.length >= 3 && !isSelected;
+              return (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => toggleLeader(m.id)}
+                  disabled={isMaxReached}
+                  className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 border cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#283827] text-white border-[#283827] shadow-2xs ring-1 ring-[#283827]/30'
+                      : isMaxReached
+                      ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed opacity-60'
+                      : 'bg-white text-stone-700 hover:bg-[#FAF6EF] border-[#E8E2D7] shadow-2xs'
+                  } active:scale-95`}
+                  title={isMaxReached ? 'Maximum 3 worship leaders allowed' : undefined}
+                >
+                  <span
+                    className={`w-3.5 h-3.5 rounded-full flex items-center justify-center transition-all ${
+                      isSelected
+                        ? 'bg-white border border-white text-[#283827]'
+                        : 'border border-stone-400 bg-transparent'
+                    }`}
+                  >
+                    {isSelected && <Check className="w-2.5 h-2.5 stroke-[3] text-[#283827]" />}
+                  </span>
+                  <span>{m.name}</span>
+                  <span className={`text-[10px] ${isSelected ? 'text-stone-300' : 'text-stone-400'}`}>
+                    ({m.role_title})
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -618,9 +705,15 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                             ))}
                           </select>
                         </div>
-                        <p className="text-[11px] text-stone-500 truncate mt-0.5">
-                          {item.artist} • Orig Key: <strong>{item.original_key}</strong>
-                        </p>
+                        <div className="flex items-center gap-1.5 text-[11px] flex-wrap mt-0.5">
+                          <span className="text-[#8A5828] font-bold">
+                            Lead: <span className="text-stone-900 font-bold">{item.assigned_vocalist_name || formatLeaderNames(selectedLeaderIds)}</span>
+                          </span>
+                          <span className="text-stone-300">•</span>
+                          <span className="text-stone-500 truncate">{item.artist}</span>
+                          <span className="text-stone-300">•</span>
+                          <span className="text-stone-500 text-[10px]">Orig: <strong>{item.original_key}</strong></span>
+                        </div>
                       </div>
                     </div>
 
@@ -709,7 +802,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
 
                       <div>
                         <label className="text-[10px] font-bold text-stone-600 uppercase tracking-wider block mb-1">
-                          YouTube Video / Reference URL:
+                          Video Reference Link:
                         </label>
                         <div className="flex items-center gap-1.5">
                           <input

@@ -70,7 +70,9 @@ export const LineupPrintModal: React.FC<LineupPrintModalProps> = ({ lineup, onCl
           {/* Service Roster Summary */}
           <div className="grid grid-cols-2 gap-4 pb-4 mb-6 border-b border-stone-300 font-sans text-xs">
             <div>
-              <span className="font-bold text-stone-700 uppercase block mb-1">Worship Leader:</span>
+              <span className="font-bold text-stone-700 uppercase block mb-1">
+                {(lineup.worship_leaders && lineup.worship_leaders.length > 1) ? 'Worship Leaders:' : 'Worship Leader:'}
+              </span>
               <p className="font-bold">{lineup.worship_leader_name}</p>
               {lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0 && (
                 <div className="mt-2">
@@ -132,7 +134,7 @@ export const LineupPrintModal: React.FC<LineupPrintModalProps> = ({ lineup, onCl
                       {item.selected_key || item.original_key}
                     </td>
                     <td className="py-2.5 text-stone-800 font-medium">
-                      {item.assigned_vocalist_name || '—'}
+                      {item.assigned_vocalist_name || lineup.worship_leader_name || '—'}
                     </td>
                     <td className="py-2.5 text-stone-600 italic">
                       {item.notes || '—'}

@@ -285,7 +285,7 @@ export const LineupsListView: React.FC = () => {
                   {/* Worship Leader & Author Row */}
                   <div className="flex items-center justify-between gap-2 mt-4 pt-3 border-t border-stone-100/90">
                     <div className="text-xs">
-                      <span className="text-stone-400 font-medium">Worship Leader:</span>{' '}
+                      <span className="text-stone-400 font-medium">{(lineup.worship_leaders && lineup.worship_leaders.length > 1) ? 'Worship Leaders:' : 'Worship Leader:'}</span>{' '}
                       <strong className="text-stone-900 font-bold">{lineup.worship_leader_name || 'TBD'}</strong>
                     </div>
                     {lineup.created_by && (
@@ -302,9 +302,12 @@ export const LineupsListView: React.FC = () => {
                         key={s.id || idx}
                         className="flex items-center justify-between text-xs py-2 px-3.5 rounded-full bg-[#FAF6EF]"
                       >
-                        <div className="flex items-center gap-3 min-w-0 pr-2">
+                        <div className="flex items-center gap-2 min-w-0 pr-2">
                           <span className="text-stone-400 font-medium text-xs w-3">{idx + 1}</span>
                           <span className="font-bold text-stone-900 truncate">{s.title}</span>
+                          <span className="text-[10px] font-semibold text-amber-800 bg-amber-100/60 px-2 py-0.5 rounded-full shrink-0">
+                            Lead: {s.assigned_vocalist_name || lineup.worship_leader_name || 'Leader'}
+                          </span>
                         </div>
                         <span className="font-bold text-[#9A6B3A] shrink-0 text-xs">
                           Key {s.selected_key || s.original_key || 'G'}

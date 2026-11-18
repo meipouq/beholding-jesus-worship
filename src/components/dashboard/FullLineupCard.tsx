@@ -149,7 +149,7 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#2E200F] border border-amber-600/40 text-amber-300 text-xs font-bold">
               <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-              <span>LEADER</span>
+              <span>{(lineup.worship_leaders && lineup.worship_leaders.length > 1) ? 'LEADERS' : 'LEADER'}</span>
             </div>
             <span className="text-xs sm:text-sm font-bold text-white">
               {lineup.worship_leader_name || leader?.name || 'Assigned Leader'}
@@ -235,30 +235,21 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
                         </span>
                       </button>
 
-                      {/* Middle: Title, Artist, Video reference, Vocalist */}
+                      {/* Middle: Title, Lead Singer, Artist */}
                       <div className="flex-1 min-w-0 pr-1">
                         <div className="flex items-center gap-2">
                           <h4 className="text-sm sm:text-[15px] font-bold text-white tracking-tight truncate group-hover:text-[#F3B755] transition-colors">
                             {item.title}
                           </h4>
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs text-stone-400 mt-0.5 truncate">
-                          <span className="truncate">{item.artist || 'Worship Track'}</span>
-                          {hasVideo && (
-                            <>
-                              <span>•</span>
-                              <span className="text-[11px] text-[#D4A359] font-medium truncate">
-                                YouTube ref
-                              </span>
-                            </>
-                          )}
-                          {item.assigned_vocalist_name && (
-                            <>
-                              <span>•</span>
-                              <span className="text-[11px] text-stone-300 font-semibold truncate">
-                                Lead: {item.assigned_vocalist_name}
-                              </span>
-                            </>
+                        <div className="flex items-center gap-1.5 text-xs mt-0.5 min-w-0 flex-wrap">
+                          <span className="text-[11px] sm:text-xs font-bold text-[#F3B755] truncate shrink-0">
+                            Lead: {item.assigned_vocalist_name || lineup.worship_leader_name || 'Worship Leader'}
+                          </span>
+                          {item.artist && (
+                            <span className="text-[11px] text-stone-400 truncate">
+                              • {item.artist}
+                            </span>
                           )}
                         </div>
                       </div>

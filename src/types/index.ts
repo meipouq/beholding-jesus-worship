@@ -70,6 +70,12 @@ export interface ServiceLineup {
   service_time: string; // "9:00 AM"
   worship_leader_id: string;
   worship_leader_name: string;
+  worship_leaders?: Array<{
+    id: string;
+    name: string;
+    role?: string;
+    avatar?: string;
+  }>;
   assigned_vocalists: Array<{
     id: string;
     name: string;

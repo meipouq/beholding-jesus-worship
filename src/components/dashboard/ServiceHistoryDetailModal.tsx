@@ -82,7 +82,7 @@ export const ServiceHistoryDetailModal: React.FC<ServiceHistoryDetailModalProps>
           {/* Worship Leader */}
           <div className="p-3.5 rounded-2xl bg-[#FAF6F0] border border-stone-200/80">
             <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1">
-              Worship Leader
+              {(lineup.worship_leaders && lineup.worship_leaders.length > 1) ? 'Worship Leaders' : 'Worship Leader'}
             </span>
             <div className="flex items-center gap-2">
               <Star className="w-4 h-4 text-amber-600 fill-amber-500" />
@@ -162,7 +162,7 @@ export const ServiceHistoryDetailModal: React.FC<ServiceHistoryDetailModalProps>
                         </span>
                       </div>
                       <p className="text-[11px] text-stone-500 truncate">
-                        {item.artist} {item.assigned_vocalist_name ? `• Lead: ${item.assigned_vocalist_name}` : ''}
+                        <strong className="text-amber-900 font-semibold">Lead: {item.assigned_vocalist_name || lineup.worship_leader_name}</strong> {item.artist ? `• ${item.artist}` : ''}
                       </p>
                     </div>
                   </div>

@@ -567,7 +567,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                           borderRadius: '6px'
                         }}
                       >
-                        ⭐ LEADER
+                        ⭐ {(lineup.worship_leaders && lineup.worship_leaders.length > 1) ? 'LEADERS' : 'LEADER'}
                       </span>
                       <span style={{ fontSize: '13px', fontWeight: '700', color: isDark ? '#FFFFFF' : '#1C1917' }}>
                         {lineup.worship_leader_name}
@@ -792,16 +792,23 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                               <div
                                 style={{
                                   fontSize: '12px',
-                                  fontWeight: '500',
-                                  color: isDark ? '#A1A1AA' : '#78716C',
+                                  fontWeight: '600',
+                                  color: isDark ? '#F3B755' : '#92400E',
                                   lineHeight: '18px',
-                                  display: 'block'
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'nowrap'
                                 }}
                               >
-                                <span>{hasVideo ? 'YouTube video' : 'YouTube reference'}</span>
-                                {song.assigned_vocalist_name && (
-                                  <span style={{ color: isDark ? '#FDE68A' : '#92400E', fontWeight: '600', marginLeft: '6px' }}>
-                                    • Lead: {song.assigned_vocalist_name}
+                                <span>
+                                  Lead: {song.assigned_vocalist_name || lineup.worship_leader_name || 'Worship Leader'}
+                                </span>
+                                {song.artist && (
+                                  <span style={{ color: isDark ? '#A1A1AA' : '#78716C', fontWeight: '400' }}>
+                                    • {song.artist}
                                   </span>
                                 )}
                               </div>
