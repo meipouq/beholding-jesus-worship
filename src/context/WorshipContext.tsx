@@ -364,25 +364,38 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
       created_by: lineup.created_by || currentUser.name,
       updated_by: currentUser.name,
       updated_at: new Date().toISOString(),
-      history: [
-        ...(lineup.history || []),
-        {
-          id: `h-${Date.now()}`,
-          action: isNew ? 'Created worship set' : (lineup.status === 'published' ? 'Published worship set' : 'Updated lineup'),
-          user_name: currentUser.name,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }
-      ]
+      history: isNew
+        ? [
+            {
+              id: `h-${Date.now()}`,
+              action: 'Created worship set',
+              user_name: currentUser.name,
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }
+          ]
+        : notify
+        ? [
+            ...(lineup.history || []),
+            {
+              id: `h-${Date.now()}`,
+              action: lineup.status === 'published' ? 'Published worship set' : 'Updated lineup',
+              user_name: currentUser.name,
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }
+          ]
+        : (lineup.history || [])
     };
     if (isNew) {
       updatedLineup.created_at = new Date().toISOString();
     }
     const updated = StorageService.saveLineup(updatedLineup);
     setLineups(updated);
-    logActivity(isNew ? 'created service lineup' : 'saved service lineup', updatedLineup.title);
+    if (isNew || notify) {
+      logActivity(isNew ? 'created service lineup' : 'saved service lineup', updatedLineup.title);
+    }
     syncRecordToSupabase('service_lineups', updatedLineup);
 
-    if (notify || updatedLineup.status === 'published') {
+    if (notify) {
       const notif: NotificationItem = {
         id: `notif-${Date.now()}`,
         title: updatedLineup.status === 'published' ? 'Service Lineup Published!' : 'Lineup Updated',

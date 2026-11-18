@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Calendar,
   Clock,
@@ -61,8 +61,12 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
     currentUser
   } = useWorship();
 
-  // Find lineup or initialize new
-  const existingLineup = lineups.find(l => l.id === lineupId);
+  // Stable ID for the lineup being edited or created
+  const [currentLineupId, setCurrentLineupId] = useState<string>(() => lineupId || `lineup-${Date.now()}`);
+  const loadedLineupIdRef = useRef<string | null>(null);
+
+  // Find existing lineup
+  const existingLineup = lineups.find(l => l.id === (lineupId || currentLineupId));
 
   const [title, setTitle] = useState(existingLineup?.title || 'Sunday Worship Service');
   const [serviceDate, setServiceDate] = useState(existingLineup?.service_date || new Date().toISOString().slice(0, 10));
@@ -89,39 +93,67 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
 
   const leader = members.find(m => m.id === worshipLeaderId) || currentUser;
 
-  const currentWorkingLineup: ServiceLineup = {
-    id: existingLineup?.id || `preview-${Date.now()}`,
-    title,
-    service_date: serviceDate,
-    service_time: serviceTime,
-    worship_leader_id: worshipLeaderId,
-    worship_leader_name: leader.name,
-    assigned_vocalists: members.filter(m => selectedVocalistIds.includes(m.id)).map(m => ({ id: m.id, name: m.name, role: m.role_title })),
-    assigned_musicians: existingLineup?.assigned_musicians || [],
-    status,
-    theme: theme || undefined,
-    notes: notes || undefined,
-    songs: lineupSongs,
-    created_by: existingLineup?.created_by || currentUser.name,
-    updated_by: currentUser.name,
-    created_at: existingLineup?.created_at || new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    history: existingLineup?.history || []
+  // Initialize state once when lineupId is loaded or changes, NEVER re-initialize on background polling updates!
+  useEffect(() => {
+    if (lineupId) {
+      if (existingLineup && loadedLineupIdRef.current !== lineupId) {
+        loadedLineupIdRef.current = lineupId;
+        setCurrentLineupId(existingLineup.id);
+        setTitle(existingLineup.title);
+        setServiceDate(existingLineup.service_date);
+        setServiceTime(existingLineup.service_time);
+        setWorshipLeaderId(existingLineup.worship_leader_id);
+        setTheme(existingLineup.theme || '');
+        setNotes(existingLineup.notes || '');
+        setStatus(existingLineup.status);
+        setLineupSongs(existingLineup.songs || []);
+        setSelectedVocalistIds(existingLineup.assigned_vocalists?.map(v => v.id) || []);
+      }
+    } else {
+      if (loadedLineupIdRef.current !== 'new') {
+        loadedLineupIdRef.current = 'new';
+      }
+    }
+  }, [lineupId, existingLineup]);
+
+  // Construct current working lineup object
+  const getWorkingLineup = (
+    currentSongs: LineupSongItem[],
+    overrides?: Partial<ServiceLineup>
+  ): ServiceLineup => {
+    const assignedVocalists = members
+      .filter(m => selectedVocalistIds.includes(m.id))
+      .map(m => ({
+        id: m.id,
+        name: m.name,
+        role: m.role_title,
+        vocal_range: m.vocal_range,
+        avatar: m.avatar
+      }));
+
+    return {
+      id: currentLineupId,
+      title: title.trim() || 'Sunday Worship Service',
+      service_date: serviceDate,
+      service_time: serviceTime,
+      worship_leader_id: worshipLeaderId,
+      worship_leader_name: leader.name,
+      assigned_vocalists: assignedVocalists,
+      assigned_musicians: existingLineup?.assigned_musicians || [],
+      status,
+      theme: theme.trim() || undefined,
+      notes: notes.trim() || undefined,
+      songs: currentSongs,
+      history: existingLineup?.history || [],
+      created_by: existingLineup ? existingLineup.created_by : currentUser.name,
+      updated_by: currentUser.name,
+      created_at: existingLineup ? existingLineup.created_at : new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      ...overrides
+    };
   };
 
-  useEffect(() => {
-    if (existingLineup) {
-      setTitle(existingLineup.title);
-      setServiceDate(existingLineup.service_date);
-      setServiceTime(existingLineup.service_time);
-      setWorshipLeaderId(existingLineup.worship_leader_id);
-      setTheme(existingLineup.theme || '');
-      setNotes(existingLineup.notes || '');
-      setStatus(existingLineup.status);
-      setLineupSongs(existingLineup.songs || []);
-      setSelectedVocalistIds(existingLineup.assigned_vocalists?.map(v => v.id) || []);
-    }
-  }, [existingLineup]);
+  const currentWorkingLineup = getWorkingLineup(lineupSongs);
 
   // Add existing song from library
   const handleAddSongFromLibrary = (song: Song) => {
@@ -139,8 +171,13 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
       youtube_url: song.youtube_url,
       order: lineupSongs.length + 1
     };
-    setLineupSongs([...lineupSongs, newItem]);
+    const updatedSongs = [...lineupSongs, newItem];
+    setLineupSongs(updatedSongs);
     setIsSongPickerOpen(false);
+
+    // Persist immediately so addition survives polling, refresh & navigation
+    const saved = getWorkingLineup(updatedSongs);
+    saveLineup(saved, false);
   };
 
   // Reorder songs up or down
@@ -151,36 +188,47 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
     const temp = reordered[index];
     reordered[index] = reordered[targetIndex];
     reordered[targetIndex] = temp;
-    // update order numbers
-    const updated = reordered.map((item, idx) => ({ ...item, order: idx + 1 }));
-    setLineupSongs(updated);
+    const updatedSongs = reordered.map((item, idx) => ({ ...item, order: idx + 1 }));
+    setLineupSongs(updatedSongs);
+
+    // Persist immediately
+    const saved = getWorkingLineup(updatedSongs);
+    saveLineup(saved, false);
   };
 
   // Remove song
   const removeSong = (id: string) => {
     const filtered = lineupSongs.filter(s => s.id !== id);
-    const updated = filtered.map((item, idx) => ({ ...item, order: idx + 1 }));
-    setLineupSongs(updated);
+    const updatedSongs = filtered.map((item, idx) => ({ ...item, order: idx + 1 }));
+    setLineupSongs(updatedSongs);
+
+    // Persist immediately so deletion survives polling, refresh & navigation
+    const saved = getWorkingLineup(updatedSongs);
+    saveLineup(saved, false);
   };
 
-  // Update item field
+  // Update song item fields (title, key, category, vocalist, transition notes, youtube)
   const updateSongItem = (id: string, updates: Partial<LineupSongItem>) => {
-    setLineupSongs(lineupSongs.map(s => s.id === id ? { ...s, ...updates } : s));
+    const updatedSongs = lineupSongs.map(s => s.id === id ? { ...s, ...updates } : s);
+    setLineupSongs(updatedSongs);
+
+    // Persist immediately
+    const saved = getWorkingLineup(updatedSongs);
+    saveLineup(saved, false);
   };
 
   // Toggle vocalist selection
   const toggleVocalist = (id: string) => {
+    let nextVocalistIds: string[];
     if (selectedVocalistIds.includes(id)) {
-      setSelectedVocalistIds(selectedVocalistIds.filter(vId => vId !== id));
+      nextVocalistIds = selectedVocalistIds.filter(vId => vId !== id);
     } else {
-      setSelectedVocalistIds([...selectedVocalistIds, id]);
+      nextVocalistIds = [...selectedVocalistIds, id];
     }
-  };
+    setSelectedVocalistIds(nextVocalistIds);
 
-  // Save or Publish
-  const handleSave = (newStatus: 'draft' | 'published') => {
-    const assignedVocalists = members
-      .filter(m => selectedVocalistIds.includes(m.id))
+    const updatedVocalists = members
+      .filter(m => nextVocalistIds.includes(m.id))
       .map(m => ({
         id: m.id,
         name: m.name,
@@ -189,27 +237,38 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
         avatar: m.avatar
       }));
 
-    const savedLineup: ServiceLineup = {
-      id: existingLineup?.id || `lineup-${Date.now()}`,
-      title: title.trim(),
-      service_date: serviceDate,
-      service_time: serviceTime,
-      worship_leader_id: worshipLeaderId,
-      worship_leader_name: leader.name,
-      assigned_vocalists: assignedVocalists,
-      assigned_musicians: existingLineup?.assigned_musicians || [],
-      status: newStatus,
-      theme: theme.trim() || undefined,
-      notes: notes.trim() || undefined,
-      songs: lineupSongs,
-      history: existingLineup?.history || [],
-      created_by: existingLineup ? existingLineup.created_by : currentUser.name,
-      updated_by: currentUser.name,
-      created_at: existingLineup ? existingLineup.created_at : new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
+    const saved = getWorkingLineup(lineupSongs, { assigned_vocalists: updatedVocalists });
+    saveLineup(saved, false);
+  };
 
-    saveLineup(savedLineup, true);
+  // Handle Worship Leader change
+  const handleLeaderChange = (newLeaderId: string) => {
+    setWorshipLeaderId(newLeaderId);
+    const newLeader = members.find(m => m.id === newLeaderId) || currentUser;
+    const saved = getWorkingLineup(lineupSongs, {
+      worship_leader_id: newLeaderId,
+      worship_leader_name: newLeader.name
+    });
+    saveLineup(saved, false);
+  };
+
+  // Auto-save on blur
+  const handleBlurSave = () => {
+    const saved = getWorkingLineup(lineupSongs);
+    saveLineup(saved, false);
+  };
+
+  // Handle Back
+  const handleBack = () => {
+    const saved = getWorkingLineup(lineupSongs);
+    saveLineup(saved, false);
+    onBack();
+  };
+
+  // Save Draft or Publish
+  const handleSave = (newStatus: 'draft' | 'published') => {
+    const savedLineup = getWorkingLineup(lineupSongs, { status: newStatus });
+    saveLineup(savedLineup, newStatus === 'published');
     setStatus(newStatus);
     alert(newStatus === 'published' ? 'Lineup published to the team successfully!' : 'Lineup draft saved successfully!');
   };
@@ -219,7 +278,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
       {/* Top Header Row with Circle Back Button & Utility Actions */}
       <div className="flex items-center justify-between">
         <button
-          onClick={onBack}
+          onClick={handleBack}
           className="w-10 h-10 rounded-full bg-white border border-[#E8E2D7] shadow-soft flex items-center justify-center text-stone-800 hover:bg-stone-50 active:scale-95 transition-all shrink-0"
           title="Back to Lineups"
         >
@@ -305,6 +364,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            onBlur={handleBlurSave}
             placeholder="e.g. Sunday Worship Service"
             className="w-full text-xs font-bold px-4 py-3 rounded-2xl border border-[#E8E2D7] bg-white text-stone-900 shadow-2xs placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C4A467]/20 focus:border-[#C4A467]"
           />
@@ -324,7 +384,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
             </div>
             <select
               value={worshipLeaderId}
-              onChange={(e) => setWorshipLeaderId(e.target.value)}
+              onChange={(e) => handleLeaderChange(e.target.value)}
               className="w-full text-xs font-semibold pl-10 pr-9 py-3 rounded-2xl border border-[#E8E2D7] bg-white text-stone-900 shadow-2xs focus:outline-none focus:ring-2 focus:ring-[#C4A467]/20 focus:border-[#C4A467] appearance-none cursor-pointer"
             >
               {members.map((m) => (
@@ -349,6 +409,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
             type="text"
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
+            onBlur={handleBlurSave}
             placeholder="e.g. Unwavering Faithfulness of God"
             className="w-full text-xs font-medium px-4 py-3 rounded-2xl border border-[#E8E2D7] bg-white text-stone-900 shadow-2xs placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C4A467]/20 focus:border-[#C4A467]"
           />
@@ -410,6 +471,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
             type="text"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
+            onBlur={handleBlurSave}
             placeholder="e.g. Call time 8:00 AM sharp. Vocalists review bridge."
             className="w-full text-xs font-medium px-4 py-3 rounded-2xl border border-[#E8E2D7] bg-white text-stone-900 shadow-2xs placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#C4A467]/20 focus:border-[#C4A467]"
           />
@@ -431,7 +493,11 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                 type="date"
                 required
                 value={serviceDate}
-                onChange={(e) => setServiceDate(e.target.value)}
+                onChange={(e) => {
+                  setServiceDate(e.target.value);
+                  const saved = getWorkingLineup(lineupSongs, { service_date: e.target.value });
+                  saveLineup(saved, false);
+                }}
                 className="w-full text-xs font-semibold text-stone-900 bg-transparent focus:outline-none cursor-pointer"
                 style={{ WebkitAppearance: 'none' }}
               />
@@ -445,6 +511,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                   required
                   value={serviceTime}
                   onChange={(e) => setServiceTime(e.target.value)}
+                  onBlur={handleBlurSave}
                   placeholder="9:00 AM"
                   className="w-full text-xs font-semibold text-stone-900 bg-transparent focus:outline-none"
                 />
