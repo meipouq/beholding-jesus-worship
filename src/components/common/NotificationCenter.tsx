@@ -46,10 +46,17 @@ export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose 
   };
 
   return (
-    <div
-      className="absolute right-0 top-12 w-80 sm:w-96 bg-white rounded-2xl shadow-modal border border-stone-200 p-4 z-50 animate-slide-up"
-      onClick={(e) => e.stopPropagation()}
-    >
+    <>
+      {/* Click-outside backdrop */}
+      <div
+        className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[1px] sm:bg-transparent sm:backdrop-blur-none"
+        onClick={onClose}
+      />
+
+      <div
+        className="fixed left-3 right-3 sm:left-auto sm:right-0 top-16 sm:top-12 sm:w-96 bg-white rounded-3xl shadow-modal border border-stone-200 p-4 sm:p-5 z-50 animate-slide-up"
+        onClick={(e) => e.stopPropagation()}
+      >
       <div className="flex items-center justify-between pb-3 border-b border-stone-100">
         <div className="flex items-center gap-2">
           <Bell className="w-4 h-4 text-stone-700" />
@@ -110,6 +117,7 @@ export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose 
         )}
       </div>
     </div>
+    </>
   );
 
   function markAllAll() {
