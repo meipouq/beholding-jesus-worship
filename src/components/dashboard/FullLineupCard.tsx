@@ -12,6 +12,9 @@ interface FullLineupCardProps {
   onShareLineup: (lineup: ServiceLineup) => void;
   onPlayVideo: (title: string, url: string) => void;
   onOpenChords: (song: Song) => void;
+  cardPosition?: 'primary' | 'secondary';
+  badgeLabel?: string;
+  showCountdown?: boolean;
 }
 
 // Format date nicely (e.g. "Sunday, Nov 29, 2026")
@@ -41,7 +44,10 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
   onViewLineup,
   onShareLineup,
   onPlayVideo,
-  onOpenChords
+  onOpenChords,
+  cardPosition = 'primary',
+  badgeLabel,
+  showCountdown
 }) => {
   const lifecycleStatus = getLineupLifecycleStatus(lineup);
   const totalSongsCount = lineup.songs?.length || 0;
@@ -76,6 +82,17 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
 
   const leader = members?.find(m => m.id === lineup.worship_leader_id);
 
+  // Determine top header badge label
+  const resolvedBadgeLabel = badgeLabel || (
+    cardPosition === 'secondary'
+      ? `UPCOMING SERVICE 2 • ${(lineup.title || 'SUNDAY LINEUP').toUpperCase()}`
+      : lifecycleStatus === 'ongoing'
+      ? `ONGOING SERVICE • ${(lineup.title || 'SUNDAY LINEUP').toUpperCase()}`
+      : `PRIMARY WORSHIP SERVICE • ${(lineup.title || 'SUNDAY LINEUP').toUpperCase()}`
+  );
+
+  const shouldRenderCountdown = showCountdown ?? (cardPosition !== 'secondary');
+
   return (
     <div className="bg-[#18181B] rounded-3xl p-5 sm:p-7 border border-[#27272A] shadow-2xl text-white space-y-5 transition-all">
       {/* =========================================================================
@@ -85,7 +102,7 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
         {/* Top Micro Label & Share Button */}
         <div className="flex items-center justify-between">
           <span className="text-[10px] sm:text-[11px] font-extrabold tracking-[0.2em] text-[#E5A93C] uppercase">
-            PRIMARY WORSHIP SERVICE • {lineup.title ? lineup.title.toUpperCase() : 'SUNDAY LINEUP'}
+            {resolvedBadgeLabel}
           </span>
           <button
             onClick={() => onShareLineup(lineup)}
@@ -98,7 +115,7 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
 
         {/* Main Title Row with Dynamic Status Badge */}
         <div className="flex items-center justify-between gap-3 mt-1.5 flex-wrap">
-          <h2 data-testid="primary-lineup-title" className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-tight">
+          <h2 data-testid={cardPosition === 'secondary' ? 'secondary-lineup-title' : 'primary-lineup-title'} className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-tight">
             {lineup.title || 'Sunday Worship Service'}
           </h2>
 
@@ -136,9 +153,11 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
       </div>
 
       {/* =========================================================================
-          2. LIVE COUNTDOWN TIMER
+          2. LIVE COUNTDOWN TIMER (Rendered on primary service only)
          ========================================================================= */}
-      <ServiceCountdownTimer lineup={lineup} />
+      {shouldRenderCountdown && (
+        <ServiceCountdownTimer lineup={lineup} />
+      )}
 
       {/* =========================================================================
           3. WORSHIP LEADER & ASSIGNED SINGERS

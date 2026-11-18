@@ -81,7 +81,12 @@ export function sanitizeRecordForSupabase(table: string, record: any): any {
       if (!sanitized.notes?.includes('[CANCELLED]')) {
         sanitized.notes = sanitized.notes ? `[CANCELLED] ${sanitized.notes}` : '[CANCELLED]';
       }
-    } else if (sanitized.status === 'upcoming' || sanitized.status === 'ongoing' || sanitized.status === 'completed') {
+    } else if (sanitized.status === 'completed') {
+      sanitized.status = 'published';
+      if (!sanitized.notes?.includes('[COMPLETED]')) {
+        sanitized.notes = sanitized.notes ? `[COMPLETED] ${sanitized.notes}` : '[COMPLETED]';
+      }
+    } else if (sanitized.status === 'upcoming' || sanitized.status === 'ongoing') {
       sanitized.status = 'published';
     } else if (sanitized.status !== 'draft') {
       sanitized.status = 'published';
@@ -234,6 +239,9 @@ export async function pullAllFromSupabase(): Promise<{ success: boolean; count: 
       const normalizedLineups = lineups.map(l => {
         if (l.status === 'draft' && (l.notes?.includes('[CANCELLED]') || l.history?.some((h: any) => h?.action?.toLowerCase().includes('cancel')))) {
           return { ...l, status: 'cancelled' };
+        }
+        if (l.status === 'published' && l.notes?.includes('[COMPLETED]')) {
+          return { ...l, status: 'completed' };
         }
         return l;
       });

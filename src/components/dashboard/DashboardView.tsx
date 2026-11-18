@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Music2,
   Users,
@@ -73,10 +73,20 @@ export const DashboardView: React.FC = () => {
   const [sharingLineup, setSharingLineup] = useState<ServiceLineup | null>(null);
   const [isAddingAnnouncement, setIsAddingAnnouncement] = useState(false);
 
-  // 1. Automatic upcoming lineup detection: sorted chronologically
-  const upcomingLineups = getSortedUpcomingLineups(lineups);
+  // Real-time timer to trigger automatic promotion/rotation the exact second a service reaches its end time
+  const [currentTime, setCurrentTime] = useState(() => new Date());
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // 1. Automatic upcoming lineup detection: sorted chronologically (1st and 2nd positions)
+  const upcomingLineups = getSortedUpcomingLineups(lineups, currentTime);
   const primaryLineup = upcomingLineups[0];
-  const otherUpcomingLineups = upcomingLineups.slice(1);
+  const secondaryLineup = upcomingLineups[1];
+  const remainingUpcomingLineups = upcomingLineups.slice(2);
 
   // 2. Completed services history (reverse chronological)
   const historyLineups = getCompletedServiceHistory(lineups);
@@ -146,20 +156,43 @@ export const DashboardView: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Next Service Card */}
+        {/* Mobile Next 2 Upcoming Service Cards */}
         {primaryLineup ? (
-          <FullLineupCard
-            lineup={primaryLineup}
-            songs={songs}
-            members={members}
-            onViewLineup={(lineupId) => {
-              setActiveLineupId(lineupId);
-              setActiveModule('lineups');
-            }}
-            onShareLineup={(l) => setSharingLineup(l)}
-            onPlayVideo={playVideo}
-            onOpenChords={openChords}
-          />
+          <div className="space-y-4">
+            {/* Primary Upcoming / Ongoing Service (Card 1 with Countdown) */}
+            <FullLineupCard
+              lineup={primaryLineup}
+              songs={songs}
+              members={members}
+              cardPosition="primary"
+              showCountdown={true}
+              onViewLineup={(lineupId) => {
+                setActiveLineupId(lineupId);
+                setActiveModule('lineups');
+              }}
+              onShareLineup={(l) => setSharingLineup(l)}
+              onPlayVideo={playVideo}
+              onOpenChords={openChords}
+            />
+
+            {/* Second Upcoming Service (Card 2 without duplicate countdown) */}
+            {secondaryLineup && (
+              <FullLineupCard
+                lineup={secondaryLineup}
+                songs={songs}
+                members={members}
+                cardPosition="secondary"
+                showCountdown={false}
+                onViewLineup={(lineupId) => {
+                  setActiveLineupId(lineupId);
+                  setActiveModule('lineups');
+                }}
+                onShareLineup={(l) => setSharingLineup(l)}
+                onPlayVideo={playVideo}
+                onOpenChords={openChords}
+              />
+            )}
+          </div>
         ) : (
           <div className="bg-white rounded-3xl p-6 border border-[#E8E2D7] shadow-soft text-center space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-[#FAF6F0] border border-stone-200 text-stone-400 flex items-center justify-center mx-auto">
@@ -181,10 +214,10 @@ export const DashboardView: React.FC = () => {
           </div>
         )}
 
-        {/* Mobile Upcoming Services List */}
-        {otherUpcomingLineups.length > 0 && (
+        {/* Mobile Remaining Upcoming Services List (3rd service onwards) */}
+        {remainingUpcomingLineups.length > 0 && (
           <UpcomingServicesList
-            lineups={otherUpcomingLineups}
+            lineups={remainingUpcomingLineups}
             songs={songs}
             onSelectLineup={(id) => {
               setActiveLineupId(id);
@@ -330,21 +363,44 @@ export const DashboardView: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
         {/* LEFT COLUMN: PRIMARY LINEUP, UPCOMING LIST & SERVICE HISTORY */}
         <div className="space-y-6 lg:col-span-7">
-          {/* Primary Lineup Card (Desktop) */}
-          <div className="hidden md:block">
+          {/* Primary & Secondary Lineup Cards (Desktop) */}
+          <div className="hidden md:block space-y-5">
             {primaryLineup ? (
-              <FullLineupCard
-                lineup={primaryLineup}
-                songs={songs}
-                members={members}
-                onViewLineup={(lineupId) => {
-                  setActiveLineupId(lineupId);
-                  setActiveModule('lineups');
-                }}
-                onShareLineup={(l) => setSharingLineup(l)}
-                onPlayVideo={playVideo}
-                onOpenChords={openChords}
-              />
+              <>
+                {/* 1st Position: Primary Upcoming / Ongoing Service Card */}
+                <FullLineupCard
+                  lineup={primaryLineup}
+                  songs={songs}
+                  members={members}
+                  cardPosition="primary"
+                  showCountdown={true}
+                  onViewLineup={(lineupId) => {
+                    setActiveLineupId(lineupId);
+                    setActiveModule('lineups');
+                  }}
+                  onShareLineup={(l) => setSharingLineup(l)}
+                  onPlayVideo={playVideo}
+                  onOpenChords={openChords}
+                />
+
+                {/* 2nd Position: Second-nearest Upcoming Service Card */}
+                {secondaryLineup && (
+                  <FullLineupCard
+                    lineup={secondaryLineup}
+                    songs={songs}
+                    members={members}
+                    cardPosition="secondary"
+                    showCountdown={false}
+                    onViewLineup={(lineupId) => {
+                      setActiveLineupId(lineupId);
+                      setActiveModule('lineups');
+                    }}
+                    onShareLineup={(l) => setSharingLineup(l)}
+                    onPlayVideo={playVideo}
+                    onOpenChords={openChords}
+                  />
+                )}
+              </>
             ) : (
               <div className="bg-white rounded-3xl p-8 border border-[#E8E2D7] shadow-soft flex flex-col justify-center items-center text-center py-14">
                 <div className="w-14 h-14 rounded-2xl bg-[#F8F5EE] border border-stone-200 text-stone-400 flex items-center justify-center mb-3">
@@ -365,16 +421,18 @@ export const DashboardView: React.FC = () => {
             )}
           </div>
 
-          {/* Upcoming Services Section (Below Primary Service) */}
-          <UpcomingServicesList
-            lineups={otherUpcomingLineups}
-            songs={songs}
-            onSelectLineup={(id) => {
-              setActiveLineupId(id);
-              setActiveModule('lineups');
-            }}
-            onCreateLineup={handleCreateLineup}
-          />
+          {/* Upcoming Services Section (3rd service onwards) */}
+          {remainingUpcomingLineups.length > 0 && (
+            <UpcomingServicesList
+              lineups={remainingUpcomingLineups}
+              songs={songs}
+              onSelectLineup={(id) => {
+                setActiveLineupId(id);
+                setActiveModule('lineups');
+              }}
+              onCreateLineup={handleCreateLineup}
+            />
+          )}
 
           {/* Service History Section (Preserved Completed Lineups) */}
           <ServiceHistorySection
