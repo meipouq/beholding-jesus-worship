@@ -6,6 +6,7 @@ import { MobileBottomNav } from './components/common/MobileBottomNav';
 import { YouTubePlayerModal } from './components/common/YouTubePlayerModal';
 import { ChordsTransposerModal } from './components/common/ChordsTransposerModal';
 import { AuthModal } from './components/auth/AuthModal';
+import { AuthGatewayView } from './components/auth/AuthGatewayView';
 
 import { DashboardView } from './components/dashboard/DashboardView';
 import { SongLibraryView } from './components/songs/SongLibraryView';
@@ -69,10 +70,20 @@ const MainLayout: React.FC = () => {
   );
 };
 
+const AppContent: React.FC = () => {
+  const { isAuthenticated } = useWorship();
+
+  if (!isAuthenticated) {
+    return <AuthGatewayView />;
+  }
+
+  return <MainLayout />;
+};
+
 export const App: React.FC = () => {
   return (
     <WorshipProvider>
-      <MainLayout />
+      <AppContent />
     </WorshipProvider>
   );
 };

@@ -252,6 +252,7 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const logoutUser = () => {
     AuthService.clearSession();
     setIsAuthenticated(false);
+    setIsAuthModalOpen(false);
   };
 
   const logActivity = (action: string, target?: string) => {

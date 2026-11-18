@@ -176,7 +176,7 @@ export const AuthModal: React.FC = () => {
         </div>
 
         {/* Current Active Account Status */}
-        {isAuthenticated && currentUser && currentUser.username && (
+        {isAuthenticated && currentUser && (
           <div className="my-3.5 p-3 rounded-2xl bg-[#FAF6F0] border border-stone-200/80 flex items-center justify-between">
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="w-8 h-8 rounded-full bg-white border border-stone-200 text-stone-900 flex items-center justify-center text-xs font-bold shrink-0 overflow-hidden shadow-2xs">
@@ -194,7 +194,7 @@ export const AuthModal: React.FC = () => {
                   {currentUser.name} {currentUser.username ? <span className="text-amber-800 font-medium">(@{currentUser.username})</span> : null}
                 </p>
                 <p className="text-[10px] text-stone-500 truncate">
-                  {currentUser.role_title} • Active Author
+                  {currentUser.role_title || 'Worship Team Member'} • Active
                 </p>
               </div>
             </div>
@@ -202,10 +202,11 @@ export const AuthModal: React.FC = () => {
             <button
               onClick={() => {
                 logoutUser();
+                setIsAuthModalOpen(false);
                 setLoginUsername('');
                 setLoginPassword('');
               }}
-              className="px-3 py-1.5 rounded-xl text-xs font-bold text-stone-600 hover:text-rose-700 hover:bg-rose-50 border border-stone-200/90 shadow-2xs hover:shadow-soft active:scale-95 transition-all shrink-0"
+              className="px-3 py-1.5 rounded-xl text-xs font-bold text-stone-600 hover:text-rose-700 hover:bg-rose-50 border border-stone-200/90 shadow-2xs hover:shadow-soft active:scale-95 transition-all shrink-0 cursor-pointer"
             >
               Sign Out
             </button>
