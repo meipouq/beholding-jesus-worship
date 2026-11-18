@@ -72,22 +72,22 @@ export const DashboardView: React.FC = () => {
       {/* =========================================================================
           DESKTOP HERO BANNER (Matches Reference Image)
          ========================================================================= */}
-      <div className="hidden md:block relative overflow-hidden rounded-3xl border border-[#E8E2D7] shadow-card bg-[#1E1D1B] min-h-[175px] text-white">
-        {/* Background Image with Clean Sunset Cross */}
+      <div className="hidden md:block relative overflow-hidden rounded-3xl border border-[#E8E2D7] shadow-card bg-[#1E1D1B] min-h-[210px] text-white">
+        {/* Background Image with Church Worship Team */}
         <div 
-          className="absolute inset-0 bg-cover bg-right"
-          style={{ backgroundImage: `url('/images/clean_hero_desktop.png')` }}
+          className="absolute inset-0 bg-cover bg-[center_20%]"
+          style={{ backgroundImage: `url('/images/team_welcome_hero.jpg')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#171615] via-[#171615]/85 via-45% to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#171615]/95 via-[#171615]/75 via-45% to-black/20" />
 
         <div className="relative z-10 p-7 sm:p-9 flex flex-col justify-center h-full max-w-xl">
-          <span className="text-stone-300 text-[11px] tracking-widest uppercase font-semibold">
+          <span className="text-amber-300 text-[11px] tracking-widest uppercase font-bold drop-shadow-xs">
             Welcome to
           </span>
-          <h1 className="text-2xl sm:text-[28px] font-extrabold tracking-tight text-white mt-1 leading-snug">
+          <h1 className="text-2xl sm:text-[28px] font-extrabold tracking-tight text-white mt-1 leading-snug drop-shadow-sm">
             Beholding Jesus Worship Team
           </h1>
-          <p className="text-amber-100/90 text-xs sm:text-[13px] italic font-serif mt-1.5 tracking-wide">
+          <p className="text-amber-100/90 text-xs sm:text-[13px] italic font-serif mt-1.5 tracking-wide drop-shadow-xs">
             Plan. Prepare. Worship.
           </p>
         </div>
@@ -98,17 +98,17 @@ export const DashboardView: React.FC = () => {
          ========================================================================= */}
       <div className="block md:hidden space-y-4">
         {/* Mobile Hero Banner */}
-        <div className="relative overflow-hidden rounded-3xl border border-[#E8E2D7] shadow-card bg-[#1E1D1B] p-5 text-white min-h-[140px] flex flex-col justify-end">
+        <div className="relative overflow-hidden rounded-3xl border border-[#E8E2D7] shadow-card bg-[#1E1D1B] p-5 text-white min-h-[170px] flex flex-col justify-end">
           <div 
-            className="absolute inset-0 bg-cover bg-right"
-            style={{ backgroundImage: `url('/images/clean_hero_mobile.png')` }}
+            className="absolute inset-0 bg-cover bg-[center_18%]"
+            style={{ backgroundImage: `url('/images/team_welcome_hero.jpg')` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#171615] via-[#171615]/75 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 via-40% to-transparent" />
           <div className="relative z-10">
-            <h2 className="text-xl font-bold text-white leading-tight">
+            <h2 className="text-xl font-bold text-white leading-tight drop-shadow-sm">
               Welcome Team!
             </h2>
-            <p className="text-xs text-stone-300 italic font-serif mt-0.5">
+            <p className="text-xs text-amber-100/90 italic font-serif mt-0.5 drop-shadow-xs">
               Together in Worship
             </p>
           </div>
