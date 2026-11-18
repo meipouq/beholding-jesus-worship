@@ -42,13 +42,13 @@ export const ServiceCountdownTimer: React.FC<ServiceCountdownTimerProps> = ({
   // If service is already completed
   if (lifecycleStatus === 'completed' || countdown.isExpired) {
     return (
-      <div className={`p-3.5 rounded-2xl bg-[#222225] border border-stone-800 flex items-center justify-between ${className}`}>
-        <div className="flex items-center gap-2 text-stone-400 text-xs font-semibold">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+      <div className={`px-3.5 py-2 rounded-2xl bg-[#202023] border border-stone-800 flex items-center justify-between gap-2 ${className}`}>
+        <div className="flex items-center gap-1.5 text-stone-400 text-xs font-semibold">
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
           <span>Service Concluded</span>
         </div>
-        <span className="text-[11px] font-bold text-stone-400 bg-stone-800/80 px-2.5 py-1 rounded-xl">
-          Archived in History
+        <span className="text-[10px] font-bold text-stone-400 bg-stone-800/80 px-2 py-0.5 rounded-lg">
+          Archived
         </span>
       </div>
     );
@@ -57,29 +57,26 @@ export const ServiceCountdownTimer: React.FC<ServiceCountdownTimerProps> = ({
   // If service is currently ongoing (within start and end time)
   if (lifecycleStatus === 'ongoing' || countdown.isOngoing) {
     return (
-      <div className={`p-4 rounded-2xl bg-gradient-to-r from-[#2A1808] to-[#1F160C] border border-[#D4A359]/40 shadow-inner flex flex-col sm:flex-row items-center justify-between gap-3 ${className}`}>
-        <div className="flex items-center gap-2.5">
-          <span className="relative flex h-3 w-3">
+      <div className={`px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl bg-gradient-to-r from-[#2A1808]/90 via-[#221509] to-[#1A1208] border border-[#D4A359]/35 shadow-xs flex items-center justify-between gap-2.5 ${className}`}>
+        {/* Left: Live pulsing dot + Title */}
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="relative flex h-2.5 w-2.5 shrink-0">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-[#E5A93C]" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#E5A93C]" />
           </span>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <Radio className="w-4 h-4 text-[#E5A93C]" />
-              <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-200">
-                Service Ongoing Now
-              </span>
-            </div>
-            <p className="text-[11px] text-amber-100/70 mt-0.5 font-medium">
-              Worship service in session
-            </p>
+          <div className="flex items-center gap-1.5 truncate">
+            <Radio className="w-3.5 h-3.5 text-[#E5A93C] shrink-0" />
+            <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-amber-200 truncate">
+              Service Ongoing Now
+            </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 bg-black/40 px-3.5 py-2 rounded-xl border border-amber-500/20">
-          <Clock className="w-3.5 h-3.5 text-[#E5A93C]" />
-          <span className="text-xs font-bold text-stone-300">Remaining:</span>
-          <span className="font-mono text-sm font-extrabold text-[#E5A93C]">
+        {/* Right: Sleek compact countdown pill */}
+        <div className="flex items-center gap-1.5 bg-black/50 px-2.5 py-1 rounded-xl border border-amber-500/25 shrink-0">
+          <Clock className="w-3 h-3 text-[#E5A93C]" />
+          <span className="text-[10px] font-semibold text-stone-300 hidden xs:inline">Ends in</span>
+          <span className="font-mono text-xs sm:text-sm font-black text-[#E5A93C] tracking-wider">
             {String(countdown.hours).padStart(2, '0')}:
             {String(countdown.minutes).padStart(2, '0')}:
             {String(countdown.seconds).padStart(2, '0')}
@@ -89,59 +86,59 @@ export const ServiceCountdownTimer: React.FC<ServiceCountdownTimerProps> = ({
     );
   }
 
-  // Normal upcoming countdown
+  // Normal upcoming countdown - compact, engaging & space-saving
   return (
-    <div className={`p-4 rounded-2xl bg-[#1C1C1F] border border-stone-800/90 shadow-soft ${className}`}>
-      <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-stone-800">
-        <div className="flex items-center gap-1.5 text-stone-400">
-          <Clock className="w-3.5 h-3.5 text-[#D4A359]" />
-          <span className="text-[11px] font-bold uppercase tracking-wider text-stone-300">
-            Live Service Countdown
-          </span>
-        </div>
-        <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/70 border border-emerald-800/60 px-2 py-0.5 rounded-full uppercase tracking-wider">
-          Upcoming
+    <div className={`px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl bg-[#1D1D21] border border-stone-800/90 shadow-xs flex items-center justify-between gap-2.5 ${className}`}>
+      {/* Left: Compact Label */}
+      <div className="flex items-center gap-1.5 text-stone-300 shrink-0">
+        <Clock className="w-3.5 h-3.5 text-[#D4A359]" />
+        <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-stone-300">
+          Countdown
         </span>
       </div>
 
-      <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center">
+      {/* Right: 4 Sleek Compact Capsule Units */}
+      <div className="flex items-center gap-1 sm:gap-1.5 text-center">
         {/* Days */}
-        <div className="bg-[#242428] rounded-xl p-2 sm:p-2.5 border border-stone-800/80">
-          <span className="font-mono text-xl sm:text-2xl font-black text-white leading-none block">
+        <div className="bg-[#26262B] px-2 py-1 rounded-xl border border-stone-700/60 flex items-baseline gap-0.5 min-w-[34px] sm:min-w-[42px] justify-center">
+          <span className="font-mono text-xs sm:text-sm font-black text-white leading-none">
             {countdown.days}
           </span>
-          <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-1 block">
-            {countdown.days === 1 ? 'Day' : 'Days'}
+          <span className="text-[8px] sm:text-[9px] font-bold text-stone-400 uppercase tracking-tight">
+            d
           </span>
         </div>
+        <span className="text-stone-600 font-bold text-xs select-none">:</span>
 
         {/* Hours */}
-        <div className="bg-[#242428] rounded-xl p-2 sm:p-2.5 border border-stone-800/80">
-          <span className="font-mono text-xl sm:text-2xl font-black text-white leading-none block">
+        <div className="bg-[#26262B] px-2 py-1 rounded-xl border border-stone-700/60 flex items-baseline gap-0.5 min-w-[34px] sm:min-w-[42px] justify-center">
+          <span className="font-mono text-xs sm:text-sm font-black text-white leading-none">
             {String(countdown.hours).padStart(2, '0')}
           </span>
-          <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-1 block">
-            Hours
+          <span className="text-[8px] sm:text-[9px] font-bold text-stone-400 uppercase tracking-tight">
+            h
           </span>
         </div>
+        <span className="text-stone-600 font-bold text-xs select-none">:</span>
 
         {/* Minutes */}
-        <div className="bg-[#242428] rounded-xl p-2 sm:p-2.5 border border-stone-800/80">
-          <span className="font-mono text-xl sm:text-2xl font-black text-white leading-none block">
+        <div className="bg-[#26262B] px-2 py-1 rounded-xl border border-stone-700/60 flex items-baseline gap-0.5 min-w-[34px] sm:min-w-[42px] justify-center">
+          <span className="font-mono text-xs sm:text-sm font-black text-white leading-none">
             {String(countdown.minutes).padStart(2, '0')}
           </span>
-          <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-1 block">
-            Mins
+          <span className="text-[8px] sm:text-[9px] font-bold text-stone-400 uppercase tracking-tight">
+            m
           </span>
         </div>
+        <span className="text-stone-600 font-bold text-xs select-none">:</span>
 
         {/* Seconds */}
-        <div className="bg-[#242428] rounded-xl p-2 sm:p-2.5 border border-stone-800/80">
-          <span className="font-mono text-xl sm:text-2xl font-black text-[#E5A93C] leading-none block">
+        <div className="bg-[#26262B] px-2 py-1 rounded-xl border border-amber-500/35 flex items-baseline gap-0.5 min-w-[34px] sm:min-w-[42px] justify-center">
+          <span className="font-mono text-xs sm:text-sm font-black text-[#E5A93C] leading-none">
             {String(countdown.seconds).padStart(2, '0')}
           </span>
-          <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-1 block">
-            Secs
+          <span className="text-[8px] sm:text-[9px] font-bold text-amber-400/80 uppercase tracking-tight">
+            s
           </span>
         </div>
       </div>
