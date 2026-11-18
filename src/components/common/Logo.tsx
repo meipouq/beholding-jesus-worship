@@ -26,61 +26,13 @@ export const Logo: React.FC<LogoProps> = ({
     <div className={`flex items-center gap-3 ${className}`}>
       {/* Official Emblem */}
       <div className={`relative flex items-center justify-center shrink-0 ${iconSizes[size]}`}>
-        <svg
-          viewBox="0 0 100 100"
-          className="w-full h-full drop-shadow-sm"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Outer circle ring */}
-          <circle
-            cx="50"
-            cy="50"
-            r="44"
-            stroke={isLight ? '#FFFFFF' : '#1F1E1D'}
-            strokeWidth="2.8"
-          />
-
-          {/* Left crescent / orbit arc */}
-          <path
-            d="M 50 9 C 27 9 12 27 12 50 C 12 73 27 91 50 91 C 33 87 21 70 21 50 C 21 30 33 13 50 9 Z"
-            stroke={isLight ? '#FFFFFF' : '#1F1E1D'}
-            strokeWidth="2.2"
-            fill="none"
-          />
-
-          {/* Cross stem */}
-          <line
-            x1="58"
-            y1="18"
-            x2="58"
-            y2="78"
-            stroke={isLight ? '#FFFFFF' : '#1F1E1D'}
-            strokeWidth="3.2"
-            strokeLinecap="round"
-          />
-
-          {/* Crossbar */}
-          <line
-            x1="45"
-            y1="36"
-            x2="71"
-            y2="36"
-            stroke={isLight ? '#FFFFFF' : '#1F1E1D'}
-            strokeWidth="3.2"
-            strokeLinecap="round"
-          />
-
-          {/* Delicate lower sweep under cross */}
-          <path
-            d="M 28 66 C 42 85 68 82 82 58"
-            stroke={isLight ? '#FFFFFF' : '#1F1E1D'}
-            strokeWidth="2"
-            strokeLinecap="round"
-            fill="none"
-            opacity="0.85"
-          />
-        </svg>
+        <img
+          src="/images/worship_team_profile.png"
+          alt="Beholding Jesus Worship Team"
+          className={`w-full h-full rounded-full object-cover shadow-2xs border ${
+            isLight ? 'border-white/20' : 'border-stone-800/20'
+          }`}
+        />
       </div>
 
       {/* Brand Typography */}

@@ -69,12 +69,15 @@ export const MobileBottomNav: React.FC = () => {
             {/* Active User Account Strip inside Mobile Drawer */}
             <div className="my-3 p-3 rounded-2xl bg-[#FAF6F0] border border-stone-200 flex items-center justify-between">
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-9 h-9 rounded-full bg-[#1E1D1B] text-white flex items-center justify-center font-bold text-xs shrink-0 overflow-hidden shadow-2xs">
-                  {currentUser.avatar && currentUser.avatar.includes('/') ? (
-                    <img src={currentUser.avatar} alt={currentUser.name} className="w-full h-full object-cover" />
-                  ) : (
-                    initials
-                  )}
+                <div className="w-9 h-9 rounded-full bg-white border border-stone-200 text-stone-900 flex items-center justify-center font-bold text-xs shrink-0 overflow-hidden shadow-2xs">
+                  <img
+                    src={currentUser.avatar && currentUser.avatar.includes('/') ? currentUser.avatar : '/images/worship_team_profile.png'}
+                    alt={currentUser.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/worship_team_profile.png';
+                    }}
+                  />
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs font-bold text-stone-900 truncate">

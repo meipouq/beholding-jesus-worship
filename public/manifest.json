@@ -1,0 +1,30 @@
+{
+  "short_name": "Worship Team",
+  "name": "Beholding Jesus Worship Team",
+  "description": "Dedicated Worship Team Management Platform for Beholding Jesus Church",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#F8F5EE",
+  "theme_color": "#283827",
+  "display": "standalone",
+  "orientation": "portrait"
+}

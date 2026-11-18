@@ -104,12 +104,15 @@ export const Sidebar: React.FC = () => {
           title="Account Settings / Log In / Register"
         >
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-full bg-amber-400 text-[#1E1D1B] font-bold text-xs flex items-center justify-center shrink-0 overflow-hidden shadow-xs">
-              {currentUser.avatar && currentUser.avatar.includes('/') ? (
-                <img src={currentUser.avatar} alt={currentUser.name} className="w-full h-full object-cover" />
-              ) : (
-                initials
-              )}
+            <div className="w-8 h-8 rounded-full bg-white text-[#1E1D1B] font-bold text-xs flex items-center justify-center shrink-0 overflow-hidden shadow-xs border border-white/20">
+              <img
+                src={currentUser.avatar && currentUser.avatar.includes('/') ? currentUser.avatar : '/images/worship_team_profile.png'}
+                alt={currentUser.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/worship_team_profile.png';
+                }}
+              />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1">

@@ -168,19 +168,15 @@ export const Header: React.FC = () => {
             className="flex items-center gap-2.5 py-1.5 pl-1.5 pr-3 sm:pr-3.5 rounded-2xl bg-white/95 hover:bg-white border border-[#E2DAD0] hover:border-[#D4A359]/70 shadow-2xs hover:shadow-soft transition-all duration-200 active:scale-[0.98] group"
             title="Account Portal • Log In / Switch Account"
           >
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#2D261C] to-[#18181B] text-[#FDE68A] flex items-center justify-center text-xs font-black tracking-wider shrink-0 overflow-hidden shadow-2xs ring-1 ring-[#D4A359]/30 group-hover:ring-[#D4A359]/70 transition-all">
-              {currentUser.avatar && currentUser.avatar.includes('/') ? (
-                <img
-                  src={currentUser.avatar}
-                  alt={currentUser.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
-                />
-              ) : (
-                userInitials
-              )}
+            <div className="w-8 h-8 rounded-xl bg-white border border-[#E4DCD0] flex items-center justify-center text-xs font-black tracking-wider shrink-0 overflow-hidden shadow-2xs ring-1 ring-[#D4A359]/30 group-hover:ring-[#D4A359]/70 transition-all">
+              <img
+                src={currentUser.avatar && currentUser.avatar.includes('/') ? currentUser.avatar : '/images/worship_team_profile.png'}
+                alt={currentUser.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/worship_team_profile.png';
+                }}
+              />
             </div>
 
             <div className="hidden sm:block text-left min-w-0 pr-0.5">

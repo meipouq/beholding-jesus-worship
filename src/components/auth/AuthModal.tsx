@@ -179,12 +179,15 @@ export const AuthModal: React.FC = () => {
         {isAuthenticated && currentUser && currentUser.username && (
           <div className="my-3.5 p-3 rounded-2xl bg-[#FAF6F0] border border-stone-200/80 flex items-center justify-between">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-[#1E1D1B] text-white flex items-center justify-center text-xs font-bold shrink-0">
-                {currentUser.avatar && currentUser.avatar.includes('/') ? (
-                  <img src={currentUser.avatar} alt={currentUser.name} className="w-full h-full rounded-full object-cover" />
-                ) : (
-                  currentUser.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
-                )}
+              <div className="w-8 h-8 rounded-full bg-white border border-stone-200 text-stone-900 flex items-center justify-center text-xs font-bold shrink-0 overflow-hidden shadow-2xs">
+                <img
+                  src={currentUser.avatar && currentUser.avatar.includes('/') ? currentUser.avatar : '/images/worship_team_profile.png'}
+                  alt={currentUser.name}
+                  className="w-full h-full rounded-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/worship_team_profile.png';
+                  }}
+                />
               </div>
               <div className="min-w-0">
                 <p className="text-xs font-bold text-stone-900 truncate">
