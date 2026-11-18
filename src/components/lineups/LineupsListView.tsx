@@ -63,57 +63,57 @@ export const LineupsListView: React.FC = () => {
     <div className="space-y-5 pb-20 md:pb-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-2.5">
-          <div className="p-2.5 rounded-2xl bg-[#1E1D1B] text-white shadow-2xs">
-            <ListMusic className="w-5 h-5" />
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-2xl bg-[#283827] text-white flex items-center justify-center shrink-0 shadow-soft">
+            <ListMusic className="w-6 h-6 stroke-[2]" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-stone-900 leading-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif text-stone-900 leading-tight">
               Service Lineups
             </h1>
-            <p className="text-xs text-stone-500 mt-0.5">
-              Plan, organize, and publish worship sets with vocal keys and YouTube references
+            <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">
+              Plan, organize, and publish worship sets with vocal keys and YouTube references.
             </p>
           </div>
         </div>
 
         <button
           onClick={handleCreateNew}
-          className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold shadow-soft transition-all self-start sm:self-auto"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#283827] hover:bg-[#1E2B1D] text-white text-xs font-bold shadow-soft transition-all self-start sm:self-auto active:scale-95"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-4 h-4 stroke-[2.5]" />
           <span>New Service Lineup</span>
         </button>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
+      <div className="flex items-center gap-2.5 overflow-x-auto pb-1">
         <button
           onClick={() => setSelectedStatus('ALL')}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+          className={`px-5 py-2 rounded-full text-xs font-bold transition-all ${
             selectedStatus === 'ALL'
-              ? 'bg-[#1E1D1B] text-white shadow-2xs'
-              : 'bg-[#F2ECE1] text-stone-700 hover:bg-stone-200'
+              ? 'bg-[#283827] text-white shadow-soft'
+              : 'bg-[#F3ECE1] text-stone-700 hover:bg-[#EBE2D4]'
           }`}
         >
           All Lineups ({lineups.length})
         </button>
         <button
           onClick={() => setSelectedStatus('published')}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+          className={`px-5 py-2 rounded-full text-xs font-bold transition-all ${
             selectedStatus === 'published'
-              ? 'bg-[#1E1D1B] text-white shadow-2xs'
-              : 'bg-[#F2ECE1] text-stone-700 hover:bg-stone-200'
+              ? 'bg-[#283827] text-white shadow-soft'
+              : 'bg-[#F3ECE1] text-stone-700 hover:bg-[#EBE2D4]'
           }`}
         >
           Published ({lineups.filter(l => l.status === 'published').length})
         </button>
         <button
           onClick={() => setSelectedStatus('draft')}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+          className={`px-5 py-2 rounded-full text-xs font-bold transition-all ${
             selectedStatus === 'draft'
-              ? 'bg-[#1E1D1B] text-white shadow-2xs'
-              : 'bg-[#F2ECE1] text-stone-700 hover:bg-stone-200'
+              ? 'bg-[#283827] text-white shadow-soft'
+              : 'bg-[#F3ECE1] text-stone-700 hover:bg-[#EBE2D4]'
           }`}
         >
           Drafts ({lineups.filter(l => l.status === 'draft').length})
@@ -124,17 +124,17 @@ export const LineupsListView: React.FC = () => {
       {filteredLineups.length === 0 ? (
         <div className="bg-white rounded-3xl p-12 sm:p-16 text-center border border-[#E8E2D7] shadow-soft flex flex-col items-center justify-center">
           <div className="w-16 h-16 rounded-3xl bg-[#F8F5EE] border border-stone-200 text-stone-400 flex items-center justify-center mb-4 shadow-inner">
-            <ListMusic className="w-8 h-8 text-amber-900/70" />
+            <ListMusic className="w-8 h-8 text-[#283827]" />
           </div>
-          <h3 className="text-base sm:text-lg font-bold text-stone-900">No Service Lineups Yet</h3>
+          <h3 className="text-base sm:text-lg font-serif font-bold text-stone-900">No Service Lineups Yet</h3>
           <p className="text-xs text-stone-500 mt-1 max-w-md">
             Create and organize worship sets with songs, assigned vocalists, song categories, custom vocal keys, and YouTube references.
           </p>
           <button
             onClick={handleCreateNew}
-            className="mt-5 flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold shadow-soft transition-all"
+            className="mt-5 flex items-center gap-2 px-6 py-3 rounded-full bg-[#283827] hover:bg-[#1E2B1D] text-white text-xs font-bold shadow-soft transition-all active:scale-95"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Create First Lineup</span>
           </button>
         </div>
@@ -143,45 +143,36 @@ export const LineupsListView: React.FC = () => {
           {filteredLineups.map((lineup) => (
           <div
             key={lineup.id}
-            className="bg-white rounded-3xl p-5 sm:p-6 border border-[#E8E2D7] shadow-soft hover:shadow-card transition-all flex flex-col justify-between"
+            className="bg-white rounded-3xl p-5 sm:p-6 border border-[#EFE7DA] shadow-soft hover:shadow-card transition-all flex flex-col justify-between"
           >
             <div>
-              {/* Card Top */}
-              <div className="flex items-start justify-between gap-3 pb-3 border-b border-stone-100">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                      lineup.status === 'published'
-                        ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                        : 'bg-amber-100 text-amber-800 border border-amber-200'
-                    }`}>
-                      {lineup.status}
-                    </span>
-                    <span className="text-xs text-stone-400 font-medium">
-                      {lineup.songs?.length || 0} Songs
-                    </span>
-                  </div>
-                  <h3 className="text-base font-bold text-stone-900 mt-1 leading-snug">
-                    {lineup.title}
-                  </h3>
-                  <div className="flex items-center gap-2 text-xs text-stone-500 mt-1">
-                    <Calendar className="w-3.5 h-3.5 text-amber-800" />
-                    <span>{lineup.service_date} • {lineup.service_time}</span>
-                  </div>
+              {/* Card Top: Status, Songs Count & Quick Icons */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <span className={`px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
+                    lineup.status === 'published'
+                      ? 'bg-[#D1FAE5] text-[#047857]'
+                      : 'bg-[#FEF3C7] text-[#92400E]'
+                  }`}>
+                    {lineup.status}
+                  </span>
+                  <span className="text-xs text-[#8C827A] font-semibold">
+                    {lineup.songs?.length || 0} Songs
+                  </span>
                 </div>
 
-                {/* Quick Action Icons */}
-                <div className="flex items-center gap-1">
+                {/* 4 Clean Action Icons matching design */}
+                <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => setSharingLineup(lineup)}
-                    className="p-1.5 rounded-xl text-stone-400 hover:text-amber-800 hover:bg-amber-50"
+                    className="p-1.5 rounded-lg text-[#8C7A6B] hover:text-[#283827] hover:bg-stone-100 transition-colors"
                     title="Share Lineup / Save as Photo"
                   >
-                    <Share2 className="w-4 h-4 text-amber-800" />
+                    <Share2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => setPrintingLineup(lineup)}
-                    className="p-1.5 rounded-xl text-stone-400 hover:text-stone-800 hover:bg-stone-100"
+                    className="p-1.5 rounded-lg text-[#8C7A6B] hover:text-[#283827] hover:bg-stone-100 transition-colors"
                     title="Print Setlist"
                   >
                     <Printer className="w-4 h-4" />
@@ -191,8 +182,8 @@ export const LineupsListView: React.FC = () => {
                       const dup = duplicateLineup(lineup.id);
                       alert(`Lineup duplicated as "${dup.title}"`);
                     }}
-                    className="p-1.5 rounded-xl text-stone-400 hover:text-stone-800 hover:bg-stone-100"
-                    title="Duplicate"
+                    className="p-1.5 rounded-lg text-[#8C7A6B] hover:text-[#283827] hover:bg-stone-100 transition-colors"
+                    title="Duplicate Lineup"
                   >
                     <Copy className="w-4 h-4" />
                   </button>
@@ -202,61 +193,62 @@ export const LineupsListView: React.FC = () => {
                         deleteLineup(lineup.id);
                       }
                     }}
-                    className="p-1.5 rounded-xl text-stone-400 hover:text-red-600 hover:bg-red-50"
-                    title="Delete"
+                    className="p-1.5 rounded-lg text-[#8C7A6B] hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                    title="Delete Lineup"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>
 
-              {/* Author, Worship Leader & Assigned Vocalists */}
-              <div className="py-2.5 text-xs text-stone-600 space-y-1">
-                <div className="flex items-center justify-between gap-2">
-                  <div>
-                    <span className="text-stone-400 font-medium">Worship Leader:</span>{' '}
-                    <strong className="text-stone-800">{lineup.worship_leader_name}</strong>
-                  </div>
-                  {lineup.created_by && (
-                    <span className="text-[10px] font-bold text-amber-800 px-2 py-0.5 rounded-full bg-amber-100/70 border border-amber-200/80">
-                      By {lineup.created_by.split(' ')[0]}
-                    </span>
-                  )}
+              {/* Title in Serif Font */}
+              <h3 className="text-xl sm:text-2xl font-serif text-stone-900 mt-2.5 leading-snug">
+                {lineup.title}
+              </h3>
+
+              {/* Service Date & Time */}
+              <div className="flex items-center gap-1.5 text-xs font-medium text-stone-600 mt-1.5">
+                <Calendar className="w-4 h-4 text-[#8C7A6B]" />
+                <span>{lineup.service_date} • {lineup.service_time}</span>
+              </div>
+
+              {/* Worship Leader & Author Row */}
+              <div className="flex items-center justify-between gap-2 mt-4 pt-3 border-t border-stone-100/90">
+                <div className="text-xs">
+                  <span className="text-stone-400 font-medium">Worship Leader:</span>{' '}
+                  <strong className="text-stone-900 font-bold">{lineup.worship_leader_name || 'TBD'}</strong>
                 </div>
-                {lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0 && (
-                  <div className="truncate">
-                    <span className="text-stone-400 font-medium">Vocalists:</span>{' '}
-                    <span>{lineup.assigned_vocalists.map(v => v.name.split(' ')[0]).join(', ')}</span>
-                  </div>
+                {lineup.created_by && (
+                  <span className="text-xs font-bold text-[#8A5828] px-3 py-0.5 rounded-full bg-[#FDF3E3] border border-[#FBE0B8]">
+                    By {lineup.created_by.split(' ')[0]}
+                  </span>
                 )}
               </div>
 
-              {/* Songs Preview */}
-              <div className="py-2 space-y-1">
-                {lineup.songs?.slice(0, 4).map((s, idx) => (
-                  <div key={s.id} className="flex items-center justify-between text-xs py-1 px-2.5 rounded-xl bg-[#FAF6F0]">
-                    <div className="flex items-center gap-2 min-w-0 pr-2">
-                      <span className="text-stone-400 font-bold text-[11px] w-3">{idx + 1}</span>
-                      <span className="font-semibold text-stone-800 truncate">{s.title}</span>
+              {/* Songs Preview as Soft Cream Pills */}
+              <div className="mt-3 space-y-1.5">
+                {lineup.songs?.map((s, idx) => (
+                  <div
+                    key={s.id || idx}
+                    className="flex items-center justify-between text-xs py-2 px-3.5 rounded-full bg-[#FAF6EF]"
+                  >
+                    <div className="flex items-center gap-3 min-w-0 pr-2">
+                      <span className="text-stone-400 font-medium text-xs w-3">{idx + 1}</span>
+                      <span className="font-bold text-stone-900 truncate">{s.title}</span>
                     </div>
-                    <span className="font-bold text-amber-900 shrink-0 text-[11px]">
-                      Key {s.selected_key || s.original_key}
+                    <span className="font-bold text-[#9A6B3A] shrink-0 text-xs">
+                      Key {s.selected_key || s.original_key || 'G'}
                     </span>
                   </div>
                 ))}
-                {lineup.songs && lineup.songs.length > 4 && (
-                  <p className="text-[11px] text-stone-400 text-center pt-1 font-medium">
-                    +{lineup.songs.length - 4} more songs
-                  </p>
-                )}
               </div>
             </div>
 
-            {/* Bottom Button */}
-            <div className="pt-4 mt-2 border-t border-stone-100">
+            {/* Bottom Button: Deep Forest Green Pill */}
+            <div className="pt-4 mt-2">
               <button
                 onClick={() => handleEdit(lineup.id)}
-                className="w-full py-2.5 px-4 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold flex items-center justify-center gap-2 transition-colors shadow-xs"
+                className="w-full py-3 px-5 rounded-full bg-[#283827] hover:bg-[#1E2B1D] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-soft active:scale-[0.99] transition-all"
               >
                 <span>Edit & Organize Lineup</span>
                 <ArrowRight className="w-3.5 h-3.5" />
