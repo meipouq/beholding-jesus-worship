@@ -15,6 +15,7 @@ import {
 import { StorageService } from '../services/storage';
 import { pullAllFromSupabase, syncRecordToSupabase, deleteRecordFromSupabase, getSupabase } from '../services/supabase';
 import { AuthService } from '../services/auth';
+import { parseServiceDateTime } from '../utils/serviceSchedule';
 
 export type AppModule = 
   | 'dashboard'
@@ -82,6 +83,9 @@ interface WorshipContextType {
   saveLineup: (lineup: ServiceLineup, notify?: boolean) => void;
   deleteLineup: (id: string) => void;
   duplicateLineup: (id: string) => ServiceLineup;
+  cancelLineup: (id: string) => void;
+  publishLineup: (id: string) => void;
+  completeLineup: (id: string) => void;
 
   // Rehearsals & Schedule
   rehearsals: Rehearsal[];
@@ -99,6 +103,8 @@ interface WorshipContextType {
   announcements: Announcement[];
   saveAnnouncement: (announcement: Announcement) => void;
   deleteAnnouncement: (id: string) => void;
+  publishAnnouncement: (id: string) => void;
+  unpublishAnnouncement: (id: string) => void;
 
   // Notifications & Activity
   notifications: NotificationItem[];
@@ -187,8 +193,40 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     // 3. Ultra-responsive 4-second auto-poll fallback
     const interval = setInterval(syncAll, 4000);
 
+    // 4. Automatic Service Expiration & Upcoming Rotation Watcher
+    const checkServiceExpiration = () => {
+      const now = new Date();
+      let hasChanges = false;
+      const currentLineups = StorageService.getLineups();
+
+      const updatedList = currentLineups.map(l => {
+        if (l.status === 'published' || l.status === 'upcoming' || l.status === 'ongoing') {
+          const { endDate } = parseServiceDateTime(l.service_date, l.service_time);
+          if (now.getTime() >= endDate.getTime()) {
+            hasChanges = true;
+            const updated: ServiceLineup = {
+              ...l,
+              status: 'completed',
+              updated_at: new Date().toISOString()
+            };
+            syncRecordToSupabase('service_lineups', updated);
+            return updated;
+          }
+        }
+        return l;
+      });
+
+      if (hasChanges) {
+        StorageService.setLineups(updatedList);
+        setLineups(updatedList);
+      }
+    };
+
+    const rotationInterval = setInterval(checkServiceExpiration, 3000);
+
     return () => {
       clearInterval(interval);
+      clearInterval(rotationInterval);
       if (client && channel) {
         client.removeChannel(channel);
       }
@@ -420,7 +458,8 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const duplicateLineup = (id: string): ServiceLineup => {
-    const original = lineups.find(l => l.id === id);
+    const currentList = StorageService.getLineups();
+    const original = currentList.find(l => l.id === id);
     if (!original) throw new Error('Lineup not found');
     const newLineup: ServiceLineup = {
       ...original,
@@ -443,6 +482,54 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setActiveLineupId(newLineup.id);
     syncRecordToSupabase('service_lineups', newLineup);
     return newLineup;
+  };
+
+  const cancelLineup = (id: string) => {
+    const currentList = StorageService.getLineups();
+    const target = currentList.find(l => l.id === id);
+    if (!target) return;
+    const updatedLineup: ServiceLineup = {
+      ...target,
+      status: 'cancelled',
+      updated_by: currentUser.name,
+      updated_at: new Date().toISOString()
+    };
+    const updated = StorageService.saveLineup(updatedLineup);
+    setLineups(updated);
+    logActivity('cancelled service', updatedLineup.title);
+    syncRecordToSupabase('service_lineups', updatedLineup);
+  };
+
+  const publishLineup = (id: string) => {
+    const currentList = StorageService.getLineups();
+    const target = currentList.find(l => l.id === id);
+    if (!target) return;
+    const updatedLineup: ServiceLineup = {
+      ...target,
+      status: 'published',
+      updated_by: currentUser.name,
+      updated_at: new Date().toISOString()
+    };
+    const updated = StorageService.saveLineup(updatedLineup);
+    setLineups(updated);
+    logActivity('published service lineup', updatedLineup.title);
+    syncRecordToSupabase('service_lineups', updatedLineup);
+  };
+
+  const completeLineup = (id: string) => {
+    const currentList = StorageService.getLineups();
+    const target = currentList.find(l => l.id === id);
+    if (!target) return;
+    const updatedLineup: ServiceLineup = {
+      ...target,
+      status: 'completed',
+      updated_by: currentUser.name,
+      updated_at: new Date().toISOString()
+    };
+    const updated = StorageService.saveLineup(updatedLineup);
+    setLineups(updated);
+    logActivity('marked service completed', updatedLineup.title);
+    syncRecordToSupabase('service_lineups', updatedLineup);
   };
 
   // Rehearsals & RSVP
@@ -593,6 +680,34 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     deleteRecordFromSupabase('announcements', id);
   };
 
+  const publishAnnouncement = (id: string) => {
+    const target = announcements.find(a => a.id === id);
+    if (!target) return;
+    const updatedAnn: Announcement = {
+      ...target,
+      status: 'published',
+      updated_at: new Date().toISOString()
+    };
+    const updated = StorageService.saveAnnouncement(updatedAnn);
+    setAnnouncements(updated);
+    logActivity('published announcement', updatedAnn.title);
+    syncRecordToSupabase('announcements', updatedAnn);
+  };
+
+  const unpublishAnnouncement = (id: string) => {
+    const target = announcements.find(a => a.id === id);
+    if (!target) return;
+    const updatedAnn: Announcement = {
+      ...target,
+      status: 'draft',
+      updated_at: new Date().toISOString()
+    };
+    const updated = StorageService.saveAnnouncement(updatedAnn);
+    setAnnouncements(updated);
+    logActivity('unpublished announcement', updatedAnn.title);
+    syncRecordToSupabase('announcements', updatedAnn);
+  };
+
   // Notifications
   const markNotifRead = (id: string) => {
     const updated = StorageService.markNotificationRead(id);
@@ -618,6 +733,20 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const updated = StorageService.deleteResource(id);
     setResources(updated);
   };
+
+  if (typeof window !== 'undefined') {
+    (window as any).__worshipContext = {
+      lineups,
+      saveLineup,
+      cancelLineup,
+      publishLineup,
+      completeLineup,
+      saveAnnouncement,
+      publishAnnouncement,
+      unpublishAnnouncement,
+      deleteAnnouncement
+    };
+  }
 
   return (
     <WorshipContext.Provider
@@ -659,6 +788,9 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
         saveLineup,
         deleteLineup,
         duplicateLineup,
+        cancelLineup,
+        publishLineup,
+        completeLineup,
         rehearsals,
         saveRehearsal,
         deleteRehearsal,
@@ -670,6 +802,8 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
         announcements,
         saveAnnouncement,
         deleteAnnouncement,
+        publishAnnouncement,
+        unpublishAnnouncement,
         notifications,
         unreadNotifCount,
         markNotifRead,

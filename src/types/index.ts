@@ -83,7 +83,7 @@ export interface ServiceLineup {
     instrument: string;
     avatar?: string;
   }>;
-  status: 'draft' | 'published';
+  status: 'draft' | 'published' | 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
   songs: LineupSongItem[];
   theme?: string;
   notes?: string;
@@ -146,7 +146,11 @@ export interface Announcement {
   author_avatar: string;
   is_pinned: boolean;
   is_important: boolean;
+  status?: 'draft' | 'published';
+  event_date?: string;
+  event_time?: string;
   created_at: string;
+  updated_at?: string;
 }
 
 export interface ChatAttachment {

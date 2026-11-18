@@ -1,5 +1,6 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { StorageService } from './storage';
+import { ServiceLineup, Announcement } from '../types';
 
 let supabaseClient: SupabaseClient | null = null;
 
@@ -70,6 +71,21 @@ export function sanitizeRecordForSupabase(table: string, record: any): any {
     if (!sanitized.created_by) sanitized.created_by = 'Worship Lead';
   } else if (table === 'announcements') {
     if (!sanitized.author_name) sanitized.author_name = 'Worship Ministry';
+  } else if (table === 'service_lineups') {
+    if (!sanitized.worship_leader_name) sanitized.worship_leader_name = 'Worship Leader';
+    if (!sanitized.created_by) sanitized.created_by = 'Worship Leader';
+    if (!sanitized.updated_by) sanitized.updated_by = sanitized.created_by;
+    // Database schema constraint allows 'draft' and 'published'
+    if (sanitized.status === 'cancelled') {
+      sanitized.status = 'draft';
+      if (!sanitized.notes?.includes('[CANCELLED]')) {
+        sanitized.notes = sanitized.notes ? `[CANCELLED] ${sanitized.notes}` : '[CANCELLED]';
+      }
+    } else if (sanitized.status === 'upcoming' || sanitized.status === 'ongoing' || sanitized.status === 'completed') {
+      sanitized.status = 'published';
+    } else if (sanitized.status !== 'draft') {
+      sanitized.status = 'published';
+    }
   } else if (table === 'team_members') {
     if (!sanitized.vocal_range) sanitized.vocal_range = 'Alto';
     if (!sanitized.availability) sanitized.availability = 'Available';
@@ -215,7 +231,29 @@ export async function pullAllFromSupabase(): Promise<{ success: boolean; count: 
       totalPulled += songs.length;
     }
     if (!linErr && Array.isArray(lineups)) {
-      StorageService.setLineups(lineups);
+      const normalizedLineups = lineups.map(l => {
+        if (l.status === 'draft' && (l.notes?.includes('[CANCELLED]') || l.history?.some((h: any) => h?.action?.toLowerCase().includes('cancel')))) {
+          return { ...l, status: 'cancelled' };
+        }
+        return l;
+      });
+      // Timestamp-aware merge so local user actions are never overwritten by race conditions
+      const local = StorageService.getLineups();
+      const mergedMap = new Map<string, ServiceLineup>();
+      normalizedLineups.forEach(l => mergedMap.set(l.id, l));
+      local.forEach(l => {
+        const remote = mergedMap.get(l.id);
+        if (!remote) {
+          mergedMap.set(l.id, l);
+        } else {
+          const localTime = new Date(l.updated_at || l.created_at || 0).getTime();
+          const remoteTime = new Date(remote.updated_at || remote.created_at || 0).getTime();
+          if (localTime >= remoteTime) {
+            mergedMap.set(l.id, l);
+          }
+        }
+      });
+      StorageService.setLineups(Array.from(mergedMap.values()));
       totalPulled += lineups.length;
     }
     if (!rehErr && Array.isArray(rehearsals)) {
@@ -227,7 +265,22 @@ export async function pullAllFromSupabase(): Promise<{ success: boolean; count: 
       totalPulled += tasks.length;
     }
     if (!annErr && Array.isArray(announcements)) {
-      StorageService.setAnnouncements(announcements);
+      const localAnn = StorageService.getAnnouncements();
+      const mergedAnnMap = new Map<string, Announcement>();
+      announcements.forEach(a => mergedAnnMap.set(a.id, a));
+      localAnn.forEach(a => {
+        const remote = mergedAnnMap.get(a.id);
+        if (!remote) {
+          mergedAnnMap.set(a.id, a);
+        } else {
+          const localTime = new Date(a.updated_at || a.created_at || 0).getTime();
+          const remoteTime = new Date(remote.updated_at || remote.created_at || 0).getTime();
+          if (localTime >= remoteTime) {
+            mergedAnnMap.set(a.id, a);
+          }
+        }
+      });
+      StorageService.setAnnouncements(Array.from(mergedAnnMap.values()));
       totalPulled += announcements.length;
     }
 
