@@ -43,6 +43,9 @@ const TABLE_COLUMNS: Record<string, string[]> = {
   ],
   push_subscriptions: [
     'id', 'user_id', 'endpoint', 'p256dh', 'auth', 'user_agent', 'platform', 'created_at', 'updated_at'
+  ],
+  push_preferences: [
+    'user_id', 'push_enabled', 'categories', 'updated_at'
   ]
 };
 

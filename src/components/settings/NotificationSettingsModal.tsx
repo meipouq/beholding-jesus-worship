@@ -21,6 +21,7 @@ import {
   getExistingSubscription,
   getStoredPushPreferences,
   saveStoredPushPreferences,
+  syncPushPreferencesToSupabase,
   PushCategoryPreferences,
   IOSSupportStatus
 } from '../../services/pushNotifications';
@@ -78,6 +79,7 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
       if (res.success) {
         setIsSubscribed(true);
         setPermissionState('granted');
+        await syncPushPreferencesToSupabase(currentUser.id, preferences, true);
         setFeedback({
           type: 'success',
           text: 'Push notifications successfully activated on this device!',
@@ -104,6 +106,7 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
     try {
       await unsubscribeUserFromPush(currentUser.id);
       setIsSubscribed(false);
+      await syncPushPreferencesToSupabase(currentUser.id, preferences, false);
       setFeedback({
         type: 'info',
         text: 'Push notifications have been disabled for this device.',
@@ -122,6 +125,7 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
     const updated = { ...preferences, [key]: !preferences[key] };
     setPreferences(updated);
     saveStoredPushPreferences(updated);
+    syncPushPreferencesToSupabase(currentUser.id, updated, isSubscribed);
   };
 
   return (

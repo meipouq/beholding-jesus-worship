@@ -1,6 +1,7 @@
 -- =========================================================================
 -- BEHOLDING JESUS WORSHIP TEAM — WEB PUSH NOTIFICATIONS & DEDUPLICATION SCHEMA
--- Migrations for push subscriptions, atomic deduplication, and durable rate limiting
+-- Migrations for push subscriptions, atomic deduplication, durable rate limiting,
+-- and user notification preferences with strict Row Level Security.
 -- =========================================================================
 
 -- Enable uuid extension if not present
@@ -77,8 +78,8 @@ create table if not exists public.notifications_sent (
 -- Only the service_role key has access to insert/select/delete deduplication records.
 alter table public.notifications_sent enable row level security;
 
--- Revoke all direct permissions from public/anon/authenticated roles
-revoke all on public.notifications_sent from anon, authenticated;
+-- Explicitly revoke all direct permissions from public/anon/authenticated roles
+revoke all on public.notifications_sent from public, anon, authenticated;
 
 
 -- 3. PUSH_RATE_LIMITS (DURABLE ATOMIC RATE LIMITING TABLE)
@@ -92,10 +93,46 @@ create table if not exists public.push_rate_limits (
 
 -- Enable RLS: Strictly server-side / service_role only.
 alter table public.push_rate_limits enable row level security;
-revoke all on public.push_rate_limits from anon, authenticated;
+revoke all on public.push_rate_limits from public, anon, authenticated;
 
 
--- 4. ATOMIC RATE LIMIT & DEDUPLICATION STORED PROCEDURE
+-- 4. PUSH_PREFERENCES (USER NOTIFICATION PREFERENCES)
+-- Stores opt-in status and category subscriptions per team member
+create table if not exists public.push_preferences (
+  user_id text primary key,
+  push_enabled boolean default true not null,
+  categories jsonb default '{"lineup":true,"assignment":true,"rehearsal":true,"announcement":true,"reminder":true}'::jsonb not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+alter table public.push_preferences enable row level security;
+
+-- Members can view and manage their own preferences
+drop policy if exists "push_prefs_select_own" on public.push_preferences;
+create policy "push_prefs_select_own" on public.push_preferences
+  for select
+  using (
+    auth.uid()::text = user_id
+    or current_setting('request.jwt.claim.sub', true) = user_id
+    or user_id = current_user
+  );
+
+drop policy if exists "push_prefs_upsert_own" on public.push_preferences;
+create policy "push_prefs_upsert_own" on public.push_preferences
+  for all
+  using (
+    auth.uid()::text = user_id
+    or current_setting('request.jwt.claim.sub', true) = user_id
+    or user_id = current_user
+  )
+  with check (
+    auth.uid()::text = user_id
+    or current_setting('request.jwt.claim.sub', true) = user_id
+    or user_id = current_user
+  );
+
+
+-- 5. ATOMIC RATE LIMIT & DEDUPLICATION STORED PROCEDURE
 -- Atomically checks duplicate status & rate limit under concurrency with row-level locks
 create or replace function public.check_and_record_push(
   p_user_id text,
@@ -120,28 +157,29 @@ begin
   end if;
 
   -- 2. Durable atomic rate limit check & increment with row locking (SELECT ... FOR UPDATE)
+  -- Ensure row exists atomically first to establish a lock target even for first-time callers
+  insert into public.push_rate_limits (user_id, window_start, count, updated_at)
+  values (p_user_id, v_now, 0, v_now)
+  on conflict (user_id) do nothing;
+
+  -- Acquire exclusive row lock for user
   select window_start, count into v_window_start, v_count
   from public.push_rate_limits
   where user_id = p_user_id
   for update;
 
-  if not found then
-    insert into public.push_rate_limits (user_id, window_start, count, updated_at)
-    values (p_user_id, v_now, 1, v_now);
+  if (v_now - v_window_start) > interval '1 minute' then
+    update public.push_rate_limits
+    set window_start = v_now, count = 1, updated_at = v_now
+    where user_id = p_user_id;
   else
-    if (v_now - v_window_start) > interval '1 minute' then
-      update public.push_rate_limits
-      set window_start = v_now, count = 1, updated_at = v_now
-      where user_id = p_user_id;
-    else
-      if v_count >= p_max_per_minute then
-        return query select false, 'rate_limited';
-        return;
-      end if;
-      update public.push_rate_limits
-      set count = v_count + 1, updated_at = v_now
-      where user_id = p_user_id;
+    if v_count >= p_max_per_minute then
+      return query select false, 'rate_limited';
+      return;
     end if;
+    update public.push_rate_limits
+    set count = v_count + 1, updated_at = v_now
+    where user_id = p_user_id;
   end if;
 
   -- 3. Record notification as sent atomically
@@ -156,3 +194,9 @@ begin
   return query select true, 'ok';
 end;
 $$;
+
+-- Explicitly revoke execution on check_and_record_push from PUBLIC, anon, and authenticated
+revoke all on function public.check_and_record_push(text, text, text, int) from public, anon, authenticated;
+
+-- Grant execution strictly to the trusted server-side role (service_role)
+grant execute on function public.check_and_record_push(text, text, text, int) to service_role;

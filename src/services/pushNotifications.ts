@@ -277,3 +277,25 @@ export function saveStoredPushPreferences(prefs: PushCategoryPreferences): void 
     // ignore
   }
 }
+
+export async function syncPushPreferencesToSupabase(
+  userId: string,
+  prefs: PushCategoryPreferences,
+  pushEnabled: boolean = true
+): Promise<void> {
+  const supabase = getSupabase();
+  if (!supabase || !userId) return;
+  try {
+    await supabase.from('push_preferences').upsert(
+      {
+        user_id: userId,
+        push_enabled: pushEnabled,
+        categories: prefs,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'user_id' }
+    );
+  } catch (err) {
+    console.warn('Failed to sync push preferences to Supabase:', err);
+  }
+}
