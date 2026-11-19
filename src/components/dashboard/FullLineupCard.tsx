@@ -92,12 +92,50 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
   );
 
   const shouldRenderCountdown = showCountdown ?? (cardPosition !== 'secondary');
+  const isFeatured = cardPosition === 'primary';
 
   return (
-    <div className="bg-[#211C17] rounded-3xl p-5 sm:p-7 border border-[#393027] shadow-[0_8px_32px_rgba(0,0,0,0.6)] text-[#FFF5E6] space-y-5 transition-all">
-      {/* =========================================================================
-          1. HEADER SECTION: Status, Title, Date, Share
-         ========================================================================= */}
+    <div className="relative group/featured">
+      {/* Outer subtle champagne-gold ambient glow behind the first card corners */}
+      {isFeatured && (
+        <div
+          aria-hidden="true"
+          className="absolute -inset-1 sm:-inset-1.5 rounded-[30px] bg-gradient-to-b from-[#E5AF45]/22 via-[#E5AF45]/8 to-transparent blur-xl pointer-events-none select-none opacity-85 transition-opacity duration-300"
+        />
+      )}
+
+      {/* Main Card */}
+      <div
+        className={`relative rounded-3xl p-5 sm:p-7 text-[#FFF5E6] space-y-5 transition-all overflow-hidden ${
+          isFeatured
+            ? 'bg-gradient-to-b from-[#251F19] via-[#211C17] to-[#1E1914] border border-[#E5AF45]/40 hover:border-[#E5AF45]/60 shadow-[0_0_30px_rgba(229,175,69,0.15),0_12px_40px_rgba(0,0,0,0.65)]'
+            : 'bg-[#211C17] border border-[#393027] shadow-[0_8px_32px_rgba(0,0,0,0.6)]'
+        }`}
+      >
+        {/* Subtle Gold Corner Glow Highlights (Top-Left and Top-Right Corners) */}
+        {isFeatured && (
+          <>
+            {/* Top-Left Corner Radial Glow */}
+            <div
+              aria-hidden="true"
+              className="absolute -top-10 -left-10 w-48 h-48 rounded-full pointer-events-none select-none bg-[radial-gradient(circle,rgba(229,175,69,0.22)_0%,rgba(255,200,92,0.1)_35%,transparent_70%)] blur-2xl"
+            />
+            {/* Top-Right Corner Radial Glow */}
+            <div
+              aria-hidden="true"
+              className="absolute -top-10 -right-10 w-48 h-48 rounded-full pointer-events-none select-none bg-[radial-gradient(circle,rgba(229,175,69,0.22)_0%,rgba(255,200,92,0.1)_35%,transparent_70%)] blur-2xl"
+            />
+            {/* Top Edge Champagne Gold Sheen */}
+            <div
+              aria-hidden="true"
+              className="absolute top-0 inset-x-8 h-[1.5px] bg-gradient-to-r from-transparent via-[#FFC85C]/60 to-transparent pointer-events-none select-none"
+            />
+          </>
+        )}
+
+        {/* =========================================================================
+            1. HEADER SECTION: Status, Title, Date, Share
+           ========================================================================= */}
       <div>
         {/* Top Micro Label & Share Button */}
         <div className="flex items-center justify-between">
@@ -312,5 +350,6 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
         </button>
       </div>
     </div>
+  </div>
   );
 };
