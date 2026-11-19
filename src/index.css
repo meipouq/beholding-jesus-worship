@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  img {
+    display: inline-block;
+  }
   body {
     background-color: #100E0B;
     color: #FFF5E6;

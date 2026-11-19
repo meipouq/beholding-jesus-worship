@@ -129,33 +129,58 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
     if (!cardRef.current) return null;
     const targetWidth = isLandscape ? 1040 : 640;
 
-    return await html2canvas(cardRef.current, {
-      scale: 2, // 2x gives crystal-clear 1280px / 2080px resolution
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: isDark ? '#100E0B' : '#FAF6F0',
-      logging: false,
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: targetWidth + 200,
-      windowHeight: cardRef.current.scrollHeight + 300,
-      onclone: (clonedDoc) => {
-        // Isolate cloned card from mobile viewport constraints and scroll offsets
-        const clonedCard = clonedDoc.querySelector('[data-export-card="true"]') as HTMLElement;
-        if (clonedCard && clonedCard.parentElement) {
-          clonedCard.parentElement.style.display = 'block';
-          clonedCard.parentElement.style.padding = '0';
-          clonedCard.parentElement.style.margin = '0';
-          clonedCard.parentElement.style.overflow = 'visible';
-          clonedCard.parentElement.scrollLeft = 0;
-          clonedCard.parentElement.scrollTop = 0;
-          clonedCard.style.margin = '0 auto';
-          clonedCard.style.position = 'relative';
-          clonedCard.style.left = '0';
-          clonedCard.style.top = '0';
-        }
+    // Ensure all web fonts are fully loaded
+    if (document.fonts && document.fonts.ready) {
+      try {
+        await document.fonts.ready;
+      } catch (fontErr) {
+        console.warn('Font readiness check skipped:', fontErr);
       }
-    });
+    }
+
+    // Fix Tailwind CSS Preflight (img { display: block }) which corrupts html2canvas FontMetrics baseline calculation
+    // and causes all rendered text to be pushed downward by 20-30px
+    const style = document.createElement('style');
+    style.id = 'html2canvas-fontmetrics-fix';
+    style.innerHTML = `img { display: inline-block !important; }`;
+    document.head.appendChild(style);
+
+    try {
+      return await html2canvas(cardRef.current, {
+        scale: 2, // 2x gives crystal-clear 1280px / 2080px resolution
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: isDark ? '#100E0B' : '#FAF6F0',
+        logging: false,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: targetWidth + 200,
+        windowHeight: cardRef.current.scrollHeight + 300,
+        onclone: (clonedDoc) => {
+          // Inject inline-block img rule in the cloned document as well
+          const cloneStyle = clonedDoc.createElement('style');
+          cloneStyle.innerHTML = `img { display: inline-block !important; }`;
+          clonedDoc.head.appendChild(cloneStyle);
+
+          // Isolate cloned card from mobile viewport constraints and scroll offsets
+          const clonedCard = clonedDoc.querySelector('[data-export-card="true"]') as HTMLElement;
+          if (clonedCard && clonedCard.parentElement) {
+            clonedCard.parentElement.style.display = 'block';
+            clonedCard.parentElement.style.padding = '0';
+            clonedCard.parentElement.style.margin = '0';
+            clonedCard.parentElement.style.overflow = 'visible';
+            clonedCard.parentElement.scrollLeft = 0;
+            clonedCard.parentElement.scrollTop = 0;
+            clonedCard.style.margin = '0 auto';
+            clonedCard.style.position = 'relative';
+            clonedCard.style.left = '0';
+            clonedCard.style.top = '0';
+          }
+        }
+      });
+    } finally {
+      style.remove();
+    }
   };
 
   // Download Photo
@@ -438,6 +463,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               maxWidth: isLandscape ? '1040px' : '640px',
               backgroundColor: isDark ? '#100E0B' : '#FAF6F0',
               color: isDark ? '#FFF5E6' : '#1C1917',
+              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
               border: isDark ? '1px solid #393027' : '1px solid #E6DFD3',
               borderRadius: '24px',
               padding: isLandscape ? '32px 36px' : '32px 32px',
