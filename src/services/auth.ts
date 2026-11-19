@@ -163,36 +163,42 @@ export class AuthService {
     };
 
     const client = getSupabase();
-    if (client) {
-      try {
-        // 1. Save to church_members_auth table
-        const { error: authErr } = await client.from('church_members_auth').insert({
-          id: userId,
-          username,
-          name: fullName,
-          email: `${username}@beholdingjesus.org`,
-          role: 'ministry_member',
-          role_title: newMember.role_title,
-          avatar: newMember.avatar,
-          bio: `Worship team servant (${newMember.vocal_range} • ${newMember.instrument}).`,
-          salt,
-          password_hash: passwordHash,
-          failed_attempts: 0,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        });
+    if (!client) {
+      return { success: false, error: 'Database is currently offline. Please check your network connection.' };
+    }
 
-        if (authErr) {
-          console.error('Supabase auth insert error:', authErr);
-          return { success: false, error: authErr.message || 'Failed to create cloud user account.' };
-        }
+    try {
+      // 1. Save to church_members_auth table
+      const { error: authErr } = await client.from('church_members_auth').insert({
+        id: userId,
+        username,
+        name: fullName,
+        email: `${username}@beholdingjesus.org`,
+        role: 'ministry_member',
+        role_title: newMember.role_title,
+        avatar: newMember.avatar,
+        bio: `Worship team servant (${newMember.vocal_range} • ${newMember.instrument}).`,
+        salt,
+        password_hash: passwordHash,
+        failed_attempts: 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      });
 
-        // 2. Also save to team_members table so member can be assigned to sets
-        const sanitizedMember = sanitizeRecordForSupabase('team_members', newMember);
-        await client.from('team_members').upsert([sanitizedMember]);
-      } catch (err: any) {
-        console.error('Registration cloud sync failed:', err);
+      if (authErr) {
+        console.error('Supabase auth insert error:', authErr);
+        return { success: false, error: authErr.message || 'Failed to create cloud user account.' };
       }
+
+      // 2. Also save to team_members table so member can be assigned to sets
+      const sanitizedMember = sanitizeRecordForSupabase('team_members', newMember);
+      const { error: teamErr } = await client.from('team_members').upsert([sanitizedMember]);
+      if (teamErr) {
+        console.warn('Team member sync warning:', teamErr);
+      }
+    } catch (err: any) {
+      console.error('Registration cloud sync failed:', err);
+      return { success: false, error: err.message || 'Failed to connect to database for registration.' };
     }
 
     // Save session locally

@@ -39,7 +39,7 @@ const STORAGE_KEYS = {
   SUPABASE_CONFIG: 'bjc_worship_supabase_config'
 };
 
-const CLEAN_SLATE_KEY = 'bjc_worship_clean_slate_v6';
+const CLEAN_SLATE_KEY = 'bjc_worship_clean_slate_v7';
 
 // Purge previously cached hardcoded members, tasks, announcements, messages, songs, lineups on first run
 function initializeCleanSlate(): void {
@@ -54,7 +54,11 @@ function initializeCleanSlate(): void {
         localStorage.removeItem(STORAGE_KEYS.ANNOUNCEMENTS);
         localStorage.removeItem(STORAGE_KEYS.ACTIVITIES);
         localStorage.removeItem(STORAGE_KEYS.NOTIFICATIONS);
-        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+        // Clear any old/broken Supabase config
+        const oldCfg = localStorage.getItem(STORAGE_KEYS.SUPABASE_CONFIG);
+        if (oldCfg && (oldCfg.includes('rhdonxpn') || oldCfg.includes('rpeevqhw') || oldCfg.includes('ttps://'))) {
+          localStorage.removeItem(STORAGE_KEYS.SUPABASE_CONFIG);
+        }
         localStorage.setItem(CLEAN_SLATE_KEY, 'true');
       }
     }
@@ -379,13 +383,28 @@ export const StorageService = {
 
   // Supabase Configuration
   getSupabaseConfig(): { url: string; key: string } {
-    const envUrl = (import.meta as any).env?.VITE_SUPABASE_URL || '';
-    const envKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
+    const rawEnvUrl = ((import.meta as any).env?.VITE_SUPABASE_URL || '').trim();
+    const rawEnvKey = ((import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '').trim();
     const stored = getItem(STORAGE_KEYS.SUPABASE_CONFIG, { url: '', key: '' });
-    return {
-      url: stored.url || envUrl || 'https://qemwqoamnvswfffzxqkv.supabase.co',
-      key: stored.key || envKey || 'sb_publishable_Tv9Zb_xjkXsGN3bvQ-Z9NA_5VAJvGUs'
-    };
+
+    let url = (stored.url || rawEnvUrl || 'https://qemwqoamnvswfffzxqkv.supabase.co').trim();
+    let key = (stored.key || rawEnvKey || 'sb_publishable_Tv9Zb_xjkXsGN3bvQ-Z9NA_5VAJvGUs').trim();
+
+    // Auto-fix if old database or dead Tokyo URL was stored
+    if (url.includes('rhdonxpn') || url.includes('rpeevqhw')) {
+      url = 'https://qemwqoamnvswfffzxqkv.supabase.co';
+      key = 'sb_publishable_Tv9Zb_xjkXsGN3bvQ-Z9NA_5VAJvGUs';
+      setItem(STORAGE_KEYS.SUPABASE_CONFIG, { url, key });
+    }
+
+    // Auto-fix missing protocol or typo like 'ttps://'
+    if (url.startsWith('ttps://')) {
+      url = 'h' + url;
+    } else if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://' + url;
+    }
+
+    return { url, key };
   },
 
   saveSupabaseConfig(config: { url: string; key: string }): void {

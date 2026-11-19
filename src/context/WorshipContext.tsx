@@ -264,6 +264,14 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
       StorageService.setCurrentUser(res.user);
       logActivity('logged in as author', `@${res.user.username}`);
       confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+      pullAllFromSupabase().then(() => {
+        setMembers(StorageService.getMembers());
+        setSongs(StorageService.getSongs());
+        setLineups(StorageService.getLineups());
+        setRehearsals(StorageService.getRehearsals());
+        setTasks(StorageService.getTasks());
+        setAnnouncements(StorageService.getAnnouncements());
+      }).catch(console.warn);
     }
     return res;
   };
@@ -284,6 +292,14 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
       setMembers(StorageService.saveMember(res.user));
       logActivity('registered new worship member', `@${res.user.username}`);
       confetti({ particleCount: 80, spread: 80, origin: { y: 0.5 } });
+      pullAllFromSupabase().then(() => {
+        setMembers(StorageService.getMembers());
+        setSongs(StorageService.getSongs());
+        setLineups(StorageService.getLineups());
+        setRehearsals(StorageService.getRehearsals());
+        setTasks(StorageService.getTasks());
+        setAnnouncements(StorageService.getAnnouncements());
+      }).catch(console.warn);
     }
     return res;
   };

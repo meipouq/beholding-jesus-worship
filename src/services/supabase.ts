@@ -3,6 +3,8 @@ import { StorageService } from './storage';
 import { ServiceLineup, Announcement } from '../types';
 
 let supabaseClient: SupabaseClient | null = null;
+let currentSupabaseUrl = '';
+let currentSupabaseKey = '';
 
 // Exact whitelisted columns for each Supabase table to prevent PGRST204 schema cache errors
 const TABLE_COLUMNS: Record<string, string[]> = {
@@ -111,7 +113,7 @@ export function getSupabase(): SupabaseClient | null {
     return null;
   }
   
-  if (!supabaseClient) {
+  if (!supabaseClient || currentSupabaseUrl !== config.url || currentSupabaseKey !== config.key) {
     try {
       supabaseClient = createClient(config.url, config.key, {
         auth: {
@@ -119,6 +121,8 @@ export function getSupabase(): SupabaseClient | null {
           autoRefreshToken: true,
         }
       });
+      currentSupabaseUrl = config.url;
+      currentSupabaseKey = config.key;
     } catch (err) {
       console.error('Failed to initialize Supabase client:', err);
       return null;
