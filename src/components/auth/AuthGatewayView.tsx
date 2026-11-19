@@ -400,37 +400,6 @@ export const AuthGatewayView: React.FC = () => {
                   )}
                 </button>
               </form>
-
-              {/* Quick Sign-In Pills */}
-              {availableMembers.length > 0 && (
-                <div className="mt-5 pt-4 border-t border-[#393027]">
-                  <p className="text-[11px] font-bold text-[#B8ADA0] mb-2">
-                    Quick Sign-In as Registered Member:
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {availableMembers.slice(0, 4).map((m) => (
-                      <button
-                        key={m.id}
-                        type="button"
-                        onClick={() => {
-                          setLoginUsername(m.username || m.name.toLowerCase().replace(/\s+/g, ''));
-                          setLoginPassword('Member2026!');
-                        }}
-                        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#211C17] hover:bg-[#29231C] border border-[#393027] hover:border-[#E5AF45]/50 text-xs font-semibold text-[#FFF5E6] transition-all hover:scale-105 active:scale-95 shadow-sm cursor-pointer"
-                      >
-                        <div className="w-5 h-5 rounded-full overflow-hidden border border-[#E5AF45]/40 bg-[#100E0B] flex items-center justify-center text-[9px] font-bold text-[#E5AF45]">
-                          {m.avatar && m.avatar.includes('/') ? (
-                            <img src={m.avatar} alt={m.name} className="w-full h-full object-cover" />
-                          ) : (
-                            <span>{m.avatar || m.name.slice(0, 1)}</span>
-                          )}
-                        </div>
-                        <span>{m.name.split(' ')[0]}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Bottom Switch Link */}
