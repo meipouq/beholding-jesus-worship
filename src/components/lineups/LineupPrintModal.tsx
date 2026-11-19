@@ -13,30 +13,30 @@ export const LineupPrintModal: React.FC<LineupPrintModalProps> = ({ lineup, onCl
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-2 sm:p-5 animate-fade-in no-print"
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-5 animate-fade-in no-print"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl max-w-3xl w-full h-[92vh] flex flex-col shadow-modal border border-stone-200 animate-slide-up overflow-hidden"
+        className="bg-[#1F1F21] rounded-3xl max-w-3xl w-full h-[92vh] flex flex-col shadow-2xl border border-[#35312B] animate-slide-up overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar (Hidden when printing) */}
-        <div className="p-4 border-b border-stone-200 bg-[#FAF6F0] flex items-center justify-between no-print">
+        <div className="p-4 border-b border-[#35312B] bg-[#161616] flex items-center justify-between no-print">
           <div>
-            <h2 className="text-base font-bold text-stone-900">Printable Worship Setlist</h2>
-            <p className="text-xs text-stone-500">Formatted for music stands & sound booth</p>
+            <h2 className="text-base font-bold text-[#F5F0E6]">Printable Worship Setlist</h2>
+            <p className="text-xs text-[#AAA5A0]">Formatted for music stands & sound booth</p>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => window.print()}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold transition-all shadow-xs"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold transition-all shadow-sm"
             >
               <Printer className="w-3.5 h-3.5" />
               <span>Print Setlist</span>
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-stone-400 hover:text-stone-700 hover:bg-stone-200/60"
+              className="p-2 rounded-xl text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
             >
               <X className="w-5 h-5" />
             </button>
@@ -44,7 +44,7 @@ export const LineupPrintModal: React.FC<LineupPrintModalProps> = ({ lineup, onCl
         </div>
 
         {/* Printable Paper Document */}
-        <div className="p-8 sm:p-10 overflow-y-auto flex-1 font-serif text-black print:p-0 print:m-0">
+        <div className="p-8 sm:p-10 overflow-y-auto flex-1 font-serif text-black bg-white print:p-0 print:m-0">
           {/* Header */}
           <div className="text-center border-b-2 border-black pb-4 mb-6">
             <h1 className="text-2xl font-black uppercase tracking-widest font-sans">

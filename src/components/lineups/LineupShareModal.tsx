@@ -230,24 +230,24 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 animate-fade-in overflow-y-auto"
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-fade-in overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl max-w-6xl w-full max-h-[94vh] flex flex-col shadow-modal border border-stone-200 animate-slide-up overflow-hidden my-auto"
+        className="bg-[#1F1F21] rounded-3xl max-w-6xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-[#35312B] animate-slide-up overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar */}
-        <div className="p-3.5 sm:p-5 border-b border-stone-200 bg-[#FAF6F0] flex flex-wrap items-center justify-between gap-3">
+        <div className="p-3.5 sm:p-5 border-b border-[#35312B] bg-[#161616] flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#1E1D1B] text-white flex items-center justify-center shadow-2xs shrink-0">
-              <Share2 className="w-5 h-5 text-amber-200" />
+            <div className="w-10 h-10 rounded-2xl bg-[#262626] border border-[#35312B] text-[#D9A441] flex items-center justify-center shadow-sm shrink-0">
+              <Share2 className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-stone-900 leading-tight">
+              <h2 className="text-base sm:text-lg font-bold text-[#F5F0E6] leading-tight">
                 Share Lineup & Save as Photo
               </h2>
-              <p className="text-xs text-stone-500 mt-0.5">
+              <p className="text-xs text-[#AAA5A0] mt-0.5">
                 Download a high-resolution landscape photo card or copy formatted text for Messenger
               </p>
             </div>
@@ -255,13 +255,13 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
 
           <div className="flex items-center gap-2 flex-wrap">
             {/* Orientation Toggle: Landscape / Portrait */}
-            <div className="flex items-center p-1 bg-stone-200/70 rounded-xl">
+            <div className="flex items-center p-1 bg-[#262626] border border-[#35312B] rounded-xl">
               <button
                 onClick={() => setOrientation('landscape')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   isLandscape
-                    ? 'bg-[#1E1D1B] text-white shadow-2xs'
-                    : 'text-stone-600 hover:text-stone-900'
+                    ? 'bg-[#D9A441] text-[#101010] shadow-sm'
+                    : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
                 }`}
                 title="Landscape (Recommended for presentation & widescreen)"
               >
@@ -274,8 +274,8 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                 onClick={() => setOrientation('portrait')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   !isLandscape
-                    ? 'bg-[#1E1D1B] text-white shadow-2xs'
-                    : 'text-stone-600 hover:text-stone-900'
+                    ? 'bg-[#D9A441] text-[#101010] shadow-sm'
+                    : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
                 }`}
                 title="Portrait (Mobile story format)"
               >
@@ -287,20 +287,20 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
             </div>
 
             {/* Theme Toggle */}
-            <div className="flex items-center p-1 bg-stone-200/70 rounded-xl">
+            <div className="flex items-center p-1 bg-[#262626] border border-[#35312B] rounded-xl">
               <button
                 onClick={() => setThemeMode('dark')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  isDark ? 'bg-[#1E1D1B] text-white shadow-2xs' : 'text-stone-600 hover:text-stone-900'
+                  isDark ? 'bg-[#D9A441] text-[#101010] shadow-sm' : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
                 }`}
-                title="Sleek Dark Theme"
+                title="Midnight Black Theme"
               >
-                Charcoal
+                Midnight
               </button>
               <button
                 onClick={() => setThemeMode('warm')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  !isDark ? 'bg-white text-stone-900 shadow-2xs' : 'text-stone-600 hover:text-stone-900'
+                  !isDark ? 'bg-[#D9A441] text-[#101010] shadow-sm' : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
                 }`}
                 title="Warm Beige Theme"
               >
@@ -310,7 +310,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-stone-400 hover:text-stone-700 hover:bg-stone-200/60"
+              className="p-2 rounded-xl text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
             >
               <X className="w-5 h-5" />
             </button>
@@ -318,18 +318,18 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
         </div>
 
         {/* Action Buttons Toolbar */}
-        <div className="p-3 sm:px-6 bg-[#F5EFE6] border-b border-stone-200/80 flex items-center justify-between flex-wrap gap-2">
+        <div className="p-3 sm:px-6 bg-[#161616] border-b border-[#35312B] flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-2 flex-wrap">
             {/* Download as Photo */}
             <button
               onClick={handleDownloadPhoto}
               disabled={isExporting}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold transition-all shadow-soft disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold transition-all shadow-sm disabled:opacity-50"
             >
               {isExporting ? (
-                <Loader2 className="w-4 h-4 animate-spin text-amber-300" />
+                <Loader2 className="w-4 h-4 animate-spin text-[#101010]" />
               ) : (
-                <Download className="w-4 h-4 text-amber-300" />
+                <Download className="w-4 h-4" />
               )}
               <span>Save as Photo ({isLandscape ? 'Landscape PNG' : 'Portrait PNG'})</span>
             </button>
@@ -338,16 +338,16 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
             <button
               onClick={handleCopyImage}
               disabled={isExporting}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-white hover:bg-stone-50 text-stone-800 text-xs font-bold border border-stone-300 shadow-2xs transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#262626] hover:bg-[#35312B] text-[#F5F0E6] text-xs font-bold border border-[#35312B] shadow-sm transition-all"
             >
               {copiedImage ? (
                 <>
-                  <Check className="w-4 h-4 text-emerald-600" />
-                  <span className="text-emerald-700">Image Copied!</span>
+                  <Check className="w-4 h-4 text-[#78B887]" />
+                  <span className="text-[#78B887]">Image Copied!</span>
                 </>
               ) : (
                 <>
-                  <ImageIcon className="w-4 h-4 text-stone-600" />
+                  <ImageIcon className="w-4 h-4 text-[#D9A441]" />
                   <span>Copy Photo</span>
                 </>
               )}
@@ -358,16 +358,16 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               <button
                 onClick={handleNativeShare}
                 disabled={isExporting}
-                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-white hover:bg-stone-50 text-stone-800 text-xs font-bold border border-stone-300 shadow-2xs transition-all"
+                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#262626] hover:bg-[#35312B] text-[#F5F0E6] text-xs font-bold border border-[#35312B] shadow-sm transition-all"
               >
                 {shareSuccess ? (
                   <>
-                    <Check className="w-4 h-4 text-emerald-600" />
-                    <span className="text-emerald-700">Shared!</span>
+                    <Check className="w-4 h-4 text-[#78B887]" />
+                    <span className="text-[#78B887]">Shared!</span>
                   </>
                 ) : (
                   <>
-                    <Share2 className="w-4 h-4 text-stone-600" />
+                    <Share2 className="w-4 h-4 text-[#D9A441]" />
                     <span>Share to Apps</span>
                   </>
                 )}
@@ -379,16 +379,16 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
             {/* Copy Messenger Text */}
             <button
               onClick={handleCopyText}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold border border-amber-300/80 shadow-2xs transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#262626] hover:bg-[#35312B] text-[#D9A441] text-xs font-bold border border-[#35312B] shadow-sm transition-all"
             >
               {copiedText ? (
                 <>
-                  <Check className="w-4 h-4 text-emerald-700" />
-                  <span className="text-emerald-900">Text Copied!</span>
+                  <Check className="w-4 h-4 text-[#78B887]" />
+                  <span className="text-[#78B887]">Text Copied!</span>
                 </>
               ) : (
                 <>
-                  <MessageCircle className="w-4 h-4 text-amber-800" />
+                  <MessageCircle className="w-4 h-4 text-[#D9A441]" />
                   <span>Copy for Messenger</span>
                 </>
               )}
@@ -397,29 +397,29 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
         </div>
 
         {/* Small Screen HD Hint */}
-        <div className="px-4 py-1.5 bg-[#EFE8DC] border-b border-stone-200 text-[11px] text-stone-600 font-semibold flex items-center justify-between">
+        <div className="px-4 py-1.5 bg-[#161616] border-b border-[#35312B] text-[11px] text-[#AAA5A0] font-semibold flex items-center justify-between">
           <span>↔️ Swipe horizontally to preview full card</span>
-          <span className="text-[10px] text-amber-900 font-bold bg-amber-100 px-2 py-0.5 rounded-md">
+          <span className="text-[10px] text-[#D9A441] font-bold bg-[#262626] border border-[#35312B] px-2 py-0.5 rounded-md">
             HD Output: {isLandscape ? '1040px Landscape' : '640px Portrait'}
           </span>
         </div>
 
         {/* Card Preview Container */}
-        <div className="flex-1 overflow-x-auto overflow-y-auto p-3 sm:p-6 md:p-8 bg-[#EBE4D8] flex justify-center items-start">
-          {/* THE EXPORTABLE GRAPHIC CARD - EXACT MATCH TO SUNDAY LINEUP CARD */}
+        <div className="flex-1 overflow-x-auto overflow-y-auto p-3 sm:p-6 md:p-8 bg-[#101010] flex justify-center items-start">
+          {/* THE EXPORTABLE GRAPHIC CARD */}
           <div
             ref={cardRef}
             style={{
               width: isLandscape ? '1040px' : '640px',
               minWidth: isLandscape ? '1040px' : '640px',
               maxWidth: isLandscape ? '1040px' : '640px',
-              backgroundColor: isDark ? '#18181B' : '#FAF6F0',
-              color: isDark ? '#FFFFFF' : '#1C1917',
-              border: isDark ? '1px solid #27272A' : '1px solid #E6DFD3',
+              backgroundColor: isDark ? '#101010' : '#FAF6F0',
+              color: isDark ? '#F5F0E6' : '#1C1917',
+              border: isDark ? '1px solid #35312B' : '1px solid #E6DFD3',
               borderRadius: '24px',
               padding: isLandscape ? '32px 36px' : '32px 32px',
               boxShadow: isDark
-                ? '0 25px 50px -12px rgba(0, 0, 0, 0.55)'
+                ? '0 25px 50px -12px rgba(0, 0, 0, 0.7)'
                 : '0 20px 40px -10px rgba(120, 53, 15, 0.08)',
               boxSizing: 'border-box'
             }}

@@ -72,23 +72,23 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in"
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-modal border border-stone-200 animate-slide-up max-h-[90vh] overflow-y-auto"
+        className="bg-[#1F1F21] rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-[#35312B] animate-slide-up max-h-[90vh] overflow-y-auto text-[#F5F0E6]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between pb-4 border-b border-stone-100">
+        <div className="flex items-center justify-between pb-4 border-b border-[#35312B]">
           <div className="flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-amber-800" />
-            <h2 className="text-base font-bold text-stone-900">
+            <Calendar className="w-5 h-5 text-[#D9A441]" />
+            <h2 className="text-base font-bold text-[#F5F0E6]">
               {rehearsal ? 'Edit Schedule / Rehearsal' : 'Schedule Rehearsal or Service'}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100"
+            className="p-1 rounded-full text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -97,7 +97,7 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
         <form onSubmit={handleSubmit} className="mt-4 space-y-3.5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                 Event Title *
               </label>
               <input
@@ -106,31 +106,31 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Worship Rehearsal"
-                className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400 font-semibold"
+                className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:outline-none focus:border-[#D9A441] font-semibold"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                 Event Type
               </label>
               <select
                 value={type}
                 onChange={(e) => setType(e.target.value as any)}
-                className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400 bg-white font-medium"
+                className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:outline-none focus:border-[#D9A441] font-medium"
               >
-                <option value="Worship Rehearsal">Worship Rehearsal</option>
-                <option value="Sunday Service">Sunday Service</option>
-                <option value="Soundcheck">Soundcheck</option>
-                <option value="Team Meeting">Team Meeting</option>
-                <option value="Special Event">Special Event</option>
+                <option value="Worship Rehearsal" className="bg-[#1F1F21] text-[#F5F0E6]">Worship Rehearsal</option>
+                <option value="Sunday Service" className="bg-[#1F1F21] text-[#F5F0E6]">Sunday Service</option>
+                <option value="Soundcheck" className="bg-[#1F1F21] text-[#F5F0E6]">Soundcheck</option>
+                <option value="Team Meeting" className="bg-[#1F1F21] text-[#F5F0E6]">Team Meeting</option>
+                <option value="Special Event" className="bg-[#1F1F21] text-[#F5F0E6]">Special Event</option>
               </select>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                 Date *
               </label>
               <input
@@ -138,12 +138,12 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
                 required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400 font-medium"
+                className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:outline-none focus:border-[#D9A441] font-medium"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                 Start Time
               </label>
               <input
@@ -151,12 +151,12 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
                 placeholder="4:00 PM"
-                className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                 End Time
               </label>
               <input
@@ -164,13 +164,13 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
                 placeholder="6:00 PM"
-                className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+            <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
               Venue / Location
             </label>
             <input
@@ -178,22 +178,22 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
               value={venue}
               onChange={(e) => setVenue(e.target.value)}
               placeholder="e.g. Main Sanctuary"
-              className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400"
+              className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
             />
           </div>
 
           <div>
-            <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+            <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
               Link to Service Lineup (Optional)
             </label>
             <select
               value={lineupId}
               onChange={(e) => setLineupId(e.target.value)}
-              className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400 bg-white"
+              className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:outline-none focus:border-[#D9A441]"
             >
-              <option value="">None / General Rehearsal</option>
+              <option value="" className="bg-[#1F1F21] text-[#AAA5A0]">None / General Rehearsal</option>
               {lineups.map(l => (
-                <option key={l.id} value={l.id}>
+                <option key={l.id} value={l.id} className="bg-[#1F1F21] text-[#F5F0E6]">
                   {l.title} ({l.service_date})
                 </option>
               ))}
@@ -201,7 +201,7 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
           </div>
 
           <div>
-            <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1.5">
+            <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1.5">
               Assigned Team Participants
             </label>
             <div className="flex items-center gap-2 flex-wrap">
@@ -214,8 +214,8 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
                     onClick={() => toggleParticipant(m.id)}
                     className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
                       isSelected
-                        ? 'bg-[#1E1D1B] text-white shadow-2xs'
-                        : 'bg-[#F2ECE1] text-stone-700 hover:bg-stone-200'
+                        ? 'bg-[#D9A441] text-[#101010] shadow-sm'
+                        : 'bg-[#161616] text-[#AAA5A0] border border-[#35312B] hover:bg-[#262626] hover:text-[#F5F0E6]'
                     }`}
                   >
                     {m.name.split(' ')[0]} ({m.vocal_range})
@@ -226,7 +226,7 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
           </div>
 
           <div>
-            <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+            <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
               Preparation Notes / What to Bring
             </label>
             <textarea
@@ -234,21 +234,21 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
               value={prepNotes}
               onChange={(e) => setPrepNotes(e.target.value)}
               placeholder="e.g. Bring in-ear earphones, review chords for song 2 & 3"
-              className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400"
+              className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
             />
           </div>
 
-          <div className="pt-3 border-t border-stone-100 flex items-center justify-end gap-2">
+          <div className="pt-3 border-t border-[#35312B] flex items-center justify-end gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-2xl text-xs font-semibold text-stone-600 hover:bg-stone-100"
+              className="px-4 py-2.5 rounded-2xl text-xs font-semibold text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-2xl text-xs font-bold bg-[#1E1D1B] hover:bg-stone-800 text-white transition-colors"
+              className="px-5 py-2.5 rounded-2xl text-xs font-bold bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] transition-colors shadow-sm"
             >
               {rehearsal ? 'Save Changes' : 'Schedule Event'}
             </button>

@@ -50,30 +50,30 @@ export const AnnouncementModal: React.FC<AnnouncementModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 animate-fade-in"
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-fade-in"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-modal border border-stone-200 animate-slide-up max-h-[92vh] overflow-y-auto"
+        className="bg-[#1F1F21] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-[#35312B] animate-slide-up max-h-[92vh] overflow-y-auto text-[#F5F0E6]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between pb-3.5 border-b border-stone-100">
+        <div className="flex items-center justify-between pb-3.5 border-b border-[#35312B]">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-2xl bg-[#1E1D1B] text-white flex items-center justify-center shadow-2xs">
-              <Megaphone className="w-4.5 h-4.5 text-amber-300" />
+            <div className="w-9 h-9 rounded-2xl bg-[#161616] border border-[#35312B] text-[#D9A441] flex items-center justify-center shadow-sm">
+              <Megaphone className="w-4.5 h-4.5" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-stone-900 leading-tight">
+              <h2 className="text-base sm:text-lg font-bold text-[#F5F0E6] leading-tight">
                 {announcement ? 'Edit Announcement' : 'Create New Announcement'}
               </h2>
-              <p className="text-[11px] text-stone-500 font-medium">
+              <p className="text-[11px] text-[#AAA5A0] font-medium">
                 Author: {currentUser.name}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors"
+            className="p-1 rounded-full text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -82,7 +82,7 @@ export const AnnouncementModal: React.FC<AnnouncementModalProps> = ({
         <form onSubmit={handleSubmit} className="mt-4 space-y-3.5">
           {/* Title */}
           <div>
-            <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+            <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
               Announcement Title *
             </label>
             <input
@@ -91,13 +91,13 @@ export const AnnouncementModal: React.FC<AnnouncementModalProps> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Sunday Lineup Finalized & Call Time"
-              className="w-full text-xs p-3 rounded-2xl border border-stone-300 bg-[#FAF6F0] focus:bg-white focus:outline-none focus:ring-2 focus:ring-stone-400 font-semibold"
+              className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441] font-semibold"
             />
           </div>
 
           {/* Content / Description */}
           <div>
-            <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+            <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
               Message Description *
             </label>
             <textarea
@@ -106,28 +106,28 @@ export const AnnouncementModal: React.FC<AnnouncementModalProps> = ({
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Write the full announcement details for the worship ministry..."
-              className="w-full text-xs p-3 rounded-2xl border border-stone-300 bg-[#FAF6F0] focus:bg-white focus:outline-none focus:ring-2 focus:ring-stone-400 leading-relaxed"
+              className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441] leading-relaxed"
             />
           </div>
 
           {/* Date & Time (Optional) */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-stone-400" />
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1 flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5 text-[#D9A441]" />
                 <span>Event Date</span>
               </label>
               <input
                 type="date"
                 value={eventDate}
                 onChange={(e) => setEventDate(e.target.value)}
-                className="w-full text-xs p-2.5 rounded-2xl border border-stone-300 bg-[#FAF6F0] focus:bg-white focus:outline-none focus:ring-2 focus:ring-stone-400 font-medium"
+                className="w-full text-xs p-2.5 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:outline-none focus:border-[#D9A441] font-medium"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-stone-400" />
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1 flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5 text-[#D9A441]" />
                 <span>Event Time</span>
               </label>
               <input
@@ -135,24 +135,24 @@ export const AnnouncementModal: React.FC<AnnouncementModalProps> = ({
                 value={eventTime}
                 onChange={(e) => setEventTime(e.target.value)}
                 placeholder="e.g. 8:00 AM"
-                className="w-full text-xs p-2.5 rounded-2xl border border-stone-300 bg-[#FAF6F0] focus:bg-white focus:outline-none focus:ring-2 focus:ring-stone-400 font-medium"
+                className="w-full text-xs p-2.5 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441] font-medium"
               />
             </div>
           </div>
 
           {/* Publication Status Selector */}
           <div>
-            <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1.5">
+            <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1.5">
               Publication Status
             </label>
-            <div className="grid grid-cols-2 gap-2 bg-[#F0E9DC] p-1 rounded-2xl border border-[#E4DCD0]">
+            <div className="grid grid-cols-2 gap-2 bg-[#161616] p-1 rounded-2xl border border-[#35312B]">
               <button
                 type="button"
                 onClick={() => setStatus('published')}
                 className={`py-2 rounded-xl text-xs font-bold transition-all ${
                   status === 'published'
-                    ? 'bg-white text-emerald-800 shadow-soft'
-                    : 'text-stone-600 hover:text-stone-900'
+                    ? 'bg-[#262626] text-[#78B887] border border-[#78B887]/30 shadow-sm'
+                    : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
                 }`}
               >
                 ● Published
@@ -162,8 +162,8 @@ export const AnnouncementModal: React.FC<AnnouncementModalProps> = ({
                 onClick={() => setStatus('draft')}
                 className={`py-2 rounded-xl text-xs font-bold transition-all ${
                   status === 'draft'
-                    ? 'bg-white text-amber-900 shadow-soft'
-                    : 'text-stone-600 hover:text-stone-900'
+                    ? 'bg-[#262626] text-[#F5C15D] border border-amber-800/40 shadow-sm'
+                    : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
                 }`}
               >
                 Draft (Unpublished)
@@ -173,41 +173,41 @@ export const AnnouncementModal: React.FC<AnnouncementModalProps> = ({
 
           {/* Priority & Pin Options */}
           <div className="flex items-center gap-5 pt-1">
-            <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-stone-700">
+            <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-[#F5F0E6]">
               <input
                 type="checkbox"
                 checked={isPinned}
                 onChange={(e) => setIsPinned(e.target.checked)}
-                className="w-4 h-4 rounded text-amber-800 focus:ring-amber-500 cursor-pointer"
+                className="w-4 h-4 rounded text-[#D9A441] focus:ring-[#D9A441] cursor-pointer"
               />
-              <Pin className="w-3.5 h-3.5 text-amber-800" />
+              <Pin className="w-3.5 h-3.5 text-[#D9A441]" />
               <span>Pin to top</span>
             </label>
 
-            <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-stone-700">
+            <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-[#F5F0E6]">
               <input
                 type="checkbox"
                 checked={isImportant}
                 onChange={(e) => setIsImportant(e.target.checked)}
-                className="w-4 h-4 rounded text-red-600 focus:ring-red-500 cursor-pointer"
+                className="w-4 h-4 rounded text-[#E57373] focus:ring-[#E57373] cursor-pointer"
               />
-              <AlertCircle className="w-3.5 h-3.5 text-red-600" />
+              <AlertCircle className="w-3.5 h-3.5 text-[#E57373]" />
               <span>Important notice</span>
             </label>
           </div>
 
           {/* Modal Actions */}
-          <div className="pt-3 border-t border-stone-100 flex items-center justify-end gap-2.5">
+          <div className="pt-3 border-t border-[#35312B] flex items-center justify-end gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-2xl text-xs font-semibold text-stone-600 hover:bg-stone-100 transition-colors"
+              className="px-4 py-2.5 rounded-2xl text-xs font-semibold text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626] transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-2xl text-xs font-bold bg-[#1E1D1B] hover:bg-stone-800 text-white shadow-soft transition-all active:scale-95"
+              className="px-5 py-2.5 rounded-2xl text-xs font-bold bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] shadow-sm transition-all active:scale-95"
             >
               {announcement ? 'Save Changes' : status === 'published' ? 'Publish Announcement' : 'Save Draft'}
             </button>

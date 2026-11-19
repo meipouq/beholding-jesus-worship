@@ -39,13 +39,13 @@ export const VocalistsView: React.FC = () => {
   const getAvailabilityBadge = (status: TeamMember['availability']) => {
     switch (status) {
       case 'Available':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Available</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/40 text-[#78B887] border border-[#78B887]/30">Available</span>;
       case 'Rehearsal Only':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">Rehearsal Only</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-950/40 text-blue-400 border border-blue-800/40">Rehearsal Only</span>;
       case 'Traveling':
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">Traveling</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-950/40 text-[#F5C15D] border border-amber-800/40">Traveling</span>;
       default:
-        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-stone-100 text-stone-700 border border-stone-200">{status}</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#262626] text-[#AAA5A0] border border-[#35312B]">{status}</span>;
     }
   };
 
@@ -54,14 +54,14 @@ export const VocalistsView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2.5 rounded-2xl bg-[#1E1D1B] text-white shadow-2xs">
+          <div className="p-2.5 rounded-2xl bg-[#161616] border border-[#35312B] text-[#D9A441] shadow-sm">
             <Mic className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-stone-900 leading-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-[#F5F0E6] leading-tight">
               Vocalists & Vocal Keys
             </h1>
-            <p className="text-xs text-stone-500 mt-0.5">
+            <p className="text-xs text-[#AAA5A0] mt-0.5">
               Directory of team vocalists, individual vocal ranges, and custom song key mappings
             </p>
           </div>
@@ -69,7 +69,7 @@ export const VocalistsView: React.FC = () => {
 
         <button
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold shadow-soft transition-all shrink-0 self-start sm:self-auto"
+          className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold shadow-sm transition-all shrink-0 self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Add Vocalist</span>
@@ -77,15 +77,15 @@ export const VocalistsView: React.FC = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-4 rounded-3xl border border-[#E8E2D7] shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="bg-[#1F1F21] p-4 rounded-3xl border border-[#35312B] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search className="w-4 h-4 text-[#AAA5A0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search vocalists by name or role..."
-            className="w-full text-xs pl-10 pr-4 py-2.5 rounded-2xl border border-stone-200 bg-[#F8F5EE]/60 focus:bg-white focus:outline-none focus:ring-2 focus:ring-stone-400"
+            className="w-full text-xs pl-10 pr-4 py-2.5 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/60 focus:outline-none focus:border-[#D9A441]"
           />
         </div>
 
@@ -96,8 +96,8 @@ export const VocalistsView: React.FC = () => {
               onClick={() => setSelectedRange(range)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all ${
                 selectedRange === range
-                  ? 'bg-[#1E1D1B] text-white shadow-2xs'
-                  : 'bg-[#F2ECE1] text-stone-700 hover:bg-stone-200'
+                  ? 'bg-[#D9A441] text-[#101010] shadow-sm'
+                  : 'bg-[#161616] text-[#AAA5A0] border border-[#35312B] hover:bg-[#262626] hover:text-[#F5F0E6]'
               }`}
             >
               {range}
@@ -108,21 +108,21 @@ export const VocalistsView: React.FC = () => {
 
       {/* Vocalist Cards Grid */}
       {filtered.length === 0 ? (
-        <div className="bg-white rounded-3xl p-10 sm:p-14 text-center border border-[#E8E2D7] shadow-soft">
-          <div className="w-12 h-12 rounded-2xl bg-[#F8F5EE] border border-stone-200 text-stone-400 flex items-center justify-center mx-auto mb-3">
-            <Mic className="w-6 h-6 text-amber-800" />
+        <div className="bg-[#1F1F21] rounded-3xl p-10 sm:p-14 text-center border border-[#35312B] shadow-sm">
+          <div className="w-12 h-12 rounded-2xl bg-[#161616] border border-[#35312B] text-[#D9A441] flex items-center justify-center mx-auto mb-3">
+            <Mic className="w-6 h-6 text-[#D9A441]" />
           </div>
-          <h3 className="text-base font-bold text-stone-900">
+          <h3 className="text-base font-bold text-[#F5F0E6]">
             {vocalists.length === 0 ? 'No Vocalists in Directory Yet' : 'No Vocalists Match Filter'}
           </h3>
-          <p className="text-xs text-stone-500 mt-1 max-w-sm mx-auto">
+          <p className="text-xs text-[#AAA5A0] mt-1 max-w-sm mx-auto">
             {vocalists.length === 0
               ? 'Start building your team! Add yourself and worship vocalists with individual vocal ranges, contact details, and custom profile pictures.'
               : 'Try clearing your search query or choosing "ALL" ranges.'}
           </p>
           <button
             onClick={() => setIsAdding(true)}
-            className="mt-4 px-4 py-2.5 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs transition-colors"
+            className="mt-4 px-4 py-2.5 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold inline-flex items-center gap-1.5 shadow-sm transition-colors"
           >
             <Plus className="w-4 h-4" />
             <span>Add Vocalist</span>
@@ -137,13 +137,13 @@ export const VocalistsView: React.FC = () => {
             return (
               <div
                 key={vocalist.id}
-                className="bg-white rounded-3xl p-5 border border-[#E8E2D7] shadow-soft hover:shadow-card transition-all flex flex-col justify-between"
+                className="bg-[#1F1F21] rounded-3xl p-5 border border-[#35312B] hover:border-[#D9A441]/50 shadow-sm transition-all flex flex-col justify-between"
               >
                 <div>
                   {/* Card Top */}
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-12 h-12 rounded-2xl bg-[#1E1D1B] text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-2xs overflow-hidden">
+                      <div className="w-12 h-12 rounded-2xl bg-[#101010] text-[#D9A441] border border-[#D9A441]/40 flex items-center justify-center font-bold text-sm shrink-0 shadow-sm overflow-hidden">
                         {vocalist.avatar && vocalist.avatar.includes('/') ? (
                           <img
                             src={vocalist.avatar}
@@ -158,10 +158,10 @@ export const VocalistsView: React.FC = () => {
                         )}
                       </div>
                       <div className="min-w-0">
-                        <h3 className="text-sm font-bold text-stone-900 truncate">
+                        <h3 className="text-sm font-bold text-[#F5F0E6] truncate">
                           {vocalist.name}
                         </h3>
-                        <p className="text-xs text-stone-500 font-medium truncate">
+                        <p className="text-xs text-[#AAA5A0] font-medium truncate">
                           {vocalist.role_title}
                         </p>
                       </div>
@@ -170,7 +170,7 @@ export const VocalistsView: React.FC = () => {
                     <div className="flex items-center gap-1 shrink-0">
                       <button
                         onClick={() => setEditingVocalist(vocalist)}
-                        className="p-1.5 rounded-xl text-stone-400 hover:text-stone-700 hover:bg-stone-100"
+                        className="p-1.5 rounded-xl text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
                         title="Edit Profile"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
@@ -181,7 +181,7 @@ export const VocalistsView: React.FC = () => {
                             deleteMember(vocalist.id);
                           }
                         }}
-                        className="p-1.5 rounded-xl text-stone-400 hover:text-red-600 hover:bg-red-50"
+                        className="p-1.5 rounded-xl text-[#AAA5A0] hover:text-[#E57373] hover:bg-red-950/30"
                         title="Remove"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -191,7 +191,7 @@ export const VocalistsView: React.FC = () => {
 
                   {/* Range & Status Badges */}
                   <div className="flex items-center gap-2 mt-3 flex-wrap">
-                    <span className="px-2.5 py-0.5 rounded-lg bg-[#EFE8DC] text-stone-800 text-[10px] font-bold uppercase tracking-wider">
+                    <span className="px-2.5 py-0.5 rounded-lg bg-[#262626] text-[#D9A441] border border-[#35312B] text-[10px] font-bold uppercase tracking-wider">
                       {vocalist.vocal_range}
                     </span>
                     {getAvailabilityBadge(vocalist.availability)}
@@ -199,22 +199,22 @@ export const VocalistsView: React.FC = () => {
 
                   {/* Notes */}
                   {vocalist.notes && (
-                    <p className="text-[11px] text-stone-600 mt-2.5 bg-[#FAF6F0] p-2.5 rounded-xl border border-stone-200/60 leading-relaxed italic">
+                    <p className="text-[11px] text-[#AAA5A0] mt-2.5 bg-[#161616] p-2.5 rounded-xl border border-[#35312B] leading-relaxed italic">
                       "{vocalist.notes}"
                     </p>
                   )}
                 </div>
 
                 {/* Bottom Actions */}
-                <div className="pt-4 mt-4 border-t border-stone-100 flex items-center justify-between">
-                  <div className="text-[11px] text-stone-500 font-medium flex items-center gap-1">
-                    <Music2 className="w-3.5 h-3.5 text-amber-800" />
-                    <span><strong>{mappedSongsCount}</strong> custom keys</span>
+                <div className="pt-4 mt-4 border-t border-[#35312B] flex items-center justify-between">
+                  <div className="text-[11px] text-[#AAA5A0] font-medium flex items-center gap-1">
+                    <Music2 className="w-3.5 h-3.5 text-[#D9A441]" />
+                    <span><strong className="text-[#F5F0E6]">{mappedSongsCount}</strong> custom keys</span>
                   </div>
 
                   <button
                     onClick={() => setKeyMatrixVocalist(vocalist)}
-                    className="px-3.5 py-2 rounded-xl bg-[#FAF6F0] hover:bg-[#1E1D1B] text-stone-800 hover:text-white text-xs font-bold flex items-center gap-1.5 transition-all border border-[#E8E2D7]"
+                    className="px-3.5 py-2 rounded-xl bg-[#262626] hover:bg-[#D9A441] text-[#F5F0E6] hover:text-[#101010] text-xs font-bold flex items-center gap-1.5 transition-all border border-[#35312B]"
                   >
                     <Key className="w-3.5 h-3.5" />
                     <span>Manage Keys</span>

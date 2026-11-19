@@ -39,7 +39,7 @@ export const Sidebar: React.FC = () => {
     : 'BJ';
 
   return (
-    <aside className="w-64 bg-[#1E1D1B] text-stone-300 flex flex-col justify-between h-screen fixed left-0 top-0 z-30 select-none border-r border-[#2C2A26] no-print">
+    <aside className="w-64 bg-[#161616] text-[#AAA5A0] flex flex-col justify-between h-screen fixed left-0 top-0 z-30 select-none border-r border-[#35312B] no-print">
       {/* Top Header & Branding */}
       <div className="p-4 pb-2 overflow-y-auto">
         {/* macOS Window Controls */}
@@ -50,11 +50,11 @@ export const Sidebar: React.FC = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center text-center pb-4">
-          <Logo variant="light" size="lg" showText={false} className="mb-2" />
-          <h1 className="font-sans font-bold tracking-widest text-white text-[13.5px] uppercase leading-tight">
+          <Logo variant="dark" size="lg" showText={false} className="mb-2" />
+          <h1 className="font-sans font-extrabold tracking-widest text-[#F5F0E6] text-[13.5px] uppercase leading-tight">
             Beholding Jesus
           </h1>
-          <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-stone-400 mt-0.5 font-medium">
+          <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-[#D9A441] mt-0.5 font-bold">
             Worship Team
           </p>
         </div>
@@ -69,23 +69,23 @@ export const Sidebar: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => setActiveModule(item.id)}
-                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${
+                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 cursor-pointer ${
                   isActive
-                    ? 'bg-[#383531] text-white shadow-sm font-semibold'
-                    : 'text-[#9E9B95] hover:text-white hover:bg-[#252320]'
+                    ? 'bg-[#1F1F21] text-[#D9A441] border border-[#D9A441]/30 shadow-xs font-semibold'
+                    : 'text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <Icon
                     className={`w-4 h-4 transition-colors ${
-                      isActive ? 'text-white' : 'text-[#9E9B95]'
+                      isActive ? 'text-[#D9A441]' : 'text-[#AAA5A0]'
                     }`}
                   />
                   <span>{item.label}</span>
                 </div>
 
                 {item.badge && item.badge > 0 ? (
-                  <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-4 text-center">
+                  <span className="bg-[#E57373] text-[#101010] text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-4 text-center">
                     {item.badge}
                   </span>
                 ) : null}
@@ -96,15 +96,15 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Bottom User Account Card & Signature */}
-      <div className="p-4 pt-2 border-t border-[#2C2A26]/80 space-y-3">
+      <div className="p-4 pt-2 border-t border-[#35312B] space-y-3">
         {/* User Account Bar */}
         <button
           onClick={() => setIsAuthModalOpen(true)}
-          className="w-full text-left p-2.5 rounded-2xl bg-[#282622] hover:bg-[#34312C] border border-[#3C3832] transition-all group flex items-center justify-between gap-2.5"
+          className="w-full text-left p-2.5 rounded-2xl bg-[#1F1F21] hover:bg-[#262626] border border-[#35312B] hover:border-[#D9A441]/40 transition-all group flex items-center justify-between gap-2.5 cursor-pointer"
           title="Account Settings / Log In / Register"
         >
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-full bg-white text-[#1E1D1B] font-bold text-xs flex items-center justify-center shrink-0 overflow-hidden shadow-xs border border-white/20">
+            <div className="w-8 h-8 rounded-full bg-[#161616] text-[#F5F0E6] font-bold text-xs flex items-center justify-center shrink-0 overflow-hidden shadow-xs border border-[#35312B] ring-1 ring-[#D9A441]/30">
               <img
                 src={currentUser.avatar && currentUser.avatar.includes('/') ? currentUser.avatar : '/images/worship_team_profile.png'}
                 alt={currentUser.name}
@@ -116,18 +116,18 @@ export const Sidebar: React.FC = () => {
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1">
-                <span className="text-xs font-bold text-white truncate leading-tight">
+                <span className="text-xs font-bold text-[#F5F0E6] group-hover:text-[#F5C15D] transition-colors truncate leading-tight">
                   {currentUser.name}
                 </span>
               </div>
-              <p className="text-[10px] text-amber-300/80 truncate">
+              <p className="text-[10px] text-[#D9A441] font-semibold truncate">
                 {currentUser.username ? `@${currentUser.username}` : currentUser.role_title}
               </p>
             </div>
           </div>
 
-          <div className="p-1 rounded-lg bg-[#1E1D1B] text-stone-400 group-hover:text-white transition-colors shrink-0">
-            <UserCheck className="w-3.5 h-3.5 text-amber-400" />
+          <div className="p-1 rounded-lg bg-[#161616] border border-[#35312B] text-[#AAA5A0] group-hover:text-[#D9A441] transition-colors shrink-0">
+            <UserCheck className="w-3.5 h-3.5 text-[#D9A441]" />
           </div>
         </button>
 
@@ -142,7 +142,7 @@ export const Sidebar: React.FC = () => {
               const parent = (e.target as HTMLElement).parentElement;
               if (parent) {
                 const text = document.createElement('span');
-                text.className = 'font-cursive text-xl text-stone-400 italic tracking-wider';
+                text.className = 'font-cursive text-xl text-[#AAA5A0] italic tracking-wider';
                 text.innerText = 'For His Glory';
                 parent.appendChild(text);
               }

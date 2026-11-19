@@ -45,21 +45,21 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({ onCl
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in"
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl max-w-md w-full p-6 shadow-modal border border-stone-200 animate-slide-up"
+        className="bg-[#1F1F21] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#35312B] animate-slide-up text-[#F5F0E6]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between pb-4 border-b border-stone-100">
+        <div className="flex items-center justify-between pb-4 border-b border-[#35312B]">
           <div className="flex items-center gap-2">
-            <Tag className="w-5 h-5 text-amber-800" />
-            <h2 className="text-base font-bold text-stone-900">Manage Worship Categories</h2>
+            <Tag className="w-5 h-5 text-[#D9A441]" />
+            <h2 className="text-base font-bold text-[#F5F0E6]">Manage Worship Categories</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100"
+            className="p-1 rounded-full text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -73,11 +73,11 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({ onCl
             value={newCatName}
             onChange={(e) => setNewCatName(e.target.value)}
             placeholder="New Category (e.g. Call to Worship)"
-            className="flex-1 text-xs p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400"
+            className="flex-1 text-xs p-2.5 rounded-xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
           />
           <button
             type="submit"
-            className="px-4 py-2.5 rounded-xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold transition-colors shrink-0"
+            className="px-4 py-2.5 rounded-xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold transition-colors shrink-0 shadow-sm"
           >
             {editingCat ? 'Update' : 'Add'}
           </button>
@@ -88,7 +88,7 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({ onCl
                 setEditingCat(null);
                 setNewCatName('');
               }}
-              className="px-3 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-600 text-xs font-bold"
+              className="px-3 py-2.5 rounded-xl bg-[#262626] hover:bg-[#35312B] text-[#F5F0E6] text-xs font-bold"
             >
               Cancel
             </button>
@@ -100,20 +100,20 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({ onCl
           {categories.map((cat) => (
             <div
               key={cat.id}
-              className="flex items-center justify-between p-2.5 rounded-xl bg-[#FAF6F0] border border-stone-200/80 text-xs"
+              className="flex items-center justify-between p-2.5 rounded-xl bg-[#161616] border border-[#35312B] text-xs"
             >
-              <span className="font-semibold text-stone-800">{cat.name}</span>
+              <span className="font-semibold text-[#F5F0E6]">{cat.name}</span>
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => handleStartEdit(cat)}
-                  className="p-1 rounded text-stone-400 hover:text-stone-700 hover:bg-white"
+                  className="p-1 rounded text-[#AAA5A0] hover:text-[#D9A441] hover:bg-[#262626]"
                   title="Rename Category"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={() => handleDelete(cat.id, cat.name)}
-                  className="p-1 rounded text-stone-400 hover:text-red-600 hover:bg-white"
+                  className="p-1 rounded text-[#AAA5A0] hover:text-[#E57373] hover:bg-[#262626]"
                   title="Delete Category"
                 >
                   <Trash2 className="w-3.5 h-3.5" />

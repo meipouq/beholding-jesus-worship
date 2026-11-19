@@ -67,23 +67,23 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in"
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-modal border border-stone-200 animate-slide-up max-h-[90vh] overflow-y-auto"
+        className="bg-[#1F1F21] rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-[#35312B] animate-slide-up max-h-[90vh] overflow-y-auto text-[#F5F0E6]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between pb-4 border-b border-stone-100">
+        <div className="flex items-center justify-between pb-4 border-b border-[#35312B]">
           <div className="flex items-center gap-2">
-            <Mic className="w-5 h-5 text-amber-800" />
-            <h2 className="text-base font-bold text-stone-900">
+            <Mic className="w-5 h-5 text-[#D9A441]" />
+            <h2 className="text-base font-bold text-[#F5F0E6]">
               {vocalist ? 'Edit Vocalist Profile' : 'Add New Vocalist'}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100"
+            className="p-1 rounded-full text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -91,9 +91,9 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           {/* Profile Picture Uploader */}
-          <div className="flex items-center gap-4 p-3.5 bg-[#FAF6F0] rounded-2xl border border-stone-200/80">
+          <div className="flex items-center gap-4 p-3.5 bg-[#161616] rounded-2xl border border-[#35312B]">
             <div className="relative group shrink-0">
-              <div className="w-16 h-16 rounded-2xl bg-[#1E1D1B] text-white flex items-center justify-center font-bold text-lg overflow-hidden border-2 border-white shadow-soft">
+              <div className="w-16 h-16 rounded-2xl bg-[#101010] text-[#D9A441] flex items-center justify-center font-bold text-lg overflow-hidden border border-[#D9A441]/40 shadow-sm">
                 {avatar ? (
                   <img src={avatar} alt="Profile preview" className="w-full h-full object-cover" />
                 ) : (
@@ -103,7 +103,7 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute inset-0 bg-black/40 text-white rounded-2xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer"
+                className="absolute inset-0 bg-black/60 text-white rounded-2xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer"
                 title="Change Photo"
               >
                 <Camera className="w-5 h-5" />
@@ -111,10 +111,10 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
             </div>
 
             <div className="flex-1 min-w-0">
-              <span className="text-[11px] font-bold text-stone-800 uppercase tracking-wider block">
+              <span className="text-[11px] font-bold text-[#F5F0E6] uppercase tracking-wider block">
                 Profile Picture
               </span>
-              <p className="text-[11px] text-stone-500 mt-0.5">
+              <p className="text-[11px] text-[#AAA5A0] mt-0.5">
                 Upload a personal headshot or photo (JPG, PNG).
               </p>
 
@@ -129,9 +129,9 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="px-3 py-1.5 rounded-xl bg-white hover:bg-stone-50 text-stone-800 text-xs font-semibold border border-stone-200/90 shadow-2xs flex items-center gap-1.5 transition-all"
+                  className="px-3 py-1.5 rounded-xl bg-[#262626] hover:bg-[#35312B] text-[#F5F0E6] text-xs font-semibold border border-[#35312B] shadow-sm flex items-center gap-1.5 transition-all"
                 >
-                  <Upload className="w-3.5 h-3.5 text-stone-600" />
+                  <Upload className="w-3.5 h-3.5 text-[#D9A441]" />
                   <span>{avatar ? 'Change Photo' : 'Upload Photo'}</span>
                 </button>
 
@@ -139,7 +139,7 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
                   <button
                     type="button"
                     onClick={() => setAvatar('')}
-                    className="px-2.5 py-1.5 rounded-xl text-stone-500 hover:text-red-600 hover:bg-red-50 text-xs font-medium transition-all"
+                    className="px-2.5 py-1.5 rounded-xl text-[#AAA5A0] hover:text-[#E57373] hover:bg-red-950/30 text-xs font-medium transition-all"
                   >
                     Remove
                   </button>
@@ -149,7 +149,7 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
           </div>
 
           <div>
-            <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+            <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
               Full Name *
             </label>
             <input
@@ -158,50 +158,50 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Sarah Joy Morales"
-              className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400 font-medium"
+              className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441] font-medium"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                 Vocal Range *
               </label>
               <select
                 value={vocalRange}
                 onChange={(e) => setVocalRange(e.target.value as any)}
-                className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400 bg-white font-bold"
+                className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#D9A441] focus:outline-none focus:border-[#D9A441] font-bold"
               >
-                <option value="Soprano">Soprano</option>
-                <option value="Mezzo-Soprano">Mezzo-Soprano</option>
-                <option value="Alto">Alto</option>
-                <option value="Tenor">Tenor</option>
-                <option value="Baritone">Baritone</option>
-                <option value="Bass">Bass</option>
-                <option value="Instrumentalist">Instrumentalist</option>
+                <option value="Soprano" className="bg-[#1F1F21] text-[#D9A441]">Soprano</option>
+                <option value="Mezzo-Soprano" className="bg-[#1F1F21] text-[#D9A441]">Mezzo-Soprano</option>
+                <option value="Alto" className="bg-[#1F1F21] text-[#D9A441]">Alto</option>
+                <option value="Tenor" className="bg-[#1F1F21] text-[#D9A441]">Tenor</option>
+                <option value="Baritone" className="bg-[#1F1F21] text-[#D9A441]">Baritone</option>
+                <option value="Bass" className="bg-[#1F1F21] text-[#D9A441]">Bass</option>
+                <option value="Instrumentalist" className="bg-[#1F1F21] text-[#AAA5A0]">Instrumentalist</option>
               </select>
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                 Availability Status
               </label>
               <select
                 value={availability}
                 onChange={(e) => setAvailability(e.target.value as any)}
-                className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400 bg-white font-medium"
+                className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:outline-none focus:border-[#D9A441] font-medium"
               >
-                <option value="Available">Available</option>
-                <option value="Rehearsal Only">Rehearsal Only</option>
-                <option value="Traveling">Traveling</option>
-                <option value="On Break">On Break</option>
+                <option value="Available" className="bg-[#1F1F21] text-[#78B887]">Available</option>
+                <option value="Rehearsal Only" className="bg-[#1F1F21] text-blue-400">Rehearsal Only</option>
+                <option value="Traveling" className="bg-[#1F1F21] text-[#F5C15D]">Traveling</option>
+                <option value="On Break" className="bg-[#1F1F21] text-[#AAA5A0]">On Break</option>
               </select>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                 Role / Title
               </label>
               <input
@@ -209,12 +209,12 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
                 value={roleTitle}
                 onChange={(e) => setRoleTitle(e.target.value)}
                 placeholder="Worship Leader / Vocalist"
-                className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                 Instrument(s)
               </label>
               <input
@@ -222,14 +222,14 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
                 value={instrument}
                 onChange={(e) => setInstrument(e.target.value)}
                 placeholder="Vocals, Keys, Acoustic"
-                className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                 Email Address
               </label>
               <input
@@ -237,12 +237,12 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="sarah@beholdingjesus.org"
-                className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+              <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                 Phone / Mobile
               </label>
               <input
@@ -250,13 +250,13 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+63 912 345 6789"
-                className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+            <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
               Vocal Notes / Comfortable Range
             </label>
             <textarea
@@ -264,21 +264,21 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="e.g. Sings best in Key C or D. Great with high soprano ad-libs."
-              className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400"
+              className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
             />
           </div>
 
-          <div className="pt-3 border-t border-stone-100 flex items-center justify-end gap-2">
+          <div className="pt-3 border-t border-[#35312B] flex items-center justify-end gap-2">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-2xl text-xs font-semibold text-stone-600 hover:bg-stone-100"
+              className="px-4 py-2.5 rounded-2xl text-xs font-semibold text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-2xl text-xs font-bold bg-[#1E1D1B] hover:bg-stone-800 text-white transition-colors shadow-2xs"
+              className="px-5 py-2.5 rounded-2xl text-xs font-bold bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] transition-colors shadow-sm"
             >
               {vocalist ? 'Save Changes' : 'Add Vocalist'}
             </button>

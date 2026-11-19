@@ -4,8 +4,8 @@
 
 @layer base {
   body {
-    background-color: #F8F5EE;
-    color: #1F1E1D;
+    background-color: #101010;
+    color: #F5F0E6;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -19,16 +19,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.03);
+  background: #101010;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(166, 124, 82, 0.25);
+  background: rgba(217, 164, 65, 0.3);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(166, 124, 82, 0.45);
+  background: rgba(217, 164, 65, 0.5);
 }
 
 /* Prevent horizontal overflow on mobile */

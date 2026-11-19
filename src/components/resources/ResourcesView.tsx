@@ -49,14 +49,14 @@ export const ResourcesView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2.5 rounded-2xl bg-[#1E1D1B] text-white shadow-2xs">
+          <div className="p-2.5 rounded-2xl bg-[#161616] border border-[#35312B] text-[#D9A441] shadow-sm">
             <FolderOpen className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-stone-900 leading-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-[#F5F0E6] leading-tight">
               Files & Resources
             </h1>
-            <p className="text-xs text-stone-500 mt-0.5">
+            <p className="text-xs text-[#AAA5A0] mt-0.5">
               Chord charts packets, stage plots, backing tracks, guidelines, and audio reference documents
             </p>
           </div>
@@ -64,7 +64,7 @@ export const ResourcesView: React.FC = () => {
 
         <button
           onClick={() => setIsAdding(true)}
-          className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold shadow-soft transition-all shrink-0 self-start sm:self-auto"
+          className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold shadow-sm transition-all shrink-0 self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Upload Resource</span>
@@ -76,44 +76,44 @@ export const ResourcesView: React.FC = () => {
         {resources.map((res) => (
           <div
             key={res.id}
-            className="bg-white rounded-3xl p-5 border border-[#E8E2D7] shadow-soft hover:shadow-card transition-all flex flex-col justify-between"
+            className="bg-[#1F1F21] rounded-3xl p-5 border border-[#35312B] hover:border-[#D9A441]/50 shadow-sm transition-all flex flex-col justify-between"
           >
             <div>
-              <div className="flex items-start justify-between gap-2 pb-3 border-b border-stone-100">
-                <span className="px-2.5 py-0.5 rounded-lg bg-[#EFE8DC] text-stone-800 text-[10px] font-bold uppercase tracking-wider">
+              <div className="flex items-start justify-between gap-2 pb-3 border-b border-[#35312B]">
+                <span className="px-2.5 py-0.5 rounded-lg bg-[#262626] text-[#D9A441] border border-[#35312B] text-[10px] font-bold uppercase tracking-wider">
                   {res.category}
                 </span>
 
-                <span className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-600 text-[10px] font-bold">
+                <span className="px-2 py-0.5 rounded-md bg-[#101010] text-[#AAA5A0] border border-[#35312B] text-[10px] font-bold">
                   {res.file_type} • {res.file_size}
                 </span>
               </div>
 
               <div className="mt-3 flex items-start gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-[#FAF6F0] border border-stone-200 text-amber-900 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-2xl bg-[#161616] border border-[#35312B] text-[#D9A441] flex items-center justify-center shrink-0">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-sm font-bold text-stone-900 leading-snug">
+                  <h3 className="text-sm font-bold text-[#F5F0E6] leading-snug">
                     {res.title}
                   </h3>
-                  <p className="text-[11px] text-stone-500 mt-0.5">
+                  <p className="text-[11px] text-[#AAA5A0] mt-0.5">
                     Uploaded by {res.uploaded_by} • {res.created_at}
                   </p>
                 </div>
               </div>
 
               {res.notes && (
-                <p className="text-xs text-stone-600 mt-3 bg-[#FAF6F0] p-2.5 rounded-xl border border-stone-200/60 leading-relaxed italic">
+                <p className="text-xs text-[#AAA5A0] mt-3 bg-[#161616] p-2.5 rounded-xl border border-[#35312B] leading-relaxed italic">
                   "{res.notes}"
                 </p>
               )}
             </div>
 
-            <div className="pt-4 mt-4 border-t border-stone-100 flex items-center justify-between">
+            <div className="pt-4 mt-4 border-t border-[#35312B] flex items-center justify-between">
               <button
                 onClick={() => alert(`Downloading "${res.title}"...`)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#1E1D1B] hover:bg-stone-800 text-white text-xs font-bold transition-all shadow-2xs"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold transition-all shadow-sm"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download</span>
@@ -125,7 +125,7 @@ export const ResourcesView: React.FC = () => {
                     deleteResource(res.id);
                   }
                 }}
-                className="p-1.5 rounded-xl text-stone-400 hover:text-red-600 hover:bg-red-50"
+                className="p-1.5 rounded-xl text-[#AAA5A0] hover:text-[#E57373] hover:bg-red-950/30"
                 title="Delete"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -138,21 +138,21 @@ export const ResourcesView: React.FC = () => {
       {/* Upload Modal */}
       {isAdding && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
           onClick={() => setIsAdding(false)}
         >
           <div
-            className="bg-white rounded-3xl max-w-md w-full p-6 shadow-modal border border-stone-200 animate-slide-up"
+            className="bg-[#1F1F21] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#35312B] animate-slide-up text-[#F5F0E6]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-4 border-b border-stone-100">
+            <div className="flex items-center justify-between pb-4 border-b border-[#35312B]">
               <div className="flex items-center gap-2">
-                <FolderOpen className="w-5 h-5 text-amber-800" />
-                <h2 className="text-base font-bold text-stone-900">Upload Team Resource</h2>
+                <FolderOpen className="w-5 h-5 text-[#D9A441]" />
+                <h2 className="text-base font-bold text-[#F5F0E6]">Upload Team Resource</h2>
               </div>
               <button
                 onClick={() => setIsAdding(false)}
-                className="p-1 rounded-full text-stone-400 hover:text-stone-700"
+                className="p-1 rounded-full text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -160,7 +160,7 @@ export const ResourcesView: React.FC = () => {
 
             <form onSubmit={handleAdd} className="mt-4 space-y-3.5">
               <div>
-                <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+                <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                   Document Title *
                 </label>
                 <input
@@ -169,47 +169,47 @@ export const ResourcesView: React.FC = () => {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. Sunday Lineup Chord Charts Packet"
-                  className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400 font-semibold"
+                  className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:outline-none focus:border-[#D9A441] font-semibold"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+                  <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                     Category
                   </label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as any)}
-                    className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400 bg-white"
+                    className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:outline-none focus:border-[#D9A441]"
                   >
-                    <option value="Chord Charts">Chord Charts</option>
-                    <option value="Vocal Guide">Vocal Guide</option>
-                    <option value="Audio Track">Audio Track</option>
-                    <option value="Stage Plot">Stage Plot</option>
-                    <option value="Policy / Guidelines">Policy / Guidelines</option>
+                    <option value="Chord Charts" className="bg-[#1F1F21] text-[#F5F0E6]">Chord Charts</option>
+                    <option value="Vocal Guide" className="bg-[#1F1F21] text-[#F5F0E6]">Vocal Guide</option>
+                    <option value="Audio Track" className="bg-[#1F1F21] text-[#F5F0E6]">Audio Track</option>
+                    <option value="Stage Plot" className="bg-[#1F1F21] text-[#F5F0E6]">Stage Plot</option>
+                    <option value="Policy / Guidelines" className="bg-[#1F1F21] text-[#F5F0E6]">Policy / Guidelines</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+                  <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                     File Type
                   </label>
                   <select
                     value={fileType}
                     onChange={(e) => setFileType(e.target.value)}
-                    className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400 bg-white font-bold"
+                    className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#D9A441] focus:outline-none focus:border-[#D9A441] font-bold"
                   >
-                    <option value="PDF">PDF</option>
-                    <option value="PNG">PNG Image</option>
-                    <option value="MP3">MP3 Audio</option>
-                    <option value="DOCX">Word DOCX</option>
+                    <option value="PDF" className="bg-[#1F1F21] text-[#D9A441]">PDF</option>
+                    <option value="PNG" className="bg-[#1F1F21] text-[#D9A441]">PNG Image</option>
+                    <option value="MP3" className="bg-[#1F1F21] text-[#D9A441]">MP3 Audio</option>
+                    <option value="DOCX" className="bg-[#1F1F21] text-[#D9A441]">Word DOCX</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-stone-700 uppercase tracking-wider block mb-1">
+                <label className="text-[11px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
                   Notes / Description
                 </label>
                 <textarea
@@ -217,21 +217,21 @@ export const ResourcesView: React.FC = () => {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="e.g. Contains all 5 songs transposed to Sunday vocal keys."
-                  className="w-full text-xs p-3 rounded-2xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-400"
+                  className="w-full text-xs p-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
                 />
               </div>
 
-              <div className="pt-3 border-t border-stone-100 flex items-center justify-end gap-2">
+              <div className="pt-3 border-t border-[#35312B] flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsAdding(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:bg-stone-100"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-2xl text-xs font-bold bg-[#1E1D1B] hover:bg-stone-800 text-white"
+                  className="px-5 py-2.5 rounded-2xl text-xs font-bold bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] shadow-sm"
                 >
                   Save Resource
                 </button>

@@ -7,22 +7,35 @@ export default {
   theme: {
     extend: {
       colors: {
+        theme: {
+          bg: '#101010',            // Primary background (Midnight Black)
+          'bg-secondary': '#161616',// Secondary background
+          card: '#1F1F21',          // Card background
+          surface: '#262626',       // Elevated surfaces
+          gold: '#D9A441',          // Primary accent (Champagne Gold)
+          'gold-light': '#F5C15D',  // Gold highlight
+          ivory: '#F5F0E6',         // Primary text (Warm Ivory)
+          muted: '#AAA5A0',         // Secondary text
+          border: '#35312B',        // Borders and dividers
+          success: '#78B887',       // Success status
+          error: '#E57373',         // Error status
+        },
         worship: {
-          dark: '#181716',
-          sidebar: '#1E1D1B',
-          'sidebar-active': '#2E2D2A',
-          'sidebar-hover': '#262522',
-          card: '#FFFFFF',
-          bg: '#F8F5EE',
-          'bg-muted': '#F2ECE1',
-          border: '#E8E2D7',
-          'border-light': '#F0EBE1',
-          accent: '#A67C52',
-          'accent-light': '#F4EFE6',
-          category: '#EFE8DC',
-          'text-main': '#1F1E1D',
-          'text-muted': '#78716C',
-          'text-light': '#A8A29E',
+          dark: '#101010',
+          sidebar: '#161616',
+          'sidebar-active': '#1F1F21',
+          'sidebar-hover': '#262626',
+          card: '#1F1F21',
+          bg: '#101010',
+          'bg-muted': '#161616',
+          border: '#35312B',
+          'border-light': '#35312B',
+          accent: '#D9A441',
+          'accent-light': '#262626',
+          category: '#1F1F21',
+          'text-main': '#F5F0E6',
+          'text-muted': '#AAA5A0',
+          'text-light': '#AAA5A0',
         }
       },
       fontFamily: {
@@ -31,9 +44,11 @@ export default {
         cursive: ['"Dancing Script"', '"Caveat"', 'cursive'],
       },
       boxShadow: {
-        'soft': '0 2px 10px rgba(35, 25, 15, 0.04)',
-        'card': '0 4px 16px rgba(35, 25, 15, 0.06)',
-        'modal': '0 16px 40px rgba(25, 20, 15, 0.15)',
+        'soft': '0 2px 10px rgba(0, 0, 0, 0.4)',
+        'card': '0 4px 20px rgba(0, 0, 0, 0.5)',
+        'modal': '0 20px 50px rgba(0, 0, 0, 0.7)',
+        'gold': '0 0 15px rgba(217, 164, 65, 0.15)',
+        'gold-lg': '0 0 25px rgba(217, 164, 65, 0.25)',
       }
     },
   },

@@ -94,19 +94,19 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
   const shouldRenderCountdown = showCountdown ?? (cardPosition !== 'secondary');
 
   return (
-    <div className="bg-[#18181B] rounded-3xl p-5 sm:p-7 border border-[#27272A] shadow-2xl text-white space-y-5 transition-all">
+    <div className="bg-[#1F1F21] rounded-3xl p-5 sm:p-7 border border-[#35312B] shadow-[0_8px_32px_rgba(0,0,0,0.6)] text-[#F5F0E6] space-y-5 transition-all">
       {/* =========================================================================
           1. HEADER SECTION: Status, Title, Date, Share
          ========================================================================= */}
       <div>
         {/* Top Micro Label & Share Button */}
         <div className="flex items-center justify-between">
-          <span className="text-[10px] sm:text-[11px] font-extrabold tracking-[0.2em] text-[#E5A93C] uppercase">
+          <span className="text-[10px] sm:text-[11px] font-extrabold tracking-[0.2em] text-[#D9A441] uppercase">
             {resolvedBadgeLabel}
           </span>
           <button
             onClick={() => onShareLineup(lineup)}
-            className="text-stone-400 hover:text-[#E5A93C] transition-colors p-1 cursor-pointer"
+            className="text-[#AAA5A0] hover:text-[#D9A441] transition-colors p-1 cursor-pointer"
             title="Share Lineup / Save as Photo"
           >
             <Share2 className="w-4 h-4" />
@@ -115,39 +115,39 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
 
         {/* Main Title Row with Dynamic Status Badge */}
         <div className="flex items-center justify-between gap-3 mt-1.5 flex-wrap">
-          <h2 data-testid={cardPosition === 'secondary' ? 'secondary-lineup-title' : 'primary-lineup-title'} className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-tight">
+          <h2 data-testid={cardPosition === 'secondary' ? 'secondary-lineup-title' : 'primary-lineup-title'} className="text-xl sm:text-2xl font-bold text-[#F5F0E6] tracking-tight leading-tight">
             {lineup.title || 'Sunday Worship Service'}
           </h2>
 
           {/* Dynamic Status Badge */}
           {lifecycleStatus === 'ongoing' ? (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse">
-              <Radio className="w-3.5 h-3.5 text-amber-400" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#D9A441]/15 text-[#F5C15D] border border-[#D9A441]/30 animate-pulse">
+              <Radio className="w-3.5 h-3.5 text-[#D9A441]" />
               <span>Ongoing Service</span>
             </span>
           ) : lifecycleStatus === 'completed' ? (
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-stone-800 text-stone-300 border border-stone-700">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#262626] text-[#AAA5A0] border border-[#35312B]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#78B887]" />
               <span>Completed</span>
             </span>
           ) : lifecycleStatus === 'published' || lifecycleStatus === 'upcoming' ? (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#122A1E] text-[#4ADE80] border border-[#166534]">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#78B887]/15 text-[#78B887] border border-[#78B887]/30">
+              <span className="w-2 h-2 rounded-full bg-[#78B887] animate-pulse" />
               <span>Upcoming</span>
             </span>
           ) : lifecycleStatus === 'cancelled' ? (
-            <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-rose-950/70 text-rose-300 border border-rose-800">
+            <span className="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#E57373]/15 text-[#E57373] border border-[#E57373]/30">
               Cancelled
             </span>
           ) : (
-            <span className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider bg-[#2E200F] text-[#FBBF24] border border-[#854D0E]">
+            <span className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider bg-[#262626] text-[#AAA5A0] border border-[#35312B]">
               Draft
             </span>
           )}
         </div>
 
         {/* Subtitle: Date • Count of Songs */}
-        <p className="text-xs sm:text-sm text-stone-400 font-medium mt-1">
+        <p className="text-xs sm:text-sm text-[#AAA5A0] font-medium mt-1">
           {formattedDate} • {totalSongsCount} {totalSongsCount === 1 ? 'song' : 'songs'}
         </p>
       </div>
@@ -162,21 +162,21 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
       {/* =========================================================================
           3. WORSHIP LEADER & ASSIGNED SINGERS
          ========================================================================= */}
-      <div className="p-3.5 rounded-2xl bg-[#222225] border border-stone-800/90 space-y-2.5">
+      <div className="p-3.5 rounded-2xl bg-[#161616] border border-[#35312B] space-y-2.5">
         {/* Worship Leader */}
         <div className="flex items-center justify-between gap-2 flex-wrap">
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#2E200F] border border-amber-600/40 text-amber-300 text-xs font-bold">
-              <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#D9A441]/15 border border-[#D9A441]/30 text-[#D9A441] text-xs font-bold">
+              <Star className="w-3.5 h-3.5 text-[#D9A441] fill-[#D9A441]" />
               <span>{(lineup.worship_leaders && lineup.worship_leaders.length > 1) ? 'LEADERS' : 'LEADER'}</span>
             </div>
-            <span className="text-xs sm:text-sm font-bold text-white">
+            <span className="text-xs sm:text-sm font-bold text-[#F5F0E6]">
               {lineup.worship_leader_name || leader?.name || 'Assigned Leader'}
             </span>
           </div>
 
           {lineup.theme && (
-            <span className="text-[11px] text-amber-200/80 italic font-serif">
+            <span className="text-[11px] text-[#D9A441] italic font-serif">
               Theme: "{lineup.theme}"
             </span>
           )}
@@ -184,8 +184,8 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
 
         {/* Assigned Singers / Vocalists */}
         {lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0 && (
-          <div className="flex items-center gap-2 pt-1 border-t border-stone-800/60 flex-wrap">
-            <div className="flex items-center gap-1 text-stone-400 text-[11px] font-semibold">
+          <div className="flex items-center gap-2 pt-1 border-t border-[#35312B] flex-wrap">
+            <div className="flex items-center gap-1 text-[#AAA5A0] text-[11px] font-semibold">
               <Users className="w-3.5 h-3.5" />
               <span>Singers:</span>
             </div>
@@ -193,9 +193,9 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
               {lineup.assigned_vocalists.map((v) => (
                 <span
                   key={v.id}
-                  className="px-2 py-0.5 rounded-lg bg-[#18181B] border border-stone-700/80 text-[10px] sm:text-[11px] font-medium text-stone-200"
+                  className="px-2 py-0.5 rounded-lg bg-[#1F1F21] border border-[#35312B] text-[10px] sm:text-[11px] font-medium text-[#F5F0E6]"
                 >
-                  {v.name} {v.vocal_range ? <span className="text-amber-400/90">({v.vocal_range})</span> : ''}
+                  {v.name} {v.vocal_range ? <span className="text-[#D9A441]">({v.vocal_range})</span> : ''}
                 </span>
               ))}
             </div>
@@ -207,10 +207,10 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
           4. DYNAMIC CATEGORIZED SONGS SETLIST (JOYFUL, SOLEMN, ETC.)
          ========================================================================= */}
       {totalSongsCount === 0 ? (
-        <div className="py-10 text-center rounded-2xl bg-[#222225] border border-dashed border-stone-800 p-6 space-y-2">
-          <Music2 className="w-8 h-8 text-stone-500 mx-auto mb-2" />
-          <p className="text-sm font-bold text-stone-200">No songs in this setlist yet</p>
-          <p className="text-xs text-stone-400 max-w-sm mx-auto">
+        <div className="py-10 text-center rounded-2xl bg-[#161616] border border-dashed border-[#35312B] p-6 space-y-2">
+          <Music2 className="w-8 h-8 text-[#AAA5A0] mx-auto mb-2" />
+          <p className="text-sm font-bold text-[#F5F0E6]">No songs in this setlist yet</p>
+          <p className="text-xs text-[#AAA5A0] max-w-sm mx-auto">
             Click "Edit Lineup" below to add songs, set musical keys, and add YouTube video references.
           </p>
         </div>
@@ -220,10 +220,10 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
             <div key={categoryName} className="space-y-2">
               {/* Category Header Row: JOYFUL                    2 SONGS */}
               <div className="flex items-center justify-between px-1">
-                <span className="text-xs font-bold text-stone-200 tracking-wider uppercase">
+                <span className="text-xs font-bold text-[#D9A441] tracking-wider uppercase">
                   {categoryName}
                 </span>
-                <span className="text-[10px] sm:text-[11px] font-bold text-stone-500 tracking-wider uppercase">
+                <span className="text-[10px] sm:text-[11px] font-bold text-[#AAA5A0] tracking-wider uppercase">
                   {songItems.length} {songItems.length === 1 ? 'SONG' : 'SONGS'}
                 </span>
               </div>
@@ -238,18 +238,18 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
                   return (
                     <div
                       key={item.id || `${item.song_id}-${idx}`}
-                      className="group flex items-center justify-between p-3 sm:p-3.5 rounded-2xl bg-[#222225] hover:bg-[#28282C] border border-[#2E2E32] hover:border-[#D4A359]/60 transition-all duration-200 gap-3"
+                      className="group flex items-center justify-between p-3 sm:p-3.5 rounded-2xl bg-[#161616] hover:bg-[#262626] border border-[#35312B] hover:border-[#D9A441]/50 transition-all duration-200 gap-3"
                     >
                       {/* Left: Key Square Badge */}
                       <button
                         onClick={() => originalSong && onOpenChords(originalSong)}
-                        className="w-12 h-12 rounded-xl bg-[#2E2214] border border-[#7C4D1D] group-hover:border-[#D4A359] text-[#F3B755] flex flex-col items-center justify-center shrink-0 transition-all shadow-inner hover:scale-105 active:scale-95 cursor-pointer"
+                        className="w-12 h-12 rounded-xl bg-[#101010] border border-[#D9A441]/60 group-hover:border-[#D9A441] text-[#D9A441] flex flex-col items-center justify-center shrink-0 transition-all shadow-inner hover:scale-105 active:scale-95 cursor-pointer"
                         title="Click to transpose and view chords"
                       >
-                        <span className="text-[9px] font-bold tracking-wider text-[#A67C52] uppercase leading-none">
+                        <span className="text-[9px] font-bold tracking-wider text-[#D9A441] uppercase leading-none">
                           KEY
                         </span>
-                        <span className="text-sm sm:text-base font-extrabold leading-tight">
+                        <span className="text-sm sm:text-base font-extrabold text-[#F5F0E6] leading-tight">
                           {selectedKey}
                         </span>
                       </button>
@@ -257,16 +257,16 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
                       {/* Middle: Title, Lead Singer, Artist */}
                       <div className="flex-1 min-w-0 pr-1">
                         <div className="flex items-center gap-2">
-                          <h4 className="text-sm sm:text-[15px] font-bold text-white tracking-tight truncate group-hover:text-[#F3B755] transition-colors">
+                          <h4 className="text-sm sm:text-[15px] font-bold text-[#F5F0E6] tracking-tight truncate group-hover:text-[#F5C15D] transition-colors">
                             {item.title}
                           </h4>
                         </div>
                         <div className="flex items-center gap-1.5 text-xs mt-0.5 min-w-0 flex-wrap">
-                          <span className="text-[11px] sm:text-xs font-bold text-[#F3B755] truncate shrink-0">
+                          <span className="text-[11px] sm:text-xs font-bold text-[#D9A441] truncate shrink-0">
                             Lead: {item.assigned_vocalist_name || lineup.worship_leader_name || 'Worship Leader'}
                           </span>
                           {item.artist && (
-                            <span className="text-[11px] text-stone-400 truncate">
+                            <span className="text-[11px] text-[#AAA5A0] truncate">
                               • {item.artist}
                             </span>
                           )}
@@ -276,10 +276,10 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
                       {/* Right: Golden Circular Play Button */}
                       <button
                         onClick={() => handlePlaySong(item)}
-                        className="w-8 h-8 rounded-full bg-[#D4A359] hover:bg-[#E5A93C] text-stone-950 flex items-center justify-center shrink-0 transition-transform hover:scale-105 active:scale-95 shadow-md cursor-pointer"
+                        className="w-8 h-8 rounded-full bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] flex items-center justify-center shrink-0 transition-transform hover:scale-105 active:scale-95 shadow-md cursor-pointer"
                         title="Play YouTube video"
                       >
-                        <Play className="w-3.5 h-3.5 fill-stone-950 text-stone-950 ml-0.5" />
+                        <Play className="w-3.5 h-3.5 fill-[#101010] text-[#101010] ml-0.5" />
                       </button>
                     </div>
                   );
@@ -293,21 +293,21 @@ export const FullLineupCard: React.FC<FullLineupCardProps> = ({
       {/* =========================================================================
           5. BOTTOM MANAGE STRIP & EDIT LINEUP BUTTON
          ========================================================================= */}
-      <div className="border-t border-stone-800/80 pt-4 space-y-3">
+      <div className="border-t border-[#35312B] pt-4 space-y-3">
         <div className="flex items-center justify-between px-1">
-          <span className="text-xs text-stone-400 font-medium">
+          <span className="text-xs text-[#AAA5A0] font-medium">
             Manage and edit this worship lineup
           </span>
-          <span className="px-2.5 py-0.5 rounded-full bg-[#381E12] text-[#FB923C] border border-[#7C2D12] text-[10px] font-bold tracking-wider uppercase">
+          <span className="px-2.5 py-0.5 rounded-full bg-[#262626] text-[#D9A441] border border-[#35312B] text-[10px] font-bold tracking-wider uppercase">
             Admin editable
           </span>
         </div>
 
         <button
           onClick={() => onViewLineup(lineup.id)}
-          className="w-full py-3.5 px-4 rounded-2xl bg-[#D4A359] hover:bg-[#E5A93C] text-stone-950 font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.99] cursor-pointer"
+          className="w-full py-3.5 px-4 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.99] cursor-pointer"
         >
-          <Pencil className="w-4 h-4 text-stone-950 stroke-[2.5]" />
+          <Pencil className="w-4 h-4 text-[#101010] stroke-[2.5]" />
           <span>Edit Lineup</span>
         </button>
       </div>

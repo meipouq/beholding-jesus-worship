@@ -36,18 +36,18 @@ export const UpcomingServicesList: React.FC<UpcomingServicesListProps> = ({
   onCreateLineup
 }) => {
   return (
-    <div className="bg-white rounded-3xl p-5 sm:p-6 border border-[#E8E2D7] shadow-soft space-y-4">
+    <div className="bg-[#1F1F21] rounded-3xl p-5 sm:p-6 border border-[#35312B] shadow-soft space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3.5 border-b border-stone-100">
+      <div className="flex items-center justify-between pb-3.5 border-b border-[#35312B]">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-2xl bg-[#1E1D1B] text-white flex items-center justify-center shadow-2xs">
-            <Calendar className="w-4.5 h-4.5 text-amber-300" />
+          <div className="w-9 h-9 rounded-2xl bg-[#161616] border border-[#35312B] text-[#D9A441] flex items-center justify-center shadow-2xs">
+            <Calendar className="w-4.5 h-4.5 text-[#D9A441]" />
           </div>
           <div>
-            <h3 className="text-sm sm:text-base font-bold text-stone-900 leading-tight">
+            <h3 className="text-sm sm:text-base font-bold text-[#F5F0E6] leading-tight">
               Upcoming Services
             </h3>
-            <p className="text-[11px] text-stone-500 font-medium">
+            <p className="text-[11px] text-[#AAA5A0] font-medium">
               Chronologically scheduled worship line-ups
             </p>
           </div>
@@ -55,7 +55,7 @@ export const UpcomingServicesList: React.FC<UpcomingServicesListProps> = ({
 
         <button
           onClick={onCreateLineup}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FAF6F0] hover:bg-[#1E1D1B] text-stone-700 hover:text-white border border-stone-200 text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#161616] hover:bg-[#262626] text-[#D9A441] hover:text-[#F5C15D] border border-[#35312B] text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-2xs"
           title="Create New Service Lineup"
         >
           <Plus className="w-3.5 h-3.5" />
@@ -65,10 +65,10 @@ export const UpcomingServicesList: React.FC<UpcomingServicesListProps> = ({
 
       {/* List of upcoming services */}
       {lineups.length === 0 ? (
-        <div className="py-8 px-4 text-center rounded-2xl bg-[#FAF6F0] border border-dashed border-stone-200">
-          <ListMusic className="w-8 h-8 text-stone-400 mx-auto mb-2 opacity-70" />
-          <p className="text-xs font-bold text-stone-700">No other upcoming services scheduled</p>
-          <p className="text-[11px] text-stone-500 mt-0.5 max-w-xs mx-auto">
+        <div className="py-8 px-4 text-center rounded-2xl bg-[#161616] border border-dashed border-[#35312B]">
+          <ListMusic className="w-8 h-8 text-[#AAA5A0] mx-auto mb-2 opacity-70" />
+          <p className="text-xs font-bold text-[#F5F0E6]">No other upcoming services scheduled</p>
+          <p className="text-[11px] text-[#AAA5A0] mt-0.5 max-w-xs mx-auto">
             The next nearest published service is displayed above. Additional services will automatically appear here in chronological order.
           </p>
         </div>
@@ -82,41 +82,41 @@ export const UpcomingServicesList: React.FC<UpcomingServicesListProps> = ({
               <div
                 key={lineup.id}
                 onClick={() => onSelectLineup(lineup.id)}
-                className="group p-4 rounded-2xl bg-[#FAF6F0] hover:bg-white border border-stone-200/90 hover:border-[#D4A359]/70 shadow-2xs hover:shadow-soft transition-all duration-200 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                className="group p-4 rounded-2xl bg-[#161616] hover:bg-[#262626] border border-[#35312B] hover:border-[#D9A441]/50 shadow-2xs hover:shadow-soft transition-all duration-200 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3"
               >
                 <div className="min-w-0 space-y-1.5 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs font-bold text-stone-900 group-hover:text-amber-950 transition-colors">
+                    <span className="text-xs font-bold text-[#F5F0E6] group-hover:text-[#F5C15D] transition-colors">
                       {lineup.title}
                     </span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#78B887]/15 text-[#78B887] border border-[#78B887]/30">
                       Published
                     </span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100/80 text-amber-900 border border-amber-200/70">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#262626] text-[#D9A441] border border-[#35312B]">
                       In {cd.days > 0 ? `${cd.days}d ` : ''}{cd.hours}h {cd.minutes}m
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-[11px] text-stone-600 font-medium flex-wrap">
-                    <div className="flex items-center gap-1 text-stone-700">
-                      <Clock className="w-3.5 h-3.5 text-stone-400" />
+                  <div className="flex items-center gap-2 text-[11px] text-[#AAA5A0] font-medium flex-wrap">
+                    <div className="flex items-center gap-1 text-[#AAA5A0]">
+                      <Clock className="w-3.5 h-3.5 text-[#AAA5A0]" />
                       <span>{formatReadableDate(lineup.service_date, lineup.service_time)}</span>
                     </div>
                     <span>•</span>
                     <div className="flex items-center gap-1">
-                      <Star className="w-3.5 h-3.5 text-amber-600 fill-amber-500" />
-                      <span className="font-semibold text-stone-800">
+                      <Star className="w-3.5 h-3.5 text-[#D9A441] fill-[#D9A441]" />
+                      <span className="font-semibold text-[#F5F0E6]">
                         Leader: {lineup.worship_leader_name}
                       </span>
                     </div>
                     <span>•</span>
-                    <span className="text-stone-500">
+                    <span className="text-[#AAA5A0]">
                       {totalSongs} {totalSongs === 1 ? 'song' : 'songs'}
                     </span>
                   </div>
 
                   {lineup.theme && (
-                    <p className="text-[11px] text-amber-900/80 italic font-serif truncate">
+                    <p className="text-[11px] text-[#D9A441] italic font-serif truncate">
                       Theme: "{lineup.theme}"
                     </p>
                   )}
@@ -129,7 +129,7 @@ export const UpcomingServicesList: React.FC<UpcomingServicesListProps> = ({
                       e.stopPropagation();
                       onSelectLineup(lineup.id);
                     }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white group-hover:bg-[#1E1D1B] text-stone-800 group-hover:text-white border border-stone-200/90 group-hover:border-[#1E1D1B] text-xs font-bold transition-all shadow-2xs group-hover:shadow-soft"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#262626] group-hover:bg-[#D9A441] text-[#F5F0E6] group-hover:text-[#101010] border border-[#35312B] group-hover:border-[#D9A441] text-xs font-bold transition-all shadow-2xs group-hover:shadow-soft cursor-pointer"
                   >
                     <span>View Setlist</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
