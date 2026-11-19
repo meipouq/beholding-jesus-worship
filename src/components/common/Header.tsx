@@ -3,6 +3,7 @@ import { Search, Bell, ChevronDown, UserCircle2, X } from 'lucide-react';
 import { useWorship } from '../../context/WorshipContext';
 import { Logo } from './Logo';
 import { NotificationCenter } from './NotificationCenter';
+import { NotificationSettingsModal } from '../settings/NotificationSettingsModal';
 
 export const Header: React.FC = () => {
   const {
@@ -17,6 +18,7 @@ export const Header: React.FC = () => {
   } = useWorship();
 
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isNotifSettingsOpen, setIsNotifSettingsOpen] = useState(false);
   const [showSearchResults, setShowSearchResults] = useState(false);
 
   // Search filter
@@ -158,9 +160,21 @@ export const Header: React.FC = () => {
 
             {/* Notification Modal Drawer */}
             {isNotifOpen && (
-              <NotificationCenter onClose={() => setIsNotifOpen(false)} />
+              <NotificationCenter
+                onClose={() => setIsNotifOpen(false)}
+                onOpenSettings={() => {
+                  setIsNotifOpen(false);
+                  setIsNotifSettingsOpen(true);
+                }}
+              />
             )}
           </div>
+
+          {/* Dedicated Notification Settings Modal */}
+          <NotificationSettingsModal
+            isOpen={isNotifSettingsOpen}
+            onClose={() => setIsNotifSettingsOpen(false)}
+          />
 
           {/* User Profile / Auth Button */}
           <button

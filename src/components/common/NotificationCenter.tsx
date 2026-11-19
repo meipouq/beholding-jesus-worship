@@ -13,11 +13,12 @@ import {
   Zap
 } from 'lucide-react';
 import { useWorship, AppModule } from '../../context/WorshipContext';
-import { NotificationSettingsModal } from '../settings/NotificationSettingsModal';
 import { getExistingSubscription } from '../../services/pushNotifications';
 
-export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+export const NotificationCenter: React.FC<{
+  onClose: () => void;
+  onOpenSettings?: () => void;
+}> = ({ onClose, onOpenSettings }) => {
   const [isPushSubscribed, setIsPushSubscribed] = useState(true);
   const {
     notifications,
@@ -26,11 +27,17 @@ export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose 
     setActiveModule
   } = useWorship();
 
+  const handleOpenSettings = () => {
+    if (onOpenSettings) {
+      onOpenSettings();
+    }
+  };
+
   useEffect(() => {
     getExistingSubscription().then((sub) => {
       setIsPushSubscribed(!!sub);
     });
-  }, [isSettingsOpen]);
+  }, []);
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -86,7 +93,7 @@ export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose 
             </button>
           )}
           <button
-            onClick={() => setIsSettingsOpen(true)}
+            onClick={handleOpenSettings}
             className="p-1 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors"
             title="Notification Settings & iOS Push"
           >
@@ -114,7 +121,7 @@ export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose 
             </div>
           </div>
           <button
-            onClick={() => setIsSettingsOpen(true)}
+            onClick={handleOpenSettings}
             className="px-3 py-1.5 rounded-xl bg-[#1E1D1B] hover:bg-stone-800 active:scale-95 text-white text-[11px] font-extrabold shadow-2xs shrink-0 cursor-pointer transition-transform"
           >
             Enable
@@ -157,11 +164,6 @@ export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose 
         )}
       </div>
     </div>
-
-    <NotificationSettingsModal
-      isOpen={isSettingsOpen}
-      onClose={() => setIsSettingsOpen(false)}
-    />
     </>
   );
 

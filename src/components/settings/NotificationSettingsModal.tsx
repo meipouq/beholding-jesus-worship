@@ -181,11 +181,11 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-fade-in overscroll-contain"
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs overscroll-contain flex flex-col justify-start sm:justify-center items-center p-3 sm:p-4 pt-14 pb-8 sm:py-6 animate-fade-in"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden animate-slide-up flex flex-col max-h-[90vh] sm:max-h-[85vh]"
+        className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden animate-slide-up flex flex-col shrink-0 max-h-[84dvh] sm:max-h-[85vh] my-auto sm:my-0"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -205,7 +205,7 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-200/50 transition-colors"
+            className="p-1.5 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-200/50 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
