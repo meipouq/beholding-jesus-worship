@@ -1,11 +1,36 @@
 import * as webpush from 'web-push';
 import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://rpeevqhwwbqixuaxhsot.supabase.co';
-const SUPABASE_KEY =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.VITE_SUPABASE_ANON_KEY ||
-  'sb_publishable_kHVMAKw9XSrvQ69xIH2gmw_9RcvlYO6';
+function getSupabaseUrl(): string {
+  let url = (
+    process.env.VITE_SUPABASE_URL ||
+    process.env.SUPABASE_URL ||
+    'https://qemwqoamnvswfffzxqkv.supabase.co'
+  ).trim();
+
+  // Discard dead/obsolete project URLs
+  if (url.includes('rhdonxpn') || url.includes('rpeevqhw')) {
+    url = 'https://qemwqoamnvswfffzxqkv.supabase.co';
+  }
+
+  // Auto-fix typo like ttps://
+  if (url.startsWith('ttps://')) {
+    url = 'h' + url;
+  } else if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = 'https://' + url;
+  }
+
+  return url;
+}
+
+function getSupabaseKey(): string {
+  const key = (
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.VITE_SUPABASE_ANON_KEY ||
+    'sb_publishable_Tv9Zb_xjkXsGN3bvQ-Z9NA_5VAJvGUs'
+  ).trim();
+  return key;
+}
 
 const VAPID_PUBLIC_KEY =
   process.env.VAPID_PUBLIC_KEY ||
@@ -15,10 +40,6 @@ const VAPID_PRIVATE_KEY =
   'mSo6XQx4kB_bjlNmxnaeQviJpbvATDFcCwIRCSFtQbA';
 const VAPID_SUBJECT =
   process.env.VAPID_SUBJECT || 'mailto:worship@beholdingjesus.org';
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: { persistSession: false },
-});
 
 export default async function handler(req: any, res: any) {
   // CORS Preflight
@@ -34,6 +55,9 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
+    const supabase = createClient(getSupabaseUrl(), getSupabaseKey(), {
+      auth: { persistSession: false },
+    });
     let bodyData = req.body;
     if (typeof bodyData === 'string') {
       try {
