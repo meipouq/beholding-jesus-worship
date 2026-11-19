@@ -128,7 +128,29 @@ create table if not exists public.announcements (
   author_avatar text,
   is_pinned boolean default false,
   is_important boolean default false,
-  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+  status text default 'published' check (status in ('draft', 'published')),
+  event_date date,
+  event_time text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- 8B. CHURCH MEMBERS AUTH & PASSWORDS
+create table if not exists public.church_members_auth (
+  id text primary key,
+  username text not null unique,
+  name text not null,
+  email text,
+  role text default 'ministry_member',
+  role_title text,
+  avatar text,
+  bio text,
+  salt text not null,
+  password_hash text not null,
+  failed_attempts int default 0,
+  lockout_until timestamp with time zone,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
 -- 9. CONVERSATIONS & CHAT
@@ -181,8 +203,11 @@ alter table public.announcements enable row level security;
 alter table public.conversations enable row level security;
 alter table public.messages enable row level security;
 alter table public.notifications enable row level security;
+alter table public.church_members_auth enable row level security;
 
 -- Open Collaborative Team Access Policies (Idempotent: drops if already exists)
+drop policy if exists "Allow all on church_members_auth" on public.church_members_auth;
+create policy "Allow all on church_members_auth" on public.church_members_auth for all using (true) with check (true);
 drop policy if exists "Allow all on team_members" on public.team_members;
 create policy "Allow all on team_members" on public.team_members for all using (true) with check (true);
 
@@ -221,7 +246,7 @@ do $$
 declare
   tbl text;
 begin
-  for tbl in select unnest(array['team_members', 'songs', 'service_lineups', 'rehearsals', 'tasks', 'announcements', 'messages'])
+  for tbl in select unnest(array['team_members', 'church_members_auth', 'songs', 'service_lineups', 'rehearsals', 'tasks', 'announcements', 'messages'])
   loop
     if not exists (
       select 1 from pg_publication_tables 
@@ -231,3 +256,13 @@ begin
     end if;
   end loop;
 end $$;
+
+-- Grant table and sequence permissions to anon and authenticated roles
+grant usage on schema public to anon, authenticated;
+grant all on all tables in schema public to anon, authenticated;
+grant all on all sequences in schema public to anon, authenticated;
+grant all on all routines in schema public to anon, authenticated;
+
+alter default privileges in schema public grant all on tables to anon, authenticated;
+alter default privileges in schema public grant all on sequences to anon, authenticated;
+alter default privileges in schema public grant all on routines to anon, authenticated;

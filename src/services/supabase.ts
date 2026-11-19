@@ -34,7 +34,7 @@ const TABLE_COLUMNS: Record<string, string[]> = {
   ],
   announcements: [
     'id', 'title', 'content', 'attachments', 'author_id', 'author_name',
-    'author_avatar', 'is_pinned', 'is_important', 'created_at'
+    'author_avatar', 'is_pinned', 'is_important', 'status', 'event_date', 'event_time', 'created_at', 'updated_at'
   ],
   church_members_auth: [
     'id', 'username', 'name', 'email', 'role', 'role_title', 'avatar',
