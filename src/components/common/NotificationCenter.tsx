@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Bell,
   CheckCheck,
@@ -8,11 +8,14 @@ import {
   Calendar,
   CheckSquare,
   Megaphone,
-  MessageCircle
+  MessageCircle,
+  Settings
 } from 'lucide-react';
 import { useWorship, AppModule } from '../../context/WorshipContext';
+import { NotificationSettingsModal } from '../settings/NotificationSettingsModal';
 
 export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const {
     notifications,
     markNotifRead,
@@ -74,6 +77,13 @@ export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose 
             </button>
           )}
           <button
+            onClick={() => setIsSettingsOpen(true)}
+            className="p-1 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors"
+            title="Notification Settings & iOS Push"
+          >
+            <Settings className="w-4 h-4" />
+          </button>
+          <button
             onClick={onClose}
             className="p-1 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100"
           >
@@ -117,6 +127,11 @@ export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose 
         )}
       </div>
     </div>
+
+    <NotificationSettingsModal
+      isOpen={isSettingsOpen}
+      onClose={() => setIsSettingsOpen(false)}
+    />
     </>
   );
 

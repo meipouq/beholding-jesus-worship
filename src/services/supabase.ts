@@ -40,6 +40,9 @@ const TABLE_COLUMNS: Record<string, string[]> = {
     'id', 'username', 'name', 'email', 'role', 'role_title', 'avatar',
     'bio', 'salt', 'password_hash', 'failed_attempts', 'lockout_until',
     'created_at', 'updated_at'
+  ],
+  push_subscriptions: [
+    'id', 'user_id', 'endpoint', 'p256dh', 'auth', 'user_agent', 'platform', 'created_at', 'updated_at'
   ]
 };
 
