@@ -16,6 +16,7 @@ import { StorageService } from '../services/storage';
 import { pullAllFromSupabase, syncRecordToSupabase, deleteRecordFromSupabase, getSupabase } from '../services/supabase';
 import { AuthService } from '../services/auth';
 import { parseServiceDateTime } from '../utils/serviceSchedule';
+import { dispatchPushBroadcast } from '../services/pushNotifications';
 
 export type AppModule = 
   | 'dashboard'
@@ -445,6 +446,16 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
         created_at: 'Just now'
       };
       setNotifications(StorageService.addNotification(notif));
+
+      // Trigger Web Push notification for mobile lock-screen & home-screen alerts
+      if (updatedLineup.status === 'published') {
+        dispatchPushBroadcast({
+          title: 'Service Lineup Published!',
+          body: `${updatedLineup.title} for ${updatedLineup.service_date} (${updatedLineup.songs.length} songs) posted by ${currentUser.name}.`,
+          url: '/?module=lineups',
+          category: 'lineup'
+        });
+      }
     }
   };
 
@@ -488,9 +499,14 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const currentList = StorageService.getLineups();
     const target = currentList.find(l => l.id === id);
     if (!target) return;
+    const cleanNotes = (target.notes || '').replace(/\[COMPLETED\]\s*/g, '').trim();
+    const notesWithCancelled = cleanNotes.includes('[CANCELLED]')
+      ? cleanNotes
+      : (cleanNotes ? `[CANCELLED] ${cleanNotes}` : '[CANCELLED]');
     const updatedLineup: ServiceLineup = {
       ...target,
       status: 'cancelled',
+      notes: notesWithCancelled,
       updated_by: currentUser.name,
       updated_at: new Date().toISOString()
     };
@@ -504,9 +520,14 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const currentList = StorageService.getLineups();
     const target = currentList.find(l => l.id === id);
     if (!target) return;
+    const cleanNotes = (target.notes || '')
+      .replace(/\[COMPLETED\]\s*/g, '')
+      .replace(/\[CANCELLED\]\s*/g, '')
+      .trim();
     const updatedLineup: ServiceLineup = {
       ...target,
       status: 'published',
+      notes: cleanNotes,
       updated_by: currentUser.name,
       updated_at: new Date().toISOString()
     };
@@ -514,15 +535,28 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setLineups(updated);
     logActivity('published service lineup', updatedLineup.title);
     syncRecordToSupabase('service_lineups', updatedLineup);
+
+    // Broadcast Web Push alert to all team members
+    dispatchPushBroadcast({
+      title: 'Service Lineup Published!',
+      body: `${updatedLineup.title} for ${updatedLineup.service_date} is now published by ${currentUser.name}!`,
+      url: '/?module=lineups',
+      category: 'lineup'
+    });
   };
 
   const completeLineup = (id: string) => {
     const currentList = StorageService.getLineups();
     const target = currentList.find(l => l.id === id);
     if (!target) return;
+    const cleanNotes = (target.notes || '').replace(/\[CANCELLED\]\s*/g, '').trim();
+    const notesWithCompleted = cleanNotes.includes('[COMPLETED]')
+      ? cleanNotes
+      : (cleanNotes ? `[COMPLETED] ${cleanNotes}` : '[COMPLETED]');
     const updatedLineup: ServiceLineup = {
       ...target,
       status: 'completed',
+      notes: notesWithCompleted,
       updated_by: currentUser.name,
       updated_at: new Date().toISOString()
     };
@@ -555,6 +589,13 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
         created_at: 'Just now'
       };
       setNotifications(StorageService.addNotification(notif));
+
+      dispatchPushBroadcast({
+        title: 'Rehearsal Scheduled',
+        body: `${rehearsal.title} on ${rehearsal.date} at ${rehearsal.start_time} (${rehearsal.venue}) by ${currentUser.name}.`,
+        url: '/?module=rehearsals',
+        category: 'rehearsal'
+      });
     }
   };
 
@@ -671,6 +712,15 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
         created_at: 'Just now'
       };
       setNotifications(StorageService.addNotification(notif));
+
+      if (updatedAnn.status === 'published') {
+        dispatchPushBroadcast({
+          title: ann.is_important ? 'Important Announcement' : 'New Announcement',
+          body: `${ann.title} - posted by ${currentUser.name}`,
+          url: '/?module=announcements',
+          category: 'announcement'
+        });
+      }
     }
   };
 
@@ -692,6 +742,13 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setAnnouncements(updated);
     logActivity('published announcement', updatedAnn.title);
     syncRecordToSupabase('announcements', updatedAnn);
+
+    dispatchPushBroadcast({
+      title: updatedAnn.is_important ? 'Important Announcement' : 'New Announcement',
+      body: `${updatedAnn.title} - posted by ${currentUser.name}`,
+      url: '/?module=announcements',
+      category: 'announcement'
+    });
   };
 
   const unpublishAnnouncement = (id: string) => {

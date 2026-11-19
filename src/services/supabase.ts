@@ -246,28 +246,12 @@ export async function pullAllFromSupabase(): Promise<{ success: boolean; count: 
         if (l.status === 'draft' && (l.notes?.includes('[CANCELLED]') || l.history?.some((h: any) => h?.action?.toLowerCase().includes('cancel')))) {
           return { ...l, status: 'cancelled' };
         }
-        if (l.status === 'published' && l.notes?.includes('[COMPLETED]')) {
+        if ((l.status === 'published' || l.status === 'completed') && (l.notes?.includes('[COMPLETED]') || l.history?.some((h: any) => h?.action?.toLowerCase().includes('complete')))) {
           return { ...l, status: 'completed' };
         }
         return l;
       });
-      // Timestamp-aware merge so local user actions are never overwritten by race conditions
-      const local = StorageService.getLineups();
-      const mergedMap = new Map<string, ServiceLineup>();
-      normalizedLineups.forEach(l => mergedMap.set(l.id, l));
-      local.forEach(l => {
-        const remote = mergedMap.get(l.id);
-        if (!remote) {
-          mergedMap.set(l.id, l);
-        } else {
-          const localTime = new Date(l.updated_at || l.created_at || 0).getTime();
-          const remoteTime = new Date(remote.updated_at || remote.created_at || 0).getTime();
-          if (localTime >= remoteTime) {
-            mergedMap.set(l.id, l);
-          }
-        }
-      });
-      StorageService.setLineups(Array.from(mergedMap.values()));
+      StorageService.setLineups(normalizedLineups);
       totalPulled += lineups.length;
     }
     if (!rehErr && Array.isArray(rehearsals)) {
@@ -279,22 +263,7 @@ export async function pullAllFromSupabase(): Promise<{ success: boolean; count: 
       totalPulled += tasks.length;
     }
     if (!annErr && Array.isArray(announcements)) {
-      const localAnn = StorageService.getAnnouncements();
-      const mergedAnnMap = new Map<string, Announcement>();
-      announcements.forEach(a => mergedAnnMap.set(a.id, a));
-      localAnn.forEach(a => {
-        const remote = mergedAnnMap.get(a.id);
-        if (!remote) {
-          mergedAnnMap.set(a.id, a);
-        } else {
-          const localTime = new Date(a.updated_at || a.created_at || 0).getTime();
-          const remoteTime = new Date(remote.updated_at || remote.created_at || 0).getTime();
-          if (localTime >= remoteTime) {
-            mergedAnnMap.set(a.id, a);
-          }
-        }
-      });
-      StorageService.setAnnouncements(Array.from(mergedAnnMap.values()));
+      StorageService.setAnnouncements(announcements);
       totalPulled += announcements.length;
     }
 

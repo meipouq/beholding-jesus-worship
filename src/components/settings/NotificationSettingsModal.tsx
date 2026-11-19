@@ -23,6 +23,7 @@ import {
   getStoredPushPreferences,
   saveStoredPushPreferences,
   syncPushPreferencesToSupabase,
+  dispatchPushBroadcast,
   PushCategoryPreferences,
   IOSSupportStatus
 } from '../../services/pushNotifications';
@@ -47,12 +48,17 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [permissionState, setPermissionState] = useState<NotificationPermission>('default');
   const [loading, setLoading] = useState(false);
+  const [testing, setTesting] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error' | 'info'; text: string } | null>(null);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [preferences, setPreferences] = useState<PushCategoryPreferences>(getStoredPushPreferences());
 
   useEffect(() => {
     if (!isOpen) return;
+
+    // Prevent background scrolling while modal is open
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
 
     const status = getIOSSupportStatus();
     setSupportStatus(status);
@@ -67,9 +73,44 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
 
     // Keep guide collapsed initially so the Enable button is immediately visible without scrolling
     setIsGuideOpen(false);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
   }, [isOpen]);
 
   if (!isOpen) return null;
+
+  const handleSendTestPush = async () => {
+    setTesting(true);
+    setFeedback(null);
+    try {
+      const res = await dispatchPushBroadcast({
+        title: '🔔 Worship Team Test Alert',
+        body: `Hello ${currentUser.name}! Push notifications are working perfectly on your device.`,
+        url: '/',
+        category: 'general',
+      });
+      if (res.success) {
+        setFeedback({
+          type: 'success',
+          text: `Test alert dispatched! Sent to ${res.sentCount || 1} active device(s). Check your Lock Screen or Notification Center!`,
+        });
+      } else {
+        setFeedback({
+          type: 'error',
+          text: res.error || 'Failed to dispatch test notification.',
+        });
+      }
+    } catch (err: any) {
+      setFeedback({
+        type: 'error',
+        text: err?.message || 'Error triggering test notification.',
+      });
+    } finally {
+      setTesting(false);
+    }
+  };
 
   const handleEnablePush = async () => {
     // If on iOS and not yet running from Home Screen, guide the user
@@ -140,11 +181,11 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-fade-in overscroll-contain"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-fade-in overscroll-contain"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border border-stone-200 overflow-hidden animate-slide-up flex flex-col max-h-[88dvh] sm:max-h-[85vh]"
+        className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden animate-slide-up flex flex-col max-h-[90vh] sm:max-h-[85vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -196,8 +237,8 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
               Get notified for new Sunday lineups, singer assignments, and rehearsals even when this app is closed or locked.
             </p>
 
-            {/* Big Action Button */}
-            <div>
+            {/* Action Buttons */}
+            <div className="space-y-2">
               {!isSubscribed ? (
                 <button
                   onClick={handleEnablePush}
@@ -208,13 +249,23 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
                   <span>{loading ? 'Activating...' : 'Enable Web Push Notifications'}</span>
                 </button>
               ) : (
-                <button
-                  onClick={handleDisablePush}
-                  disabled={loading}
-                  className="w-full py-2.5 px-4 rounded-2xl bg-rose-50 hover:bg-rose-100 active:scale-[0.98] text-rose-800 border border-rose-200 font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <span>Turn Off Notifications on this Device</span>
-                </button>
+                <>
+                  <button
+                    onClick={handleSendTestPush}
+                    disabled={testing}
+                    className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 active:scale-[0.98] text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  >
+                    <Bell className="w-4 h-4 fill-white text-white" />
+                    <span>{testing ? 'Sending alert...' : 'Send Test Notification to this Device'}</span>
+                  </button>
+                  <button
+                    onClick={handleDisablePush}
+                    disabled={loading}
+                    className="w-full py-2 px-4 rounded-2xl bg-rose-50 hover:bg-rose-100 active:scale-[0.98] text-rose-800 border border-rose-200 font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <span>Turn Off Notifications on this Device</span>
+                  </button>
+                </>
               )}
             </div>
 

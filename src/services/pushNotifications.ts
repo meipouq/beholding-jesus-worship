@@ -207,7 +207,7 @@ export async function subscribeUserToPush(userId: string): Promise<{
         ? 'android'
         : 'desktop';
 
-      await supabase.from('push_subscriptions').upsert(
+      const { error: subErr } = await supabase.from('push_subscriptions').upsert(
         {
           user_id: userId,
           endpoint: sub.endpoint,
@@ -219,6 +219,16 @@ export async function subscribeUserToPush(userId: string): Promise<{
         },
         { onConflict: 'user_id,endpoint' }
       );
+      if (subErr) {
+        console.error('Supabase push_subscriptions upsert error:', subErr);
+        return {
+          success: false,
+          error:
+            subErr.code === '42501'
+              ? 'Database permission error. Please run the Supabase RLS policy update in SQL Editor.'
+              : 'Database rejected subscription: ' + subErr.message,
+        };
+      }
     }
 
     return { success: true, subscription: sub };
@@ -297,5 +307,39 @@ export async function syncPushPreferencesToSupabase(
     );
   } catch (err) {
     console.warn('Failed to sync push preferences to Supabase:', err);
+  }
+}
+
+export interface BroadcastPushPayload {
+  title: string;
+  body: string;
+  url?: string;
+  category?: 'lineup' | 'assignment' | 'rehearsal' | 'announcement' | 'reminder' | 'general';
+  notification_id?: string;
+}
+
+// Dispatches a Web Push alert to all registered and eligible devices via Vercel serverless function
+export async function dispatchPushBroadcast(
+  payload: BroadcastPushPayload
+): Promise<{ success: boolean; sentCount?: number; error?: string }> {
+  try {
+    const res = await fetch('/api/send-push', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      return { success: false, error: err.error || `HTTP ${res.status}` };
+    }
+
+    const data = await res.json();
+    return { success: true, sentCount: data.sentCount };
+  } catch (err: any) {
+    console.warn('dispatchPushBroadcast warning:', err);
+    return { success: false, error: err?.message || 'Network error' };
   }
 }

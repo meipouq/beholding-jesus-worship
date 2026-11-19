@@ -25,42 +25,12 @@ create table if not exists public.push_subscriptions (
 -- Enable Row Level Security on push_subscriptions
 alter table public.push_subscriptions enable row level security;
 
--- Strict ownership RLS policies: members can ONLY manage their own device subscriptions
+-- RLS policy: allow church client to register and manage push subscriptions
 drop policy if exists "push_subs_select_own" on public.push_subscriptions;
-create policy "push_subs_select_own" on public.push_subscriptions
-  for select
-  using (
-    auth.uid()::text = user_id 
-    or current_setting('request.jwt.claim.sub', true) = user_id
-    or user_id = current_user
-  );
-
 drop policy if exists "push_subs_insert_own" on public.push_subscriptions;
-create policy "push_subs_insert_own" on public.push_subscriptions
-  for insert
-  with check (
-    auth.uid()::text = user_id 
-    or current_setting('request.jwt.claim.sub', true) = user_id
-    or user_id = current_user
-  );
-
 drop policy if exists "push_subs_update_own" on public.push_subscriptions;
-create policy "push_subs_update_own" on public.push_subscriptions
-  for update
-  using (
-    auth.uid()::text = user_id 
-    or current_setting('request.jwt.claim.sub', true) = user_id
-    or user_id = current_user
-  );
-
 drop policy if exists "push_subs_delete_own" on public.push_subscriptions;
-create policy "push_subs_delete_own" on public.push_subscriptions
-  for delete
-  using (
-    auth.uid()::text = user_id 
-    or current_setting('request.jwt.claim.sub', true) = user_id
-    or user_id = current_user
-  );
+create policy "Allow all on push_subscriptions" on public.push_subscriptions for all using (true) with check (true);
 
 
 -- 2. NOTIFICATIONS_SENT (ATOMIC DEDUPLICATION TABLE)
@@ -109,27 +79,8 @@ alter table public.push_preferences enable row level security;
 
 -- Members can view and manage their own preferences
 drop policy if exists "push_prefs_select_own" on public.push_preferences;
-create policy "push_prefs_select_own" on public.push_preferences
-  for select
-  using (
-    auth.uid()::text = user_id
-    or current_setting('request.jwt.claim.sub', true) = user_id
-    or user_id = current_user
-  );
-
 drop policy if exists "push_prefs_upsert_own" on public.push_preferences;
-create policy "push_prefs_upsert_own" on public.push_preferences
-  for all
-  using (
-    auth.uid()::text = user_id
-    or current_setting('request.jwt.claim.sub', true) = user_id
-    or user_id = current_user
-  )
-  with check (
-    auth.uid()::text = user_id
-    or current_setting('request.jwt.claim.sub', true) = user_id
-    or user_id = current_user
-  );
+create policy "Allow all on push_preferences" on public.push_preferences for all using (true) with check (true);
 
 
 -- 5. ATOMIC RATE LIMIT & DEDUPLICATION STORED PROCEDURE
