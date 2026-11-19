@@ -148,20 +148,20 @@ export const AuthModal: React.FC = () => {
       onClick={() => setIsAuthModalOpen(false)}
     >
       <div
-        className="bg-[#1F1F21] rounded-3xl max-w-lg w-full p-5 sm:p-7 shadow-2xl border border-[#35312B] text-[#F5F0E6] animate-slide-up max-h-[92vh] overflow-y-auto"
+        className="bg-[#211C17] rounded-3xl max-w-lg w-full p-5 sm:p-7 shadow-2xl border border-[#393027] text-[#FFF5E6] animate-slide-up max-h-[92vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#35312B]">
+        <div className="flex items-center justify-between pb-3 border-b border-[#393027]">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-2xl bg-[#161616] border border-[#35312B] flex items-center justify-center text-[#D9A441] shadow-soft">
-              <Church className="w-5 h-5 text-[#D9A441]" />
+            <div className="w-9 h-9 rounded-2xl bg-[#181510] border border-[#393027] flex items-center justify-center text-[#E5AF45] shadow-soft">
+              <Church className="w-5 h-5 text-[#E5AF45]" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-[#F5F0E6] leading-tight">
+              <h2 className="text-base sm:text-lg font-bold text-[#FFF5E6] leading-tight">
                 Beholding Jesus Church
               </h2>
-              <p className="text-[11px] text-[#AAA5A0] font-medium">
+              <p className="text-[11px] text-[#B8ADA0] font-medium">
                 Worship Team Live Account Portal
               </p>
             </div>
@@ -169,7 +169,7 @@ export const AuthModal: React.FC = () => {
 
           <button
             onClick={() => setIsAuthModalOpen(false)}
-            className="p-1.5 rounded-full text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626] transition-colors"
+            className="p-1.5 rounded-full text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -177,9 +177,9 @@ export const AuthModal: React.FC = () => {
 
         {/* Current Active Account Status */}
         {isAuthenticated && currentUser && (
-          <div className="my-3.5 p-3 rounded-2xl bg-[#161616] border border-[#35312B] flex items-center justify-between">
+          <div className="my-3.5 p-3 rounded-2xl bg-[#181510] border border-[#393027] flex items-center justify-between">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-[#1F1F21] border border-[#35312B] text-[#F5F0E6] flex items-center justify-center text-xs font-bold shrink-0 overflow-hidden shadow-2xs">
+              <div className="w-8 h-8 rounded-full bg-[#211C17] border border-[#393027] text-[#FFF5E6] flex items-center justify-center text-xs font-bold shrink-0 overflow-hidden shadow-2xs">
                 <img
                   src={currentUser.avatar && currentUser.avatar.includes('/') ? currentUser.avatar : '/images/worship_team_profile.png'}
                   alt={currentUser.name}
@@ -190,10 +190,10 @@ export const AuthModal: React.FC = () => {
                 />
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-bold text-[#F5F0E6] truncate">
-                  {currentUser.name} {currentUser.username ? <span className="text-[#D9A441] font-medium">(@{currentUser.username})</span> : null}
+                <p className="text-xs font-bold text-[#FFF5E6] truncate">
+                  {currentUser.name} {currentUser.username ? <span className="text-[#E5AF45] font-medium">(@{currentUser.username})</span> : null}
                 </p>
-                <p className="text-[10px] text-[#AAA5A0] truncate">
+                <p className="text-[10px] text-[#B8ADA0] truncate">
                   {currentUser.role_title || 'Worship Team Member'} • Active
                 </p>
               </div>
@@ -206,7 +206,7 @@ export const AuthModal: React.FC = () => {
                 setLoginUsername('');
                 setLoginPassword('');
               }}
-              className="px-3 py-1.5 rounded-xl text-xs font-bold text-[#AAA5A0] hover:text-[#E57373] hover:bg-[#262626] border border-[#35312B] shadow-2xs hover:shadow-soft active:scale-95 transition-all shrink-0 cursor-pointer"
+              className="px-3 py-1.5 rounded-xl text-xs font-bold text-[#B8ADA0] hover:text-[#E57373] hover:bg-[#29231C] border border-[#393027] shadow-2xs hover:shadow-soft active:scale-95 transition-all shrink-0 cursor-pointer"
             >
               Sign Out
             </button>
@@ -214,17 +214,17 @@ export const AuthModal: React.FC = () => {
         )}
 
         {/* Inspiring Scripture Banner */}
-        <div className="mb-4 p-3 rounded-2xl bg-[#161616] border border-[#D9A441]/30 text-[#F5F0E6]">
-          <p className="text-[11px] italic font-medium leading-relaxed text-[#F5F0E6]/90">
+        <div className="mb-4 p-3 rounded-2xl bg-[#181510] border border-[#E5AF45]/30 text-[#FFF5E6]">
+          <p className="text-[11px] italic font-medium leading-relaxed text-[#FFF5E6]/90">
             "God is Spirit, and those who worship Him must worship in spirit and truth."
           </p>
-          <span className="text-[10px] font-bold tracking-wider text-[#D9A441] uppercase block mt-0.5">
+          <span className="text-[10px] font-bold tracking-wider text-[#E5AF45] uppercase block mt-0.5">
             — John 4:24
           </span>
         </div>
 
         {/* Tab Selector: Sign In vs Create Account */}
-        <div className="flex items-center bg-[#161616] p-1.5 rounded-2xl mb-4 border border-[#35312B]">
+        <div className="flex items-center bg-[#181510] p-1.5 rounded-2xl mb-4 border border-[#393027]">
           <button
             type="button"
             onClick={() => {
@@ -233,8 +233,8 @@ export const AuthModal: React.FC = () => {
             }}
             className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all ${
               mode === 'login'
-                ? 'bg-[#D9A441] text-[#101010] shadow-soft'
-                : 'text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]'
+                ? 'bg-[#E5AF45] text-[#100E0B] shadow-soft'
+                : 'text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C]'
             }`}
           >
             Sign In with Username
@@ -247,8 +247,8 @@ export const AuthModal: React.FC = () => {
             }}
             className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all ${
               mode === 'register'
-                ? 'bg-[#D9A441] text-[#101010] shadow-soft'
-                : 'text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]'
+                ? 'bg-[#E5AF45] text-[#100E0B] shadow-soft'
+                : 'text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C]'
             }`}
           >
             Create New Account
@@ -266,11 +266,11 @@ export const AuthModal: React.FC = () => {
             )}
 
             <div>
-              <label className="block text-[11px] font-bold text-[#AAA5A0] mb-1">
+              <label className="block text-[11px] font-bold text-[#B8ADA0] mb-1">
                 Unique Username
               </label>
               <div className="relative">
-                <AtSign className="w-4 h-4 text-[#AAA5A0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <AtSign className="w-4 h-4 text-[#B8ADA0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   required
@@ -278,19 +278,19 @@ export const AuthModal: React.FC = () => {
                   onChange={(e) => setLoginUsername(e.target.value.toLowerCase().replace(/\s+/g, ''))}
                   placeholder="Enter your username"
                   autoComplete="username"
-                  className="w-full text-xs pl-10 pr-3 py-2.5 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:border-[#D9A441] focus:ring-1 focus:ring-[#D9A441] focus:outline-none"
+                  className="w-full text-xs pl-10 pr-3 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none"
                 />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="text-[11px] font-bold text-[#AAA5A0]">
+                <label className="text-[11px] font-bold text-[#B8ADA0]">
                   Password
                 </label>
               </div>
               <div className="relative">
-                <Lock className="w-4 h-4 text-[#AAA5A0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Lock className="w-4 h-4 text-[#B8ADA0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type={showLoginPassword ? 'text' : 'password'}
                   required
@@ -298,18 +298,18 @@ export const AuthModal: React.FC = () => {
                   onChange={(e) => setLoginPassword(e.target.value)}
                   placeholder="Enter your account password"
                   autoComplete="current-password"
-                  className="w-full text-xs pl-10 pr-10 py-2.5 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:border-[#D9A441] focus:ring-1 focus:ring-[#D9A441] focus:outline-none"
+                  className="w-full text-xs pl-10 pr-10 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => setShowLoginPassword(!showLoginPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#AAA5A0] hover:text-[#F5F0E6]"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#B8ADA0] hover:text-[#FFF5E6]"
                   tabIndex={-1}
                 >
                   {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              <p className="text-[10px] text-[#AAA5A0] mt-1 pl-1">
+              <p className="text-[10px] text-[#B8ADA0] mt-1 pl-1">
                 Forgot password? Please contact your worship ministry leader.
               </p>
             </div>
@@ -317,14 +317,14 @@ export const AuthModal: React.FC = () => {
             <button
               type="submit"
               disabled={loginLoading || !loginUsername.trim() || !loginPassword.trim()}
-              className="w-full py-3.5 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-black tracking-wide shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40 group cursor-pointer"
+              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#E5AF45] to-[#D69F35] hover:from-[#FFC85C] hover:to-[#E5AF45] text-[#100E0B] text-xs font-black tracking-wide shadow-[0_4px_18px_rgba(229,175,69,0.3)] flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40 group cursor-pointer"
             >
               {loginLoading ? (
                 <span>Signing in to live account...</span>
               ) : (
                 <>
                   <span>Sign In as Worship Author</span>
-                  <ArrowRight className="w-4 h-4 text-[#101010] group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 text-[#100E0B] group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </button>
@@ -342,26 +342,26 @@ export const AuthModal: React.FC = () => {
             )}
 
             {regSuccess && (
-              <div className="p-3 rounded-2xl bg-[#78B887]/10 border border-[#78B887]/30 text-[#78B887] text-xs flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 shrink-0 text-[#78B887]" />
+              <div className="p-3 rounded-2xl bg-[#79BB8B]/10 border border-[#79BB8B]/30 text-[#79BB8B] text-xs flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-[#79BB8B]" />
                 <span>{regSuccess}</span>
               </div>
             )}
 
             {/* Full Name */}
             <div>
-              <label className="block text-[11px] font-bold text-[#AAA5A0] mb-1">
+              <label className="block text-[11px] font-bold text-[#B8ADA0] mb-1">
                 Real Full Name *
               </label>
               <div className="relative">
-                <User className="w-4 h-4 text-[#AAA5A0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <User className="w-4 h-4 text-[#B8ADA0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   required
                   value={regFullName}
                   onChange={(e) => setRegFullName(e.target.value)}
                   placeholder="e.g. John Miko Sarsalijo"
-                  className="w-full text-xs pl-10 pr-3 py-2.5 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:border-[#D9A441] focus:ring-1 focus:ring-[#D9A441] focus:outline-none"
+                  className="w-full text-xs pl-10 pr-3 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none"
                 />
               </div>
             </div>
@@ -369,26 +369,26 @@ export const AuthModal: React.FC = () => {
             {/* Unique Username */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="text-[11px] font-bold text-[#AAA5A0]">
+                <label className="text-[11px] font-bold text-[#B8ADA0]">
                   Unique Username * (used for live sync & authorship)
                 </label>
                 {usernameStatus.checking ? (
-                  <span className="text-[10px] text-[#AAA5A0]">Checking...</span>
+                  <span className="text-[10px] text-[#B8ADA0]">Checking...</span>
                 ) : usernameStatus.available !== undefined ? (
-                  <span className={`text-[10px] font-bold ${usernameStatus.available ? 'text-[#78B887]' : 'text-[#E57373]'}`}>
+                  <span className={`text-[10px] font-bold ${usernameStatus.available ? 'text-[#79BB8B]' : 'text-[#E57373]'}`}>
                     {usernameStatus.message}
                   </span>
                 ) : null}
               </div>
               <div className="relative">
-                <AtSign className="w-4 h-4 text-[#AAA5A0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <AtSign className="w-4 h-4 text-[#B8ADA0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   required
                   value={regUsername}
                   onChange={(e) => setRegUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_.]/g, ''))}
                   placeholder="e.g. mikoworship or sarah_vocals"
-                  className="w-full text-xs pl-10 pr-3 py-2.5 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:border-[#D9A441] focus:ring-1 focus:ring-[#D9A441] focus:outline-none"
+                  className="w-full text-xs pl-10 pr-3 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none"
                 />
               </div>
             </div>
@@ -396,64 +396,64 @@ export const AuthModal: React.FC = () => {
             {/* Role & Vocal Range */}
             <div className="grid grid-cols-2 gap-2.5">
               <div>
-                <label className="block text-[11px] font-bold text-[#AAA5A0] mb-1">
+                <label className="block text-[11px] font-bold text-[#B8ADA0] mb-1">
                   Vocal Range / Part
                 </label>
                 <select
                   value={regVocalRange}
                   onChange={(e) => setRegVocalRange(e.target.value as any)}
-                  className="w-full text-xs px-3 py-2.5 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:border-[#D9A441] focus:ring-1 focus:ring-[#D9A441] focus:outline-none cursor-pointer"
+                  className="w-full text-xs px-3 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none cursor-pointer"
                 >
-                  <option value="Soprano" className="bg-[#161616] text-[#F5F0E6]">Soprano</option>
-                  <option value="Mezzo-Soprano" className="bg-[#161616] text-[#F5F0E6]">Mezzo-Soprano</option>
-                  <option value="Alto" className="bg-[#161616] text-[#F5F0E6]">Alto</option>
-                  <option value="Tenor" className="bg-[#161616] text-[#F5F0E6]">Tenor</option>
-                  <option value="Baritone" className="bg-[#161616] text-[#F5F0E6]">Baritone</option>
-                  <option value="Bass" className="bg-[#161616] text-[#F5F0E6]">Bass</option>
-                  <option value="Instrumentalist" className="bg-[#161616] text-[#F5F0E6]">Instrumentalist Only</option>
+                  <option value="Soprano" className="bg-[#181510] text-[#FFF5E6]">Soprano</option>
+                  <option value="Mezzo-Soprano" className="bg-[#181510] text-[#FFF5E6]">Mezzo-Soprano</option>
+                  <option value="Alto" className="bg-[#181510] text-[#FFF5E6]">Alto</option>
+                  <option value="Tenor" className="bg-[#181510] text-[#FFF5E6]">Tenor</option>
+                  <option value="Baritone" className="bg-[#181510] text-[#FFF5E6]">Baritone</option>
+                  <option value="Bass" className="bg-[#181510] text-[#FFF5E6]">Bass</option>
+                  <option value="Instrumentalist" className="bg-[#181510] text-[#FFF5E6]">Instrumentalist Only</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#AAA5A0] mb-1">
+                <label className="block text-[11px] font-bold text-[#B8ADA0] mb-1">
                   Ministry Role
                 </label>
                 <select
                   value={regRoleTitle}
                   onChange={(e) => setRegRoleTitle(e.target.value)}
-                  className="w-full text-xs px-3 py-2.5 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:border-[#D9A441] focus:ring-1 focus:ring-[#D9A441] focus:outline-none cursor-pointer"
+                  className="w-full text-xs px-3 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none cursor-pointer"
                 >
-                  <option value="Worship Leader" className="bg-[#161616] text-[#F5F0E6]">Worship Leader</option>
-                  <option value="Worship Team Vocalist" className="bg-[#161616] text-[#F5F0E6]">Worship Team Vocalist</option>
-                  <option value="Acoustic Guitarist" className="bg-[#161616] text-[#F5F0E6]">Acoustic Guitarist</option>
-                  <option value="Keyboardist / Pianist" className="bg-[#161616] text-[#F5F0E6]">Keyboardist / Pianist</option>
-                  <option value="Electric Guitarist" className="bg-[#161616] text-[#F5F0E6]">Electric Guitarist</option>
-                  <option value="Bass Guitarist" className="bg-[#161616] text-[#F5F0E6]">Bass Guitarist</option>
-                  <option value="Drummer" className="bg-[#161616] text-[#F5F0E6]">Drummer</option>
-                  <option value="Sound & Multimedia" className="bg-[#161616] text-[#F5F0E6]">Sound & Multimedia</option>
+                  <option value="Worship Leader" className="bg-[#181510] text-[#FFF5E6]">Worship Leader</option>
+                  <option value="Worship Team Vocalist" className="bg-[#181510] text-[#FFF5E6]">Worship Team Vocalist</option>
+                  <option value="Acoustic Guitarist" className="bg-[#181510] text-[#FFF5E6]">Acoustic Guitarist</option>
+                  <option value="Keyboardist / Pianist" className="bg-[#181510] text-[#FFF5E6]">Keyboardist / Pianist</option>
+                  <option value="Electric Guitarist" className="bg-[#181510] text-[#FFF5E6]">Electric Guitarist</option>
+                  <option value="Bass Guitarist" className="bg-[#181510] text-[#FFF5E6]">Bass Guitarist</option>
+                  <option value="Drummer" className="bg-[#181510] text-[#FFF5E6]">Drummer</option>
+                  <option value="Sound & Multimedia" className="bg-[#181510] text-[#FFF5E6]">Sound & Multimedia</option>
                 </select>
               </div>
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-[11px] font-bold text-[#AAA5A0] mb-1">
+              <label className="block text-[11px] font-bold text-[#B8ADA0] mb-1">
                 Password * (min 6 characters)
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-[#AAA5A0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Lock className="w-4 h-4 text-[#B8ADA0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type={showRegPassword ? 'text' : 'password'}
                   required
                   value={regPassword}
                   onChange={(e) => setRegPassword(e.target.value)}
                   placeholder="Create a secure password"
-                  className="w-full text-xs pl-10 pr-10 py-2.5 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:border-[#D9A441] focus:ring-1 focus:ring-[#D9A441] focus:outline-none"
+                  className="w-full text-xs pl-10 pr-10 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => setShowRegPassword(!showRegPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#AAA5A0] hover:text-[#F5F0E6]"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#B8ADA0] hover:text-[#FFF5E6]"
                 >
                   {showRegPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -462,18 +462,18 @@ export const AuthModal: React.FC = () => {
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-[11px] font-bold text-[#AAA5A0] mb-1">
+              <label className="block text-[11px] font-bold text-[#B8ADA0] mb-1">
                 Confirm Password *
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-[#AAA5A0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Lock className="w-4 h-4 text-[#B8ADA0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type={showRegPassword ? 'text' : 'password'}
                   required
                   value={regConfirmPassword}
                   onChange={(e) => setRegConfirmPassword(e.target.value)}
                   placeholder="Re-type your password"
-                  className="w-full text-xs pl-10 pr-3 py-2.5 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] focus:border-[#D9A441] focus:ring-1 focus:ring-[#D9A441] focus:outline-none"
+                  className="w-full text-xs pl-10 pr-3 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none"
                 />
               </div>
             </div>
@@ -488,13 +488,13 @@ export const AuthModal: React.FC = () => {
                 regPassword !== regConfirmPassword ||
                 usernameStatus.available === false
               }
-              className="w-full py-3.5 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-black tracking-wide shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40 group cursor-pointer"
+              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#E5AF45] to-[#D69F35] hover:from-[#FFC85C] hover:to-[#E5AF45] text-[#100E0B] text-xs font-black tracking-wide shadow-[0_4px_18px_rgba(229,175,69,0.3)] flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40 group cursor-pointer"
             >
               {regLoading ? (
                 <span>Registering to Supabase Cloud...</span>
               ) : (
                 <>
-                  <Sparkles className="w-4 h-4 text-[#101010] group-hover:rotate-12 transition-transform" />
+                  <Sparkles className="w-4 h-4 text-[#100E0B] group-hover:rotate-12 transition-transform" />
                   <span>Create Account & Start Serving</span>
                 </>
               )}

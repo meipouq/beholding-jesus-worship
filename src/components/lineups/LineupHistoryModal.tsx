@@ -14,17 +14,17 @@ export const LineupHistoryModal: React.FC<LineupHistoryModalProps> = ({ lineup, 
       onClick={onClose}
     >
       <div
-        className="bg-[#1F1F21] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#35312B] animate-slide-up text-[#F5F0E6]"
+        className="bg-[#211C17] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#393027] animate-slide-up text-[#FFF5E6]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between pb-4 border-b border-[#35312B]">
+        <div className="flex items-center justify-between pb-4 border-b border-[#393027]">
           <div className="flex items-center gap-2">
-            <History className="w-5 h-5 text-[#D9A441]" />
-            <h2 className="text-base font-bold text-[#F5F0E6]">Lineup Change History</h2>
+            <History className="w-5 h-5 text-[#E5AF45]" />
+            <h2 className="text-base font-bold text-[#FFF5E6]">Lineup Change History</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
+            className="p-1 rounded-full text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -32,18 +32,18 @@ export const LineupHistoryModal: React.FC<LineupHistoryModalProps> = ({ lineup, 
 
         <div className="mt-4 space-y-3 max-h-72 overflow-y-auto pr-1">
           {(!lineup.history || lineup.history.length === 0) ? (
-            <p className="text-xs text-[#AAA5A0] text-center py-6">No change history recorded.</p>
+            <p className="text-xs text-[#B8ADA0] text-center py-6">No change history recorded.</p>
           ) : (
             lineup.history.map((h) => (
-              <div key={h.id} className="p-3 rounded-2xl bg-[#161616] border border-[#35312B] text-xs">
+              <div key={h.id} className="p-3 rounded-2xl bg-[#181510] border border-[#393027] text-xs">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="font-bold text-[#F5F0E6]">{h.user_name}</span>
-                  <span className="text-[10px] text-[#AAA5A0] flex items-center gap-1">
-                    <Clock className="w-3 h-3 text-[#D9A441]" />
+                  <span className="font-bold text-[#FFF5E6]">{h.user_name}</span>
+                  <span className="text-[10px] text-[#B8ADA0] flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-[#E5AF45]" />
                     {h.timestamp}
                   </span>
                 </div>
-                <p className="text-[#AAA5A0] mt-1 leading-snug">{h.action}</p>
+                <p className="text-[#B8ADA0] mt-1 leading-snug">{h.action}</p>
               </div>
             ))
           )}

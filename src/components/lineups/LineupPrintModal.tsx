@@ -17,26 +17,26 @@ export const LineupPrintModal: React.FC<LineupPrintModalProps> = ({ lineup, onCl
       onClick={onClose}
     >
       <div
-        className="bg-[#1F1F21] rounded-3xl max-w-3xl w-full h-[92vh] flex flex-col shadow-2xl border border-[#35312B] animate-slide-up overflow-hidden"
+        className="bg-[#211C17] rounded-3xl max-w-3xl w-full h-[92vh] flex flex-col shadow-2xl border border-[#393027] animate-slide-up overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar (Hidden when printing) */}
-        <div className="p-4 border-b border-[#35312B] bg-[#161616] flex items-center justify-between no-print">
+        <div className="p-4 border-b border-[#393027] bg-[#181510] flex items-center justify-between no-print">
           <div>
-            <h2 className="text-base font-bold text-[#F5F0E6]">Printable Worship Setlist</h2>
-            <p className="text-xs text-[#AAA5A0]">Formatted for music stands & sound booth</p>
+            <h2 className="text-base font-bold text-[#FFF5E6]">Printable Worship Setlist</h2>
+            <p className="text-xs text-[#B8ADA0]">Formatted for music stands & sound booth</p>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => window.print()}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold transition-all shadow-sm"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#E5AF45] hover:bg-[#FFC85C] text-[#100E0B] text-xs font-bold transition-all shadow-sm"
             >
               <Printer className="w-3.5 h-3.5" />
               <span>Print Setlist</span>
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
+              className="p-2 rounded-xl text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C]"
             >
               <X className="w-5 h-5" />
             </button>

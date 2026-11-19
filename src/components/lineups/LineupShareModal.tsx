@@ -234,20 +234,20 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
       onClick={onClose}
     >
       <div
-        className="bg-[#1F1F21] rounded-3xl max-w-6xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-[#35312B] animate-slide-up overflow-hidden my-auto"
+        className="bg-[#211C17] rounded-3xl max-w-6xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-[#393027] animate-slide-up overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar */}
-        <div className="p-3.5 sm:p-5 border-b border-[#35312B] bg-[#161616] flex flex-wrap items-center justify-between gap-3">
+        <div className="p-3.5 sm:p-5 border-b border-[#393027] bg-[#181510] flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#262626] border border-[#35312B] text-[#D9A441] flex items-center justify-center shadow-sm shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-[#29231C] border border-[#393027] text-[#E5AF45] flex items-center justify-center shadow-sm shrink-0">
               <Share2 className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-[#F5F0E6] leading-tight">
+              <h2 className="text-base sm:text-lg font-bold text-[#FFF5E6] leading-tight">
                 Share Lineup & Save as Photo
               </h2>
-              <p className="text-xs text-[#AAA5A0] mt-0.5">
+              <p className="text-xs text-[#B8ADA0] mt-0.5">
                 Download a high-resolution landscape photo card or copy formatted text for Messenger
               </p>
             </div>
@@ -255,13 +255,13 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
 
           <div className="flex items-center gap-2 flex-wrap">
             {/* Orientation Toggle: Landscape / Portrait */}
-            <div className="flex items-center p-1 bg-[#262626] border border-[#35312B] rounded-xl">
+            <div className="flex items-center p-1 bg-[#29231C] border border-[#393027] rounded-xl">
               <button
                 onClick={() => setOrientation('landscape')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   isLandscape
-                    ? 'bg-[#D9A441] text-[#101010] shadow-sm'
-                    : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
+                    ? 'bg-[#E5AF45] text-[#100E0B] shadow-sm'
+                    : 'text-[#B8ADA0] hover:text-[#FFF5E6]'
                 }`}
                 title="Landscape (Recommended for presentation & widescreen)"
               >
@@ -274,8 +274,8 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                 onClick={() => setOrientation('portrait')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   !isLandscape
-                    ? 'bg-[#D9A441] text-[#101010] shadow-sm'
-                    : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
+                    ? 'bg-[#E5AF45] text-[#100E0B] shadow-sm'
+                    : 'text-[#B8ADA0] hover:text-[#FFF5E6]'
                 }`}
                 title="Portrait (Mobile story format)"
               >
@@ -287,11 +287,11 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
             </div>
 
             {/* Theme Toggle */}
-            <div className="flex items-center p-1 bg-[#262626] border border-[#35312B] rounded-xl">
+            <div className="flex items-center p-1 bg-[#29231C] border border-[#393027] rounded-xl">
               <button
                 onClick={() => setThemeMode('dark')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  isDark ? 'bg-[#D9A441] text-[#101010] shadow-sm' : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
+                  isDark ? 'bg-[#E5AF45] text-[#100E0B] shadow-sm' : 'text-[#B8ADA0] hover:text-[#FFF5E6]'
                 }`}
                 title="Midnight Black Theme"
               >
@@ -300,7 +300,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               <button
                 onClick={() => setThemeMode('warm')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  !isDark ? 'bg-[#D9A441] text-[#101010] shadow-sm' : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
+                  !isDark ? 'bg-[#E5AF45] text-[#100E0B] shadow-sm' : 'text-[#B8ADA0] hover:text-[#FFF5E6]'
                 }`}
                 title="Warm Beige Theme"
               >
@@ -310,7 +310,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
+              className="p-2 rounded-xl text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C]"
             >
               <X className="w-5 h-5" />
             </button>
@@ -318,16 +318,16 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
         </div>
 
         {/* Action Buttons Toolbar */}
-        <div className="p-3 sm:px-6 bg-[#161616] border-b border-[#35312B] flex items-center justify-between flex-wrap gap-2">
+        <div className="p-3 sm:px-6 bg-[#181510] border-b border-[#393027] flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-2 flex-wrap">
             {/* Download as Photo */}
             <button
               onClick={handleDownloadPhoto}
               disabled={isExporting}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold transition-all shadow-sm disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-[#E5AF45] hover:bg-[#FFC85C] text-[#100E0B] text-xs font-bold transition-all shadow-sm disabled:opacity-50"
             >
               {isExporting ? (
-                <Loader2 className="w-4 h-4 animate-spin text-[#101010]" />
+                <Loader2 className="w-4 h-4 animate-spin text-[#100E0B]" />
               ) : (
                 <Download className="w-4 h-4" />
               )}
@@ -338,16 +338,16 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
             <button
               onClick={handleCopyImage}
               disabled={isExporting}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#262626] hover:bg-[#35312B] text-[#F5F0E6] text-xs font-bold border border-[#35312B] shadow-sm transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#29231C] hover:bg-[#393027] text-[#FFF5E6] text-xs font-bold border border-[#393027] shadow-sm transition-all"
             >
               {copiedImage ? (
                 <>
-                  <Check className="w-4 h-4 text-[#78B887]" />
-                  <span className="text-[#78B887]">Image Copied!</span>
+                  <Check className="w-4 h-4 text-[#79BB8B]" />
+                  <span className="text-[#79BB8B]">Image Copied!</span>
                 </>
               ) : (
                 <>
-                  <ImageIcon className="w-4 h-4 text-[#D9A441]" />
+                  <ImageIcon className="w-4 h-4 text-[#E5AF45]" />
                   <span>Copy Photo</span>
                 </>
               )}
@@ -358,16 +358,16 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               <button
                 onClick={handleNativeShare}
                 disabled={isExporting}
-                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#262626] hover:bg-[#35312B] text-[#F5F0E6] text-xs font-bold border border-[#35312B] shadow-sm transition-all"
+                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#29231C] hover:bg-[#393027] text-[#FFF5E6] text-xs font-bold border border-[#393027] shadow-sm transition-all"
               >
                 {shareSuccess ? (
                   <>
-                    <Check className="w-4 h-4 text-[#78B887]" />
-                    <span className="text-[#78B887]">Shared!</span>
+                    <Check className="w-4 h-4 text-[#79BB8B]" />
+                    <span className="text-[#79BB8B]">Shared!</span>
                   </>
                 ) : (
                   <>
-                    <Share2 className="w-4 h-4 text-[#D9A441]" />
+                    <Share2 className="w-4 h-4 text-[#E5AF45]" />
                     <span>Share to Apps</span>
                   </>
                 )}
@@ -379,16 +379,16 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
             {/* Copy Messenger Text */}
             <button
               onClick={handleCopyText}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#262626] hover:bg-[#35312B] text-[#D9A441] text-xs font-bold border border-[#35312B] shadow-sm transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#29231C] hover:bg-[#393027] text-[#E5AF45] text-xs font-bold border border-[#393027] shadow-sm transition-all"
             >
               {copiedText ? (
                 <>
-                  <Check className="w-4 h-4 text-[#78B887]" />
-                  <span className="text-[#78B887]">Text Copied!</span>
+                  <Check className="w-4 h-4 text-[#79BB8B]" />
+                  <span className="text-[#79BB8B]">Text Copied!</span>
                 </>
               ) : (
                 <>
-                  <MessageCircle className="w-4 h-4 text-[#D9A441]" />
+                  <MessageCircle className="w-4 h-4 text-[#E5AF45]" />
                   <span>Copy for Messenger</span>
                 </>
               )}
@@ -397,15 +397,15 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
         </div>
 
         {/* Small Screen HD Hint */}
-        <div className="px-4 py-1.5 bg-[#161616] border-b border-[#35312B] text-[11px] text-[#AAA5A0] font-semibold flex items-center justify-between">
+        <div className="px-4 py-1.5 bg-[#181510] border-b border-[#393027] text-[11px] text-[#B8ADA0] font-semibold flex items-center justify-between">
           <span>↔️ Swipe horizontally to preview full card</span>
-          <span className="text-[10px] text-[#D9A441] font-bold bg-[#262626] border border-[#35312B] px-2 py-0.5 rounded-md">
+          <span className="text-[10px] text-[#E5AF45] font-bold bg-[#29231C] border border-[#393027] px-2 py-0.5 rounded-md">
             HD Output: {isLandscape ? '1040px Landscape' : '640px Portrait'}
           </span>
         </div>
 
         {/* Card Preview Container */}
-        <div className="flex-1 overflow-x-auto overflow-y-auto p-3 sm:p-6 md:p-8 bg-[#101010] flex justify-center items-start">
+        <div className="flex-1 overflow-x-auto overflow-y-auto p-3 sm:p-6 md:p-8 bg-[#100E0B] flex justify-center items-start">
           {/* THE EXPORTABLE GRAPHIC CARD */}
           <div
             ref={cardRef}
@@ -413,9 +413,9 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               width: isLandscape ? '1040px' : '640px',
               minWidth: isLandscape ? '1040px' : '640px',
               maxWidth: isLandscape ? '1040px' : '640px',
-              backgroundColor: isDark ? '#101010' : '#FAF6F0',
-              color: isDark ? '#F5F0E6' : '#1C1917',
-              border: isDark ? '1px solid #35312B' : '1px solid #E6DFD3',
+              backgroundColor: isDark ? '#100E0B' : '#FAF6F0',
+              color: isDark ? '#FFF5E6' : '#1C1917',
+              border: isDark ? '1px solid #393027' : '1px solid #E6DFD3',
               borderRadius: '24px',
               padding: isLandscape ? '32px 36px' : '32px 32px',
               boxShadow: isDark

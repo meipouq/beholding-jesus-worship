@@ -44,7 +44,7 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#101010] text-[#F5F0E6] flex flex-col md:flex-row antialiased selection:bg-[#D9A441]/30 selection:text-[#F5F0E6]">
+    <div className="min-h-screen bg-[#100E0B] text-[#FFF5E6] flex flex-col md:flex-row antialiased selection:bg-[#E5AF45]/30 selection:text-[#FFF5E6]">
       {/* Desktop Fixed Left Sidebar */}
       <div className="hidden md:block w-64 shrink-0">
         <Sidebar />

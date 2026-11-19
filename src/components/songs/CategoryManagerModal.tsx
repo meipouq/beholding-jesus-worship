@@ -49,17 +49,17 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({ onCl
       onClick={onClose}
     >
       <div
-        className="bg-[#1F1F21] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#35312B] animate-slide-up text-[#F5F0E6]"
+        className="bg-[#211C17] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#393027] animate-slide-up text-[#FFF5E6]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between pb-4 border-b border-[#35312B]">
+        <div className="flex items-center justify-between pb-4 border-b border-[#393027]">
           <div className="flex items-center gap-2">
-            <Tag className="w-5 h-5 text-[#D9A441]" />
-            <h2 className="text-base font-bold text-[#F5F0E6]">Manage Worship Categories</h2>
+            <Tag className="w-5 h-5 text-[#E5AF45]" />
+            <h2 className="text-base font-bold text-[#FFF5E6]">Manage Worship Categories</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
+            className="p-1 rounded-full text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -73,11 +73,11 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({ onCl
             value={newCatName}
             onChange={(e) => setNewCatName(e.target.value)}
             placeholder="New Category (e.g. Call to Worship)"
-            className="flex-1 text-xs p-2.5 rounded-xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/50 focus:outline-none focus:border-[#D9A441]"
+            className="flex-1 text-xs p-2.5 rounded-xl border border-[#393027] bg-[#181510] text-[#FFF5E6] placeholder:text-[#B8ADA0]/50 focus:outline-none focus:border-[#E5AF45]"
           />
           <button
             type="submit"
-            className="px-4 py-2.5 rounded-xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold transition-colors shrink-0 shadow-sm"
+            className="px-4 py-2.5 rounded-xl bg-[#E5AF45] hover:bg-[#FFC85C] text-[#100E0B] text-xs font-bold transition-colors shrink-0 shadow-sm"
           >
             {editingCat ? 'Update' : 'Add'}
           </button>
@@ -88,7 +88,7 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({ onCl
                 setEditingCat(null);
                 setNewCatName('');
               }}
-              className="px-3 py-2.5 rounded-xl bg-[#262626] hover:bg-[#35312B] text-[#F5F0E6] text-xs font-bold"
+              className="px-3 py-2.5 rounded-xl bg-[#29231C] hover:bg-[#393027] text-[#FFF5E6] text-xs font-bold"
             >
               Cancel
             </button>
@@ -100,20 +100,20 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({ onCl
           {categories.map((cat) => (
             <div
               key={cat.id}
-              className="flex items-center justify-between p-2.5 rounded-xl bg-[#161616] border border-[#35312B] text-xs"
+              className="flex items-center justify-between p-2.5 rounded-xl bg-[#181510] border border-[#393027] text-xs"
             >
-              <span className="font-semibold text-[#F5F0E6]">{cat.name}</span>
+              <span className="font-semibold text-[#FFF5E6]">{cat.name}</span>
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => handleStartEdit(cat)}
-                  className="p-1 rounded text-[#AAA5A0] hover:text-[#D9A441] hover:bg-[#262626]"
+                  className="p-1 rounded text-[#B8ADA0] hover:text-[#E5AF45] hover:bg-[#29231C]"
                   title="Rename Category"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={() => handleDelete(cat.id, cat.name)}
-                  className="p-1 rounded text-[#AAA5A0] hover:text-[#E57373] hover:bg-[#262626]"
+                  className="p-1 rounded text-[#B8ADA0] hover:text-[#E57373] hover:bg-[#29231C]"
                   title="Delete Category"
                 >
                   <Trash2 className="w-3.5 h-3.5" />

@@ -29,7 +29,7 @@ export const Logo: React.FC<LogoProps> = ({
         <img
           src="/images/worship_team_profile.png"
           alt="Beholding Jesus Worship Team"
-          className="w-full h-full rounded-full object-cover shadow-2xs border border-[#D9A441]/50 ring-1 ring-[#D9A441]/20"
+          className="w-full h-full rounded-full object-cover shadow-[0_0_10px_rgba(229,175,69,0.25)] border border-[#E5AF45]/60 ring-1 ring-[#FFC85C]/30"
         />
       </div>
 
@@ -37,13 +37,13 @@ export const Logo: React.FC<LogoProps> = ({
       {showText && (
         <div className="flex flex-col">
           <span
-            className="font-sans tracking-wider uppercase font-extrabold text-sm md:text-[15px] leading-tight text-[#F5F0E6]"
+            className="font-sans tracking-wider uppercase font-extrabold text-sm md:text-[15px] leading-tight text-[#FFF5E6]"
             style={{ letterSpacing: '0.08em' }}
           >
             Beholding Jesus
           </span>
           <span
-            className="font-sans tracking-widest uppercase text-[10px] md:text-[11px] font-bold leading-none mt-1 text-[#D9A441]"
+            className="font-sans tracking-widest uppercase text-[10px] md:text-[11px] font-bold leading-none mt-1 text-[#E5AF45]"
             style={{ letterSpacing: '0.14em' }}
           >
             Worship Team

@@ -46,29 +46,29 @@ export const SongDetailModal: React.FC<SongDetailModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="bg-[#1F1F21] rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-[#35312B] animate-slide-up overflow-hidden text-[#F5F0E6]"
+        className="bg-[#211C17] rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-[#393027] animate-slide-up overflow-hidden text-[#FFF5E6]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-5 sm:p-6 border-b border-[#35312B] bg-[#161616] flex items-start justify-between gap-4">
+        <div className="p-5 sm:p-6 border-b border-[#393027] bg-[#181510] flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-[#262626] text-[#D9A441] border border-[#35312B] text-[11px] font-bold uppercase tracking-wider">
+              <span className="px-2.5 py-0.5 rounded-full bg-[#29231C] text-[#E5AF45] border border-[#393027] text-[11px] font-bold uppercase tracking-wider">
                 {song.category}
               </span>
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#101010] text-[#D9A441] border border-[#D9A441]/50">
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#100E0B] text-[#E5AF45] border border-[#E5AF45]/50">
                 Key of {song.original_key}
               </span>
               {song.tempo_bpm && (
-                <span className="text-xs text-[#AAA5A0] font-medium">
+                <span className="text-xs text-[#B8ADA0] font-medium">
                   {song.tempo_bpm} BPM • {song.time_signature || '4/4'}
                 </span>
               )}
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-[#F5F0E6] mt-1.5">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#FFF5E6] mt-1.5">
               {song.title}
             </h2>
-            <p className="text-xs text-[#AAA5A0] font-medium">
+            <p className="text-xs text-[#B8ADA0] font-medium">
               By {song.artist} {song.composer ? `• Comp: ${song.composer}` : ''}
             </p>
           </div>
@@ -76,21 +76,21 @@ export const SongDetailModal: React.FC<SongDetailModalProps> = ({
           <div className="flex items-center gap-1.5">
             <button
               onClick={() => onEdit(song)}
-              className="p-2 rounded-xl text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626] transition-colors"
+              className="p-2 rounded-xl text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C] transition-colors"
               title="Edit Song"
             >
               <Edit className="w-4 h-4" />
             </button>
             <button
               onClick={handleDelete}
-              className="p-2 rounded-xl text-[#AAA5A0] hover:text-[#E57373] hover:bg-red-950/30 transition-colors"
+              className="p-2 rounded-xl text-[#B8ADA0] hover:text-[#E57373] hover:bg-red-950/30 transition-colors"
               title="Delete Song"
             >
               <Trash2 className="w-4 h-4" />
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626] transition-colors"
+              className="p-2 rounded-xl text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -98,7 +98,7 @@ export const SongDetailModal: React.FC<SongDetailModalProps> = ({
         </div>
 
         {/* Content Body */}
-        <div className="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1 text-[#F5F0E6]">
+        <div className="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1 text-[#FFF5E6]">
           {/* Quick Action Buttons */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             {song.youtube_url && (
@@ -113,7 +113,7 @@ export const SongDetailModal: React.FC<SongDetailModalProps> = ({
 
             <button
               onClick={() => openChords(song)}
-              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold transition-all shadow-sm"
+              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-[#E5AF45] hover:bg-[#FFC85C] text-[#100E0B] text-xs font-bold transition-all shadow-sm"
             >
               <FileMusic className="w-3.5 h-3.5" />
               <span>Chords & Transpose</span>
@@ -121,19 +121,19 @@ export const SongDetailModal: React.FC<SongDetailModalProps> = ({
 
             <button
               onClick={() => onAddToLineup(song)}
-              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-[#262626] hover:bg-[#35312B] text-[#F5F0E6] text-xs font-bold transition-all border border-[#35312B] col-span-2 sm:col-span-1 shadow-sm"
+              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-[#29231C] hover:bg-[#393027] text-[#FFF5E6] text-xs font-bold transition-all border border-[#393027] col-span-2 sm:col-span-1 shadow-sm"
             >
-              <PlusCircle className="w-3.5 h-3.5 text-[#D9A441]" />
+              <PlusCircle className="w-3.5 h-3.5 text-[#E5AF45]" />
               <span>Add to Lineup</span>
             </button>
           </div>
 
           {/* Vocal Keys Assignment Matrix */}
           {Object.keys(song.vocal_keys || {}).length > 0 && (
-            <div className="p-4 rounded-2xl bg-[#161616] border border-[#35312B]">
+            <div className="p-4 rounded-2xl bg-[#181510] border border-[#393027]">
               <div className="flex items-center gap-2 mb-2">
-                <Mic className="w-4 h-4 text-[#D9A441]" />
-                <h3 className="text-xs font-bold text-[#F5F0E6] uppercase tracking-wider">
+                <Mic className="w-4 h-4 text-[#E5AF45]" />
+                <h3 className="text-xs font-bold text-[#FFF5E6] uppercase tracking-wider">
                   Vocal Keys by Singer
                 </h3>
               </div>
@@ -143,12 +143,12 @@ export const SongDetailModal: React.FC<SongDetailModalProps> = ({
                   return (
                     <div
                       key={vocalistId}
-                      className="flex items-center justify-between p-2 rounded-xl bg-[#1F1F21] border border-[#35312B] text-xs"
+                      className="flex items-center justify-between p-2 rounded-xl bg-[#211C17] border border-[#393027] text-xs"
                     >
-                      <span className="font-semibold text-[#F5F0E6] truncate">
+                      <span className="font-semibold text-[#FFF5E6] truncate">
                         {vocalist ? vocalist.name : 'Vocalist'}
                       </span>
-                      <span className="font-black text-[#D9A441] px-2 py-0.5 bg-[#101010] rounded-lg border border-[#D9A441]/40">
+                      <span className="font-black text-[#E5AF45] px-2 py-0.5 bg-[#100E0B] rounded-lg border border-[#E5AF45]/40">
                         Key {vKey}
                       </span>
                     </div>
@@ -160,26 +160,26 @@ export const SongDetailModal: React.FC<SongDetailModalProps> = ({
 
           {/* Song Notes */}
           {song.song_notes && (
-            <div className="p-3.5 rounded-2xl bg-[#161616] border border-[#35312B] text-xs">
-              <span className="font-bold text-[#D9A441] block mb-1">Arrangement / Performance Notes:</span>
-              <p className="text-[#AAA5A0] leading-relaxed">{song.song_notes}</p>
+            <div className="p-3.5 rounded-2xl bg-[#181510] border border-[#393027] text-xs">
+              <span className="font-bold text-[#E5AF45] block mb-1">Arrangement / Performance Notes:</span>
+              <p className="text-[#B8ADA0] leading-relaxed">{song.song_notes}</p>
             </div>
           )}
 
           {/* Lyrics Preview */}
           <div>
-            <h3 className="text-xs font-bold text-[#AAA5A0] uppercase tracking-wider mb-2">
+            <h3 className="text-xs font-bold text-[#B8ADA0] uppercase tracking-wider mb-2">
               Lyrics
             </h3>
-            <div className="p-4 rounded-2xl bg-[#161616] border border-[#35312B] font-sans text-xs leading-relaxed whitespace-pre-wrap text-[#F5F0E6] max-h-64 overflow-y-auto">
+            <div className="p-4 rounded-2xl bg-[#181510] border border-[#393027] font-sans text-xs leading-relaxed whitespace-pre-wrap text-[#FFF5E6] max-h-64 overflow-y-auto">
               {song.lyrics || 'No lyrics added yet.'}
             </div>
           </div>
 
           {/* Audit Trail / Accountability */}
-          <div className="pt-2 border-t border-[#35312B] flex items-center justify-between text-[11px] text-[#AAA5A0]">
-            <span>Added by: <strong className="text-[#F5F0E6]">{song.created_by}</strong></span>
-            <span>Last updated by: <strong className="text-[#F5F0E6]">{song.updated_by}</strong></span>
+          <div className="pt-2 border-t border-[#393027] flex items-center justify-between text-[11px] text-[#B8ADA0]">
+            <span>Added by: <strong className="text-[#FFF5E6]">{song.created_by}</strong></span>
+            <span>Last updated by: <strong className="text-[#FFF5E6]">{song.updated_by}</strong></span>
           </div>
         </div>
       </div>

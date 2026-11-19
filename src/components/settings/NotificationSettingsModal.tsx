@@ -186,27 +186,27 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg bg-[#1F1F21] rounded-3xl shadow-2xl border border-[#35312B] overflow-hidden animate-slide-up flex flex-col shrink-0 max-h-[84dvh] sm:max-h-[85vh] my-auto sm:my-0 text-[#F5F0E6]"
+        className="w-full max-w-lg bg-[#211C17] rounded-3xl shadow-2xl border border-[#393027] overflow-hidden animate-slide-up flex flex-col shrink-0 max-h-[84dvh] sm:max-h-[85vh] my-auto sm:my-0 text-[#FFF5E6]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 sm:py-4 bg-[#161616] border-b border-[#35312B] shrink-0">
+        <div className="flex items-center justify-between px-5 py-3.5 sm:py-4 bg-[#181510] border-b border-[#393027] shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-[#262626] border border-[#35312B] text-[#D9A441] flex items-center justify-center shadow-2xs">
+            <div className="w-9 h-9 rounded-xl bg-[#29231C] border border-[#393027] text-[#E5AF45] flex items-center justify-center shadow-2xs">
               <BellRing className="w-4.5 h-4.5" />
             </div>
             <div>
-              <h3 className="text-sm sm:text-base font-extrabold text-[#F5F0E6] leading-tight">
+              <h3 className="text-sm sm:text-base font-extrabold text-[#FFF5E6] leading-tight">
                 Notification Settings
               </h3>
-              <p className="text-[11px] text-[#AAA5A0] font-medium">
+              <p className="text-[11px] text-[#B8ADA0] font-medium">
                 Push alerts when the app is closed
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626] transition-colors cursor-pointer"
+            className="p-1.5 rounded-full text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -216,25 +216,25 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
         <div className="p-4 sm:p-6 space-y-4 overflow-y-auto overscroll-contain flex-1">
           
           {/* PRIMARY ACTION CARD (Pinned at top - immediately visible without scrolling) */}
-          <div className="p-4 rounded-2xl bg-[#161616] border border-[#35312B] shadow-xs space-y-3">
+          <div className="p-4 rounded-2xl bg-[#181510] border border-[#393027] shadow-xs space-y-3">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-[#F5F0E6]">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-[#FFF5E6]">
                 Web Push Notifications
               </span>
               {isSubscribed ? (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#78B887]/15 text-[#78B887] border border-[#78B887]/30 shadow-2xs">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#78B887]" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#79BB8B]/15 text-[#79BB8B] border border-[#79BB8B]/30 shadow-2xs">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#79BB8B]" />
                   Active & Subscribed
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#262626] text-[#AAA5A0] border border-[#35312B]">
-                  <Info className="w-3.5 h-3.5 text-[#AAA5A0]" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#29231C] text-[#B8ADA0] border border-[#393027]">
+                  <Info className="w-3.5 h-3.5 text-[#B8ADA0]" />
                   Not Enabled
                 </span>
               )}
             </div>
 
-            <p className="text-xs text-[#AAA5A0] leading-relaxed font-medium">
+            <p className="text-xs text-[#B8ADA0] leading-relaxed font-medium">
               Get notified for new Sunday lineups, singer assignments, and rehearsals even when this app is closed or locked.
             </p>
 
@@ -244,9 +244,9 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
                 <button
                   onClick={handleEnablePush}
                   disabled={loading}
-                  className="w-full py-3.5 px-4 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] active:scale-[0.98] text-[#101010] font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-[#E5AF45] to-[#D69F35] hover:from-[#FFC85C] hover:to-[#E5AF45] active:scale-[0.98] text-[#100E0B] font-black text-xs sm:text-sm shadow-[0_4px_16px_rgba(229,175,69,0.25)] hover:shadow-[0_6px_22px_rgba(229,175,69,0.38)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                 >
-                  <Zap className="w-4 h-4 text-[#101010] fill-[#101010]" />
+                  <Zap className="w-4 h-4 text-[#100E0B] fill-[#100E0B]" />
                   <span>{loading ? 'Activating...' : 'Enable Web Push Notifications'}</span>
                 </button>
               ) : (
@@ -254,15 +254,15 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
                   <button
                     onClick={handleSendTestPush}
                     disabled={testing}
-                    className="w-full py-3 px-4 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] active:scale-[0.98] text-[#101010] font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                    className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#E5AF45] to-[#D69F35] hover:from-[#FFC85C] hover:to-[#E5AF45] active:scale-[0.98] text-[#100E0B] font-black text-xs sm:text-sm shadow-[0_4px_16px_rgba(229,175,69,0.25)] hover:shadow-[0_6px_22px_rgba(229,175,69,0.38)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
-                    <Bell className="w-4 h-4 fill-[#101010] text-[#101010]" />
+                    <Bell className="w-4 h-4 fill-[#100E0B] text-[#100E0B]" />
                     <span>{testing ? 'Sending alert...' : 'Send Test Notification to this Device'}</span>
                   </button>
                   <button
                     onClick={handleDisablePush}
                     disabled={loading}
-                    className="w-full py-2 px-4 rounded-2xl bg-[#262626] hover:bg-[#333] active:scale-[0.98] text-[#E57373] border border-[#35312B] font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-2 px-4 rounded-2xl bg-[#29231C] hover:bg-[#352c23] active:scale-[0.98] text-[#E57373] border border-[#393027] font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>Turn Off Notifications on this Device</span>
                   </button>
@@ -274,14 +274,14 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
               <div
                 className={`p-3 rounded-xl text-xs flex items-start gap-2 ${
                   feedback.type === 'success'
-                    ? 'bg-[#78B887]/15 text-[#78B887] border border-[#78B887]/30'
+                    ? 'bg-[#79BB8B]/15 text-[#79BB8B] border border-[#79BB8B]/30'
                     : feedback.type === 'error'
                     ? 'bg-[#E57373]/15 text-[#E57373] border border-[#E57373]/30'
-                    : 'bg-[#D9A441]/15 text-[#F5C15D] border border-[#D9A441]/30'
+                    : 'bg-[#E5AF45]/15 text-[#FFC85C] border border-[#E5AF45]/30'
                 }`}
               >
                 {feedback.type === 'success' ? (
-                  <CheckCircle2 className="w-4 h-4 shrink-0 text-[#78B887] mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 shrink-0 text-[#79BB8B] mt-0.5" />
                 ) : (
                   <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
                 )}
@@ -291,69 +291,69 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
           </div>
 
           {/* iPhone & iPad Setup Guide (Collapsible Accordion) */}
-          <div className="border border-[#35312B] rounded-2xl overflow-hidden bg-[#161616] shadow-2xs">
+          <div className="border border-[#393027] rounded-2xl overflow-hidden bg-[#181510] shadow-2xs">
             <button
               onClick={() => setIsGuideOpen(!isGuideOpen)}
-              className="w-full p-3.5 text-left flex items-center justify-between bg-[#1F1F21] hover:bg-[#262626] transition-colors cursor-pointer"
+              className="w-full p-3.5 text-left flex items-center justify-between bg-[#211C17] hover:bg-[#29231C] transition-colors cursor-pointer"
             >
               <div className="flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-[#D9A441]" />
-                <span className="text-xs font-bold text-[#F5F0E6]">
+                <Smartphone className="w-4 h-4 text-[#E5AF45]" />
+                <span className="text-xs font-bold text-[#FFF5E6]">
                   iPhone & iPad Setup Guide (iOS 16.4+)
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="text-[10px] font-bold text-[#D9A441] bg-[#262626] border border-[#35312B] px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-bold text-[#E5AF45] bg-[#29231C] border border-[#393027] px-2 py-0.5 rounded-full">
                   {isGuideOpen ? 'Hide' : 'View Steps'}
                 </span>
                 {isGuideOpen ? (
-                  <ChevronUp className="w-4 h-4 text-[#AAA5A0]" />
+                  <ChevronUp className="w-4 h-4 text-[#B8ADA0]" />
                 ) : (
-                  <ChevronDown className="w-4 h-4 text-[#AAA5A0]" />
+                  <ChevronDown className="w-4 h-4 text-[#B8ADA0]" />
                 )}
               </div>
             </button>
 
             {isGuideOpen && (
-              <div className="p-4 space-y-3 text-xs text-[#AAA5A0] border-t border-[#35312B] bg-[#161616]">
-                <div className="bg-[#262626] border border-[#35312B] p-2.5 rounded-xl text-[#F5F0E6] leading-relaxed font-medium">
-                  <strong className="text-[#D9A441]">Apple Requirement:</strong> On iPhone/iPad, push notifications work after adding the app to your Home Screen from Safari.
+              <div className="p-4 space-y-3 text-xs text-[#B8ADA0] border-t border-[#393027] bg-[#181510]">
+                <div className="bg-[#29231C] border border-[#393027] p-2.5 rounded-xl text-[#FFF5E6] leading-relaxed font-medium">
+                  <strong className="text-[#E5AF45]">Apple Requirement:</strong> On iPhone/iPad, push notifications work after adding the app to your Home Screen from Safari.
                 </div>
 
-                <ol className="space-y-2.5 pl-0.5 font-medium text-[#AAA5A0]">
+                <ol className="space-y-2.5 pl-0.5 font-medium text-[#B8ADA0]">
                   <li className="flex items-start gap-2.5">
-                    <span className="w-5 h-5 rounded-full bg-[#262626] border border-[#35312B] text-[#D9A441] font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="w-5 h-5 rounded-full bg-[#29231C] border border-[#393027] text-[#E5AF45] font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                       1
                     </span>
                     <span>
-                      Open this site in <strong className="text-[#F5F0E6]">Safari</strong> on your iPhone or iPad.
+                      Open this site in <strong className="text-[#FFF5E6]">Safari</strong> on your iPhone or iPad.
                     </span>
                   </li>
 
                   <li className="flex items-start gap-2.5">
-                    <span className="w-5 h-5 rounded-full bg-[#262626] border border-[#35312B] text-[#D9A441] font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="w-5 h-5 rounded-full bg-[#29231C] border border-[#393027] text-[#E5AF45] font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                       2
                     </span>
                     <span>
-                      Tap the <strong className="text-[#F5F0E6]">Share</strong> button <Share className="w-3.5 h-3.5 inline mx-0.5 text-[#D9A441]" /> in the Safari toolbar.
+                      Tap the <strong className="text-[#FFF5E6]">Share</strong> button <Share className="w-3.5 h-3.5 inline mx-0.5 text-[#E5AF45]" /> in the Safari toolbar.
                     </span>
                   </li>
 
                   <li className="flex items-start gap-2.5">
-                    <span className="w-5 h-5 rounded-full bg-[#262626] border border-[#35312B] text-[#D9A441] font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="w-5 h-5 rounded-full bg-[#29231C] border border-[#393027] text-[#E5AF45] font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                       3
                     </span>
                     <span>
-                      Scroll down and tap <strong className="text-[#F5F0E6]">Add to Home Screen</strong> <PlusSquare className="w-3.5 h-3.5 inline mx-0.5 text-[#D9A441]" />, then tap <strong className="text-[#F5F0E6]">Add</strong>.
+                      Scroll down and tap <strong className="text-[#FFF5E6]">Add to Home Screen</strong> <PlusSquare className="w-3.5 h-3.5 inline mx-0.5 text-[#E5AF45]" />, then tap <strong className="text-[#FFF5E6]">Add</strong>.
                     </span>
                   </li>
 
                   <li className="flex items-start gap-2.5">
-                    <span className="w-5 h-5 rounded-full bg-[#78B887]/20 border border-[#78B887]/40 text-[#78B887] font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="w-5 h-5 rounded-full bg-[#79BB8B]/20 border border-[#79BB8B]/40 text-[#79BB8B] font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                       4
                     </span>
                     <span>
-                      Open <strong className="text-[#F5F0E6]">Worship Team</strong> from your Home Screen and tap <strong className="text-[#D9A441]">Enable Web Push Notifications</strong>!
+                      Open <strong className="text-[#FFF5E6]">Worship Team</strong> from your Home Screen and tap <strong className="text-[#E5AF45]">Enable Web Push Notifications</strong>!
                     </span>
                   </li>
                 </ol>
@@ -363,74 +363,74 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
 
           {/* Notification Categories Preferences */}
           <div className="space-y-2.5">
-            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#AAA5A0]">
-              <ShieldCheck className="w-4 h-4 text-[#D9A441]" />
+            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#B8ADA0]">
+              <ShieldCheck className="w-4 h-4 text-[#E5AF45]" />
               <span>Notification Categories</span>
             </div>
 
-            <div className="divide-y divide-[#35312B] border border-[#35312B] rounded-2xl bg-[#161616] overflow-hidden shadow-2xs">
-              <label className="p-3 sm:p-3.5 flex items-center justify-between cursor-pointer hover:bg-[#262626] transition-colors">
+            <div className="divide-y divide-[#393027] border border-[#393027] rounded-2xl bg-[#181510] overflow-hidden shadow-2xs">
+              <label className="p-3 sm:p-3.5 flex items-center justify-between cursor-pointer hover:bg-[#29231C] transition-colors">
                 <div className="pr-3">
-                  <p className="text-xs font-bold text-[#F5F0E6]">Lineup Published & Changes</p>
-                  <p className="text-[11px] text-[#AAA5A0]">When new Sunday lineups are released or updated</p>
+                  <p className="text-xs font-bold text-[#FFF5E6]">Lineup Published & Changes</p>
+                  <p className="text-[11px] text-[#B8ADA0]">When new Sunday lineups are released or updated</p>
                 </div>
                 <input
                   type="checkbox"
                   checked={preferences.lineup}
                   onChange={() => toggleCategory('lineup')}
-                  className="w-4 h-4 text-[#D9A441] rounded-sm focus:ring-[#D9A441] accent-[#D9A441] cursor-pointer"
+                  className="w-4 h-4 text-[#E5AF45] rounded-sm focus:ring-[#E5AF45] accent-[#E5AF45] cursor-pointer"
                 />
               </label>
 
-              <label className="p-3 sm:p-3.5 flex items-center justify-between cursor-pointer hover:bg-[#262626] transition-colors">
+              <label className="p-3 sm:p-3.5 flex items-center justify-between cursor-pointer hover:bg-[#29231C] transition-colors">
                 <div className="pr-3">
-                  <p className="text-xs font-bold text-[#F5F0E6]">Vocalist & Role Assignments</p>
-                  <p className="text-[11px] text-[#AAA5A0]">When you are assigned as Worship Leader or Singer</p>
+                  <p className="text-xs font-bold text-[#FFF5E6]">Vocalist & Role Assignments</p>
+                  <p className="text-[11px] text-[#B8ADA0]">When you are assigned as Worship Leader or Singer</p>
                 </div>
                 <input
                   type="checkbox"
                   checked={preferences.assignment}
                   onChange={() => toggleCategory('assignment')}
-                  className="w-4 h-4 text-[#D9A441] rounded-sm focus:ring-[#D9A441] accent-[#D9A441] cursor-pointer"
+                  className="w-4 h-4 text-[#E5AF45] rounded-sm focus:ring-[#E5AF45] accent-[#E5AF45] cursor-pointer"
                 />
               </label>
 
-              <label className="p-3 sm:p-3.5 flex items-center justify-between cursor-pointer hover:bg-[#262626] transition-colors">
+              <label className="p-3 sm:p-3.5 flex items-center justify-between cursor-pointer hover:bg-[#29231C] transition-colors">
                 <div className="pr-3">
-                  <p className="text-xs font-bold text-[#F5F0E6]">Rehearsals & Events</p>
-                  <p className="text-[11px] text-[#AAA5A0]">Schedule adjustments and venue announcements</p>
+                  <p className="text-xs font-bold text-[#FFF5E6]">Rehearsals & Events</p>
+                  <p className="text-[11px] text-[#B8ADA0]">Schedule adjustments and venue announcements</p>
                 </div>
                 <input
                   type="checkbox"
                   checked={preferences.rehearsal}
                   onChange={() => toggleCategory('rehearsal')}
-                  className="w-4 h-4 text-[#D9A441] rounded-sm focus:ring-[#D9A441] accent-[#D9A441] cursor-pointer"
+                  className="w-4 h-4 text-[#E5AF45] rounded-sm focus:ring-[#E5AF45] accent-[#E5AF45] cursor-pointer"
                 />
               </label>
 
-              <label className="p-3 sm:p-3.5 flex items-center justify-between cursor-pointer hover:bg-[#262626] transition-colors">
+              <label className="p-3 sm:p-3.5 flex items-center justify-between cursor-pointer hover:bg-[#29231C] transition-colors">
                 <div className="pr-3">
-                  <p className="text-xs font-bold text-[#F5F0E6]">Team Announcements</p>
-                  <p className="text-[11px] text-[#AAA5A0]">Ministry bulletins and team notices</p>
+                  <p className="text-xs font-bold text-[#FFF5E6]">Team Announcements</p>
+                  <p className="text-[11px] text-[#B8ADA0]">Ministry bulletins and team notices</p>
                 </div>
                 <input
                   type="checkbox"
                   checked={preferences.announcement}
                   onChange={() => toggleCategory('announcement')}
-                  className="w-4 h-4 text-[#D9A441] rounded-sm focus:ring-[#D9A441] accent-[#D9A441] cursor-pointer"
+                  className="w-4 h-4 text-[#E5AF45] rounded-sm focus:ring-[#E5AF45] accent-[#E5AF45] cursor-pointer"
                 />
               </label>
 
-              <label className="p-3 sm:p-3.5 flex items-center justify-between cursor-pointer hover:bg-[#262626] transition-colors">
+              <label className="p-3 sm:p-3.5 flex items-center justify-between cursor-pointer hover:bg-[#29231C] transition-colors">
                 <div className="pr-3">
-                  <p className="text-xs font-bold text-[#F5F0E6]">Service Reminders</p>
-                  <p className="text-[11px] text-[#AAA5A0]">Sunday morning countdown and call times</p>
+                  <p className="text-xs font-bold text-[#FFF5E6]">Service Reminders</p>
+                  <p className="text-[11px] text-[#B8ADA0]">Sunday morning countdown and call times</p>
                 </div>
                 <input
                   type="checkbox"
                   checked={preferences.reminder}
                   onChange={() => toggleCategory('reminder')}
-                  className="w-4 h-4 text-[#D9A441] rounded-sm focus:ring-[#D9A441] accent-[#D9A441] cursor-pointer"
+                  className="w-4 h-4 text-[#E5AF45] rounded-sm focus:ring-[#E5AF45] accent-[#E5AF45] cursor-pointer"
                 />
               </label>
             </div>
@@ -438,10 +438,10 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
         </div>
 
         {/* Modal Sticky Footer */}
-        <div className="p-3 sm:p-4 bg-[#161616] border-t border-[#35312B] flex items-center justify-end shrink-0">
+        <div className="p-3 sm:p-4 bg-[#181510] border-t border-[#393027] flex items-center justify-end shrink-0">
           <button
             onClick={onClose}
-            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#262626] hover:bg-[#333] border border-[#35312B] text-[#F5F0E6] text-xs font-bold transition-colors cursor-pointer"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#29231C] hover:bg-[#333] border border-[#393027] text-[#FFF5E6] text-xs font-bold transition-colors cursor-pointer"
           >
             Done
           </button>

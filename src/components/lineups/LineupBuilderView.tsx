@@ -337,12 +337,12 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
   };
 
   return (
-    <div className="space-y-5 pb-20 md:pb-8 max-w-3xl mx-auto text-[#F5F0E6]">
+    <div className="space-y-5 pb-20 md:pb-8 max-w-3xl mx-auto text-[#FFF5E6]">
       {/* Top Header Row with Circle Back Button & Utility Actions */}
       <div className="flex items-center justify-between">
         <button
           onClick={handleBack}
-          className="w-10 h-10 rounded-full bg-[#1F1F21] border border-[#35312B] shadow-soft flex items-center justify-center text-[#F5F0E6] hover:bg-[#262626] active:scale-95 transition-all shrink-0 cursor-pointer"
+          className="w-10 h-10 rounded-full bg-[#211C17] border border-[#393027] shadow-soft flex items-center justify-center text-[#FFF5E6] hover:bg-[#29231C] active:scale-95 transition-all shrink-0 cursor-pointer"
           title="Back to Lineups"
         >
           <ArrowLeft className="w-4 h-4 stroke-[2.2]" />
@@ -355,7 +355,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
               <button
                 type="button"
                 onClick={() => setIsHistoryOpen(true)}
-                className="p-2 rounded-full bg-[#1F1F21] hover:bg-[#262626] text-[#AAA5A0] hover:text-[#F5F0E6] border border-[#35312B] shadow-2xs active:scale-95 transition-all cursor-pointer"
+                className="p-2 rounded-full bg-[#211C17] hover:bg-[#29231C] text-[#B8ADA0] hover:text-[#FFF5E6] border border-[#393027] shadow-2xs active:scale-95 transition-all cursor-pointer"
                 title="View Change History"
               >
                 <History className="w-4 h-4" />
@@ -363,7 +363,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
               <button
                 type="button"
                 onClick={() => setIsPrintOpen(true)}
-                className="p-2 rounded-full bg-[#1F1F21] hover:bg-[#262626] text-[#AAA5A0] hover:text-[#F5F0E6] border border-[#35312B] shadow-2xs active:scale-95 transition-all cursor-pointer"
+                className="p-2 rounded-full bg-[#211C17] hover:bg-[#29231C] text-[#B8ADA0] hover:text-[#FFF5E6] border border-[#393027] shadow-2xs active:scale-95 transition-all cursor-pointer"
                 title="Print Setlist"
               >
                 <Printer className="w-4 h-4" />
@@ -374,7 +374,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                   const dup = duplicateLineup(existingLineup.id);
                   alert(`Lineup duplicated as "${dup.title}"`);
                 }}
-                className="p-2 rounded-full bg-[#1F1F21] hover:bg-[#262626] text-[#AAA5A0] hover:text-[#F5F0E6] border border-[#35312B] shadow-2xs active:scale-95 transition-all cursor-pointer"
+                className="p-2 rounded-full bg-[#211C17] hover:bg-[#29231C] text-[#B8ADA0] hover:text-[#FFF5E6] border border-[#393027] shadow-2xs active:scale-95 transition-all cursor-pointer"
                 title="Duplicate Lineup"
               >
                 <Copy className="w-4 h-4" />
@@ -387,7 +387,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                     onBack();
                   }
                 }}
-                className="p-2 rounded-full bg-[#1F1F21] hover:bg-[#E57373]/15 text-[#AAA5A0] hover:text-[#E57373] border border-[#35312B] shadow-2xs active:scale-95 transition-all cursor-pointer"
+                className="p-2 rounded-full bg-[#211C17] hover:bg-[#E57373]/15 text-[#B8ADA0] hover:text-[#E57373] border border-[#393027] shadow-2xs active:scale-95 transition-all cursor-pointer"
                 title="Delete Entire Lineup"
               >
                 <Trash2 className="w-4 h-4" />
@@ -400,14 +400,14 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
       {/* Center Sacred Cross, Lineups Title & Italic Subtitle */}
       <div className="text-center space-y-0.5 pt-1 pb-2">
         <div className="flex items-center justify-center gap-3">
-          <span className="w-10 h-[1px] bg-gradient-to-r from-transparent to-[#D9A441]/60" />
-          <span className="text-[#D9A441] text-xl font-serif leading-none select-none">†</span>
-          <span className="w-10 h-[1px] bg-gradient-to-l from-transparent to-[#D9A441]/60" />
+          <span className="w-10 h-[1px] bg-gradient-to-r from-transparent to-[#E5AF45]/60" />
+          <span className="text-[#E5AF45] text-xl font-serif leading-none select-none">†</span>
+          <span className="w-10 h-[1px] bg-gradient-to-l from-transparent to-[#E5AF45]/60" />
         </div>
-        <h1 className="text-3xl sm:text-4xl font-serif text-[#F5F0E6] tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-serif text-[#FFF5E6] tracking-tight">
           Lineups
         </h1>
-        <p className="font-serif italic text-xs sm:text-sm text-[#AAA5A0] tracking-wide">
+        <p className="font-serif italic text-xs sm:text-sm text-[#B8ADA0] tracking-wide">
           Plan. Worship. Serve.
         </p>
       </div>
@@ -417,8 +417,8 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
         {/* Service Title */}
         <div>
           <div className="flex items-center gap-2 mb-1.5">
-            <Sparkles className="w-4 h-4 text-[#D9A441]" />
-            <label className="text-xs font-bold text-[#F5F0E6]">
+            <Sparkles className="w-4 h-4 text-[#E5AF45]" />
+            <label className="text-xs font-bold text-[#FFF5E6]">
               Service Title *
             </label>
           </div>
@@ -429,7 +429,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
             onChange={(e) => setTitle(e.target.value)}
             onBlur={handleBlurSave}
             placeholder="e.g. Sunday Worship Service"
-            className="w-full text-xs font-bold px-4 py-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] shadow-2xs placeholder:text-[#AAA5A0]/50 focus:outline-none focus:ring-2 focus:ring-[#D9A441]/20 focus:border-[#D9A441]"
+            className="w-full text-xs font-bold px-4 py-3 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] shadow-2xs placeholder:text-[#B8ADA0]/50 focus:outline-none focus:ring-2 focus:ring-[#E5AF45]/20 focus:border-[#E5AF45]"
           />
         </div>
 
@@ -437,12 +437,12 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
         <div>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-[#D9A441]" />
-              <label className="text-xs font-bold text-[#F5F0E6]">
-                Worship Leaders * <span className="text-[#D9A441] font-semibold text-[11px]">({selectedLeaderIds.length}/3 selected)</span>
+              <Users className="w-4 h-4 text-[#E5AF45]" />
+              <label className="text-xs font-bold text-[#FFF5E6]">
+                Worship Leaders * <span className="text-[#E5AF45] font-semibold text-[11px]">({selectedLeaderIds.length}/3 selected)</span>
               </label>
             </div>
-            <span className="text-[10px] text-[#AAA5A0] font-medium">
+            <span className="text-[10px] text-[#B8ADA0] font-medium">
               {selectedLeaderIds.length >= 3 ? 'Max 3 reached' : 'Select up to 3 leaders'}
             </span>
           </div>
@@ -458,24 +458,24 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                   disabled={isMaxReached}
                   className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 border cursor-pointer ${
                     isSelected
-                      ? 'bg-[#D9A441] text-[#101010] border-[#D9A441] shadow-2xs ring-1 ring-[#D9A441]/30 font-bold'
+                      ? 'bg-[#E5AF45] text-[#100E0B] border-[#E5AF45] shadow-2xs ring-1 ring-[#E5AF45]/30 font-bold'
                       : isMaxReached
-                      ? 'bg-[#161616] text-[#AAA5A0]/40 border-[#35312B]/40 cursor-not-allowed opacity-50'
-                      : 'bg-[#1F1F21] text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626] border-[#35312B] shadow-2xs'
+                      ? 'bg-[#181510] text-[#B8ADA0]/40 border-[#393027]/40 cursor-not-allowed opacity-50'
+                      : 'bg-[#211C17] text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C] border-[#393027] shadow-2xs'
                   } active:scale-95`}
                   title={isMaxReached ? 'Maximum 3 worship leaders allowed' : undefined}
                 >
                   <span
                     className={`w-3.5 h-3.5 rounded-full flex items-center justify-center transition-all ${
                       isSelected
-                        ? 'bg-[#101010] border border-[#101010] text-[#D9A441]'
-                        : 'border border-[#AAA5A0]/50 bg-transparent'
+                        ? 'bg-[#100E0B] border border-[#100E0B] text-[#E5AF45]'
+                        : 'border border-[#B8ADA0]/50 bg-transparent'
                     }`}
                   >
-                    {isSelected && <Check className="w-2.5 h-2.5 stroke-[3] text-[#D9A441]" />}
+                    {isSelected && <Check className="w-2.5 h-2.5 stroke-[3] text-[#E5AF45]" />}
                   </span>
                   <span>{m.name}</span>
-                  <span className={`text-[10px] ${isSelected ? 'text-[#101010]/80' : 'text-[#AAA5A0]'}`}>
+                  <span className={`text-[10px] ${isSelected ? 'text-[#100E0B]/80' : 'text-[#B8ADA0]'}`}>
                     ({m.role_title})
                   </span>
                 </button>
@@ -487,8 +487,8 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
         {/* Sermon / Worship Theme */}
         <div>
           <div className="flex items-center gap-2 mb-1.5">
-            <Music className="w-4 h-4 text-[#D9A441]" />
-            <label className="text-xs font-bold text-[#F5F0E6]">
+            <Music className="w-4 h-4 text-[#E5AF45]" />
+            <label className="text-xs font-bold text-[#FFF5E6]">
               Sermon / Worship Theme (Optional)
             </label>
           </div>
@@ -498,7 +498,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
             onChange={(e) => setTheme(e.target.value)}
             onBlur={handleBlurSave}
             placeholder="e.g. Unwavering Faithfulness of God"
-            className="w-full text-xs font-medium px-4 py-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] shadow-2xs placeholder:text-[#AAA5A0]/50 focus:outline-none focus:ring-2 focus:ring-[#D9A441]/20 focus:border-[#D9A441]"
+            className="w-full text-xs font-medium px-4 py-3 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] shadow-2xs placeholder:text-[#B8ADA0]/50 focus:outline-none focus:ring-2 focus:ring-[#E5AF45]/20 focus:border-[#E5AF45]"
           />
         </div>
 
@@ -506,12 +506,12 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
         <div>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-[#D9A441]" />
-              <label className="text-xs font-bold text-[#F5F0E6]">
+              <Users className="w-4 h-4 text-[#E5AF45]" />
+              <label className="text-xs font-bold text-[#FFF5E6]">
                 Assigned Vocalists for This Service
               </label>
             </div>
-            <span className="text-[10px] text-[#AAA5A0] font-medium">
+            <span className="text-[10px] text-[#B8ADA0] font-medium">
               Tap to select / unselect
             </span>
           </div>
@@ -525,21 +525,21 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                   onClick={() => toggleVocalist(v.id)}
                   className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 border cursor-pointer ${
                     isSelected
-                      ? 'bg-[#D9A441] text-[#101010] border-[#D9A441] shadow-2xs ring-1 ring-[#D9A441]/30 font-bold'
-                      : 'bg-[#1F1F21] text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626] border-[#35312B]'
+                      ? 'bg-[#E5AF45] text-[#100E0B] border-[#E5AF45] shadow-2xs ring-1 ring-[#E5AF45]/30 font-bold'
+                      : 'bg-[#211C17] text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C] border-[#393027]'
                   } active:scale-95`}
                 >
                   <span
                     className={`w-3.5 h-3.5 rounded-full flex items-center justify-center transition-all ${
                       isSelected
-                        ? 'bg-[#101010] border border-[#101010] text-[#D9A441]'
-                        : 'border border-[#AAA5A0]/50 bg-transparent'
+                        ? 'bg-[#100E0B] border border-[#100E0B] text-[#E5AF45]'
+                        : 'border border-[#B8ADA0]/50 bg-transparent'
                     }`}
                   >
-                    {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-[#D9A441]" />}
+                    {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-[#E5AF45]" />}
                   </span>
                   <span>{v.name}</span>
-                  <span className={`text-[10px] ${isSelected ? 'text-[#101010]/80' : 'text-[#AAA5A0]'}`}>({v.vocal_range})</span>
+                  <span className={`text-[10px] ${isSelected ? 'text-[#100E0B]/80' : 'text-[#B8ADA0]'}`}>({v.vocal_range})</span>
                 </button>
               );
             })}
@@ -549,8 +549,8 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
         {/* General Team Instructions & Preparation Notes */}
         <div>
           <div className="flex items-center gap-2 mb-1.5">
-            <FileText className="w-4 h-4 text-[#D9A441]" />
-            <label className="text-xs font-bold text-[#F5F0E6]">
+            <FileText className="w-4 h-4 text-[#E5AF45]" />
+            <label className="text-xs font-bold text-[#FFF5E6]">
               General Team Instructions & Preparation Notes
             </label>
           </div>
@@ -560,22 +560,22 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
             onChange={(e) => setNotes(e.target.value)}
             onBlur={handleBlurSave}
             placeholder="e.g. Call time 8:00 AM sharp. Vocalists review bridge."
-            className="w-full text-xs font-medium px-4 py-3 rounded-2xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] shadow-2xs placeholder:text-[#AAA5A0]/50 focus:outline-none focus:ring-2 focus:ring-[#D9A441]/20 focus:border-[#D9A441]"
+            className="w-full text-xs font-medium px-4 py-3 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] shadow-2xs placeholder:text-[#B8ADA0]/50 focus:outline-none focus:ring-2 focus:ring-[#E5AF45]/20 focus:border-[#E5AF45]"
           />
         </div>
 
         {/* Service Date & Time Card */}
-        <div className="bg-[#161616] rounded-3xl p-4 sm:p-5 border border-[#35312B] space-y-2.5 shadow-2xs">
+        <div className="bg-[#181510] rounded-3xl p-4 sm:p-5 border border-[#393027] space-y-2.5 shadow-2xs">
           <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-[#D9A441]" />
-            <label className="text-xs font-bold text-[#F5F0E6]">
+            <Calendar className="w-4 h-4 text-[#E5AF45]" />
+            <label className="text-xs font-bold text-[#FFF5E6]">
               Service Date & Time *
             </label>
           </div>
-          <div className="bg-[#1F1F21] rounded-2xl border border-[#35312B] flex items-center divide-x divide-[#35312B] shadow-2xs overflow-hidden">
+          <div className="bg-[#211C17] rounded-2xl border border-[#393027] flex items-center divide-x divide-[#393027] shadow-2xs overflow-hidden">
             {/* Date Picker */}
             <div className="flex-1 flex items-center gap-2 px-3.5 py-2.5 relative">
-              <Calendar className="w-4 h-4 text-[#AAA5A0] shrink-0" />
+              <Calendar className="w-4 h-4 text-[#B8ADA0] shrink-0" />
               <input
                 type="date"
                 required
@@ -585,14 +585,14 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                   const saved = getWorkingLineup(lineupSongs, { service_date: e.target.value });
                   saveLineup(saved, false);
                 }}
-                className="w-full text-xs font-semibold text-[#F5F0E6] bg-transparent focus:outline-none cursor-pointer"
+                className="w-full text-xs font-semibold text-[#FFF5E6] bg-transparent focus:outline-none cursor-pointer"
                 style={{ WebkitAppearance: 'none' }}
               />
             </div>
             {/* Time Picker */}
             <div className="flex-1 flex items-center justify-between gap-2 px-3.5 py-2.5 relative">
               <div className="flex items-center gap-2 min-w-0 flex-1">
-                <Clock className="w-4 h-4 text-[#AAA5A0] shrink-0" />
+                <Clock className="w-4 h-4 text-[#B8ADA0] shrink-0" />
                 <input
                   type="text"
                   required
@@ -600,10 +600,10 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                   onChange={(e) => setServiceTime(e.target.value)}
                   onBlur={handleBlurSave}
                   placeholder="9:00 AM"
-                  className="w-full text-xs font-semibold text-[#F5F0E6] bg-transparent focus:outline-none"
+                  className="w-full text-xs font-semibold text-[#FFF5E6] bg-transparent focus:outline-none"
                 />
               </div>
-              <ChevronDown className="w-4 h-4 text-[#AAA5A0] shrink-0 pointer-events-none" />
+              <ChevronDown className="w-4 h-4 text-[#B8ADA0] shrink-0 pointer-events-none" />
             </div>
           </div>
         </div>
@@ -612,17 +612,17 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
       {/* Order of Songs Section */}
       <div className="space-y-3 pt-1">
         {/* Champagne Gold Accent Header Banner */}
-        <div className="bg-[#1F1F21] rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 text-[#F5F0E6] flex items-center justify-between border border-[#35312B] shadow-sm">
+        <div className="bg-[#211C17] rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 text-[#FFF5E6] flex items-center justify-between border border-[#393027] shadow-sm">
           <div className="flex items-center gap-2">
-            <Music2 className="w-4 h-4 text-[#D9A441]" />
-            <span className="font-bold text-sm text-[#F5F0E6]">
+            <Music2 className="w-4 h-4 text-[#E5AF45]" />
+            <span className="font-bold text-sm text-[#FFF5E6]">
               Order of Songs ({lineupSongs.length})
             </span>
           </div>
           <button
             type="button"
             onClick={() => setIsInlineSongCreateOpen(true)}
-            className="bg-[#262626] hover:bg-[#D9A441] text-[#D9A441] hover:text-[#101010] border border-[#D9A441]/40 rounded-full px-3.5 py-1.5 text-xs font-bold flex items-center gap-1 active:scale-95 transition-all"
+            className="bg-[#29231C] hover:bg-[#E5AF45] text-[#E5AF45] hover:text-[#100E0B] border border-[#E5AF45]/40 rounded-full px-3.5 py-1.5 text-xs font-bold flex items-center gap-1 active:scale-95 transition-all"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Create Song Inline</span>
@@ -633,7 +633,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
         <button
           type="button"
           onClick={() => setIsSongPickerOpen(true)}
-          className="bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] rounded-full px-4 py-2 text-xs font-bold flex items-center gap-2 shadow-sm active:scale-95 transition-all self-start"
+          className="bg-gradient-to-r from-[#E5AF45] to-[#D69F35] hover:from-[#FFC85C] hover:to-[#E5AF45] text-[#100E0B] rounded-full px-4 py-2 text-xs font-black flex items-center gap-2 shadow-[0_2px_12px_rgba(229,175,69,0.25)] active:scale-95 transition-all self-start cursor-pointer"
         >
           <Music2 className="w-3.5 h-3.5" />
           <span>Select from Library</span>
@@ -641,10 +641,10 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
 
         {/* Empty State or Songs List */}
         {lineupSongs.length === 0 ? (
-          <div className="rounded-3xl border-2 border-dashed border-[#35312B] bg-[#161616] p-8 sm:p-10 text-center space-y-1.5">
-            <Music2 className="w-7 h-7 text-[#D9A441]/70 mx-auto mb-1.5" />
-            <p className="font-bold text-xs text-[#F5F0E6]">Your lineup currently has no songs</p>
-            <p className="text-[11px] text-[#AAA5A0]">Click "Select from Library" or "Create Song Inline" above.</p>
+          <div className="rounded-3xl border-2 border-dashed border-[#393027] bg-[#181510] p-8 sm:p-10 text-center space-y-1.5">
+            <Music2 className="w-7 h-7 text-[#E5AF45]/70 mx-auto mb-1.5" />
+            <p className="font-bold text-xs text-[#FFF5E6]">Your lineup currently has no songs</p>
+            <p className="text-[11px] text-[#B8ADA0]">Click "Select from Library" or "Create Song Inline" above.</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -655,7 +655,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
               return (
                 <div
                   key={item.id}
-                  className="rounded-2xl border border-[#35312B] bg-[#161616] hover:border-[#D9A441]/50 transition-colors p-3.5 sm:p-4 space-y-3 shadow-sm"
+                  className="rounded-2xl border border-[#393027] bg-[#181510] hover:border-[#E5AF45]/50 transition-colors p-3.5 sm:p-4 space-y-3 shadow-sm"
                 >
                   {/* Song Row Main Bar - Responsive & Non-overlapping */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -668,7 +668,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                             type="button"
                             onClick={() => moveSong(index, 'up')}
                             disabled={index === 0}
-                            className="p-1 rounded hover:bg-[#262626] text-[#AAA5A0] hover:text-[#F5F0E6] disabled:opacity-20 disabled:pointer-events-none"
+                            className="p-1 rounded hover:bg-[#29231C] text-[#B8ADA0] hover:text-[#FFF5E6] disabled:opacity-20 disabled:pointer-events-none"
                             title="Move Up"
                           >
                             <ArrowUp className="w-3 h-3" />
@@ -677,13 +677,13 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                             type="button"
                             onClick={() => moveSong(index, 'down')}
                             disabled={index === lineupSongs.length - 1}
-                            className="p-1 rounded hover:bg-[#262626] text-[#AAA5A0] hover:text-[#F5F0E6] disabled:opacity-20 disabled:pointer-events-none"
+                            className="p-1 rounded hover:bg-[#29231C] text-[#B8ADA0] hover:text-[#FFF5E6] disabled:opacity-20 disabled:pointer-events-none"
                             title="Move Down"
                           >
                             <ArrowDown className="w-3 h-3" />
                           </button>
                         </div>
-                        <span className="w-6 h-6 rounded-full bg-[#101010] border border-[#D9A441]/60 text-[#D9A441] flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                        <span className="w-6 h-6 rounded-full bg-[#100E0B] border border-[#E5AF45]/60 text-[#E5AF45] flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
                           {item.order}
                         </span>
                       </div>
@@ -691,44 +691,44 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                       {/* Title, Category Select & Key */}
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h4 className="text-xs sm:text-sm font-bold text-[#F5F0E6] leading-snug">
+                          <h4 className="text-xs sm:text-sm font-bold text-[#FFF5E6] leading-snug">
                             {item.title}
                           </h4>
                           {/* Inline Category Select */}
                           <select
                             value={item.category}
                             onChange={(e) => updateSongItem(item.id, { category: e.target.value })}
-                            className="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-[#262626] text-[#D9A441] border border-[#35312B] focus:border-[#D9A441] focus:outline-none cursor-pointer shrink-0"
+                            className="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-[#29231C] text-[#E5AF45] border border-[#393027] focus:border-[#E5AF45] focus:outline-none cursor-pointer shrink-0"
                           >
                             {CATEGORIES.map(c => (
-                              <option key={c} value={c} className="bg-[#1F1F21] text-[#F5F0E6]">{c}</option>
+                              <option key={c} value={c} className="bg-[#211C17] text-[#FFF5E6]">{c}</option>
                             ))}
                           </select>
                         </div>
                         <div className="flex items-center gap-1.5 text-[11px] flex-wrap mt-0.5">
-                          <span className="text-[#D9A441] font-bold">
-                            Lead: <span className="text-[#F5F0E6] font-bold">{item.assigned_vocalist_name || formatLeaderNames(selectedLeaderIds)}</span>
+                          <span className="text-[#E5AF45] font-bold">
+                            Lead: <span className="text-[#FFF5E6] font-bold">{item.assigned_vocalist_name || formatLeaderNames(selectedLeaderIds)}</span>
                           </span>
-                          <span className="text-[#35312B]">•</span>
-                          <span className="text-[#AAA5A0] truncate">{item.artist}</span>
-                          <span className="text-[#35312B]">•</span>
-                          <span className="text-[#AAA5A0] text-[10px]">Orig: <strong className="text-[#D9A441]">{item.original_key}</strong></span>
+                          <span className="text-[#393027]">•</span>
+                          <span className="text-[#B8ADA0] truncate">{item.artist}</span>
+                          <span className="text-[#393027]">•</span>
+                          <span className="text-[#B8ADA0] text-[10px]">Orig: <strong className="text-[#E5AF45]">{item.original_key}</strong></span>
                         </div>
                       </div>
                     </div>
 
                     {/* Key, Media & DELETE Actions Bar */}
-                    <div className="flex items-center justify-between sm:justify-end gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#35312B] shrink-0 flex-wrap">
+                    <div className="flex items-center justify-between sm:justify-end gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#393027] shrink-0 flex-wrap">
                       {/* Selected Key Dropdown */}
-                      <div className="flex items-center gap-1 bg-[#101010] px-2.5 py-1.5 rounded-xl border border-[#D9A441]/50 shadow-sm">
-                        <span className="text-[10px] font-bold text-[#AAA5A0]">Key:</span>
+                      <div className="flex items-center gap-1 bg-[#100E0B] px-2.5 py-1.5 rounded-xl border border-[#E5AF45]/50 shadow-sm">
+                        <span className="text-[10px] font-bold text-[#B8ADA0]">Key:</span>
                         <select
                           value={item.selected_key}
                           onChange={(e) => updateSongItem(item.id, { selected_key: e.target.value })}
-                          className="text-xs font-black text-[#D9A441] bg-transparent focus:outline-none cursor-pointer"
+                          className="text-xs font-black text-[#E5AF45] bg-transparent focus:outline-none cursor-pointer"
                         >
                           {KEYS.map(k => (
-                            <option key={k} value={k} className="bg-[#1F1F21] text-[#D9A441]">{k}</option>
+                            <option key={k} value={k} className="bg-[#211C17] text-[#E5AF45]">{k}</option>
                           ))}
                         </select>
                       </div>
@@ -752,7 +752,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                           <button
                             type="button"
                             onClick={() => openChords(originalSong)}
-                            className="p-1.5 sm:px-2.5 sm:py-1 rounded-xl bg-[#262626] border border-[#35312B] hover:bg-[#D9A441] text-[#F5F0E6] hover:text-[#101010] text-[11px] font-bold transition-colors shadow-sm flex items-center gap-1"
+                            className="p-1.5 sm:px-2.5 sm:py-1 rounded-xl bg-[#29231C] border border-[#393027] hover:bg-[#E5AF45] text-[#FFF5E6] hover:text-[#100E0B] text-[11px] font-bold transition-colors shadow-sm flex items-center gap-1"
                             title="Open Chords & Lyrics"
                           >
                             <FileMusic className="w-3.5 h-3.5" />
@@ -764,7 +764,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                         <button
                           type="button"
                           onClick={() => setExpandedSongId(isExpanded ? null : item.id)}
-                          className="p-1.5 rounded-xl hover:bg-[#262626] text-[#AAA5A0] border border-[#35312B] bg-[#1F1F21]"
+                          className="p-1.5 rounded-xl hover:bg-[#29231C] text-[#B8ADA0] border border-[#393027] bg-[#211C17]"
                           title="Toggle Details & Notes"
                         >
                           {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
@@ -774,7 +774,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                         <button
                           type="button"
                           onClick={() => removeSong(item.id)}
-                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-red-950/30 hover:bg-[#E57373] text-[#E57373] hover:text-[#101010] border border-[#E57373]/30 text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0"
+                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-red-950/30 hover:bg-[#E57373] text-[#E57373] hover:text-[#100E0B] border border-[#E57373]/30 text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0"
                           title="Remove this song from lineup"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -786,9 +786,9 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
 
                   {/* Expanded Section: Vocalist Assignment, YouTube URL & Transition Notes */}
                   {isExpanded && (
-                    <div className="pt-3 border-t border-[#35312B] grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs animate-slide-up">
+                    <div className="pt-3 border-t border-[#393027] grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs animate-slide-up">
                       <div>
-                        <label className="text-[10px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
+                        <label className="text-[10px] font-bold text-[#B8ADA0] uppercase tracking-wider block mb-1">
                           Song Title:
                         </label>
                         <input
@@ -796,12 +796,12 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                           value={item.title}
                           onChange={(e) => updateSongItem(item.id, { title: e.target.value })}
                           placeholder="Song Title"
-                          className="w-full text-xs p-2 rounded-xl border border-[#35312B] bg-[#1F1F21] text-[#F5F0E6] focus:border-[#D9A441] focus:outline-none font-bold"
+                          className="w-full text-xs p-2 rounded-xl border border-[#393027] bg-[#211C17] text-[#FFF5E6] focus:border-[#E5AF45] focus:outline-none font-bold"
                         />
                       </div>
 
                       <div>
-                        <label className="text-[10px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
+                        <label className="text-[10px] font-bold text-[#B8ADA0] uppercase tracking-wider block mb-1">
                           Video Reference Link:
                         </label>
                         <div className="flex items-center gap-1.5">
@@ -810,7 +810,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                             value={item.youtube_url || ''}
                             onChange={(e) => updateSongItem(item.id, { youtube_url: e.target.value })}
                             placeholder="https://www.youtube.com/watch?v=..."
-                            className="w-full text-xs p-2 rounded-xl border border-[#35312B] bg-[#1F1F21] text-[#F5F0E6] focus:border-[#D9A441] focus:outline-none"
+                            className="w-full text-xs p-2 rounded-xl border border-[#393027] bg-[#211C17] text-[#FFF5E6] focus:border-[#E5AF45] focus:outline-none"
                           />
                           {item.youtube_url && (
                             <button
@@ -826,7 +826,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                       </div>
 
                       <div>
-                        <label className="text-[10px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
+                        <label className="text-[10px] font-bold text-[#B8ADA0] uppercase tracking-wider block mb-1">
                           Assigned Lead Singer for this Song:
                         </label>
                         <select
@@ -842,11 +842,11 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                               selected_key: presetKey || item.selected_key
                             });
                           }}
-                          className="w-full text-xs p-2 rounded-xl border border-[#35312B] bg-[#1F1F21] text-[#F5F0E6] focus:border-[#D9A441] focus:outline-none"
+                          className="w-full text-xs p-2 rounded-xl border border-[#393027] bg-[#211C17] text-[#FFF5E6] focus:border-[#E5AF45] focus:outline-none"
                         >
-                          <option value="" className="bg-[#1F1F21] text-[#AAA5A0]">Unassigned</option>
+                          <option value="" className="bg-[#211C17] text-[#B8ADA0]">Unassigned</option>
                           {members.filter(m => m.vocal_range !== 'Instrumentalist').map(m => (
-                            <option key={m.id} value={m.id} className="bg-[#1F1F21] text-[#F5F0E6]">
+                            <option key={m.id} value={m.id} className="bg-[#211C17] text-[#FFF5E6]">
                               {m.name} ({m.vocal_range})
                             </option>
                           ))}
@@ -854,7 +854,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                       </div>
 
                       <div>
-                        <label className="text-[10px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1">
+                        <label className="text-[10px] font-bold text-[#B8ADA0] uppercase tracking-wider block mb-1">
                           Transition / Arrangement Note:
                         </label>
                         <input
@@ -862,7 +862,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                           value={item.notes || ''}
                           onChange={(e) => updateSongItem(item.id, { notes: e.target.value })}
                           placeholder="e.g. Drums build up, Pastor prayers after chorus 2"
-                          className="w-full text-xs p-2 rounded-xl border border-[#35312B] bg-[#1F1F21] text-[#F5F0E6] focus:border-[#D9A441] focus:outline-none"
+                          className="w-full text-xs p-2 rounded-xl border border-[#393027] bg-[#211C17] text-[#FFF5E6] focus:border-[#E5AF45] focus:outline-none"
                         />
                       </div>
                     </div>
@@ -880,19 +880,19 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
           <button
             type="button"
             onClick={() => setIsShareOpen(true)}
-            className="py-3 px-4 rounded-full bg-[#1F1F21] hover:bg-[#262626] text-[#F5F0E6] border border-[#35312B] text-xs font-bold shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
+            className="py-3 px-4 rounded-full bg-[#211C17] hover:bg-[#29231C] text-[#FFF5E6] border border-[#393027] text-xs font-bold shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
             title="Share Lineup / Save as Landscape Photo"
           >
-            <Share2 className="w-4 h-4 text-[#D9A441] group-hover:scale-110 transition-transform" />
+            <Share2 className="w-4 h-4 text-[#E5AF45] group-hover:scale-110 transition-transform" />
             <span>Share & Photo</span>
           </button>
 
           <button
             type="button"
             onClick={() => handleSave('draft')}
-            className="py-3 px-4 rounded-full bg-[#1F1F21] hover:bg-[#262626] text-[#F5F0E6] text-xs font-bold border border-[#35312B] shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+            className="py-3 px-4 rounded-full bg-[#211C17] hover:bg-[#29231C] text-[#FFF5E6] text-xs font-bold border border-[#393027] shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
-            <Save className="w-4 h-4 text-[#AAA5A0]" />
+            <Save className="w-4 h-4 text-[#B8ADA0]" />
             <span>Save Draft</span>
           </button>
         </div>
@@ -901,7 +901,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
         <button
           type="button"
           onClick={() => handleSave('published')}
-          className="w-full py-3.5 px-6 rounded-full bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold flex items-center justify-center gap-2 shadow-lg active:scale-[0.99] transition-all group"
+          className="w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-[#E5AF45] to-[#D69F35] hover:from-[#FFC85C] hover:to-[#E5AF45] text-[#100E0B] text-xs font-black flex items-center justify-center gap-2 shadow-[0_4px_18px_rgba(229,175,69,0.3)] hover:shadow-[0_6px_24px_rgba(229,175,69,0.45)] active:scale-[0.99] transition-all group cursor-pointer"
         >
           <Send className="w-4 h-4 stroke-[2.2] group-hover:translate-x-0.5 transition-transform" />
           <span>Publish Lineup</span>
@@ -915,44 +915,44 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
           onClick={() => setIsSongPickerOpen(false)}
         >
           <div
-            className="bg-[#1F1F21] rounded-3xl max-w-lg w-full max-h-[85vh] flex flex-col shadow-2xl border border-[#35312B] animate-slide-up overflow-hidden"
+            className="bg-[#211C17] rounded-3xl max-w-lg w-full max-h-[85vh] flex flex-col shadow-2xl border border-[#393027] animate-slide-up overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-[#35312B] bg-[#161616] flex items-center justify-between">
-              <h3 className="text-sm font-bold text-[#F5F0E6]">Add Song from Library</h3>
+            <div className="p-4 border-b border-[#393027] bg-[#181510] flex items-center justify-between">
+              <h3 className="text-sm font-bold text-[#FFF5E6]">Add Song from Library</h3>
               <button
                 onClick={() => setIsSongPickerOpen(false)}
-                className="p-1 rounded-full text-[#AAA5A0] hover:text-[#F5F0E6]"
+                className="p-1 rounded-full text-[#B8ADA0] hover:text-[#FFF5E6]"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="p-3 border-b border-[#35312B] bg-[#1F1F21]">
+            <div className="p-3 border-b border-[#393027] bg-[#211C17]">
               <div className="relative">
-                <Search className="w-4 h-4 text-[#AAA5A0] absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-[#B8ADA0] absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={songPickerSearch}
                   onChange={(e) => setSongPickerSearch(e.target.value)}
                   placeholder="Search song to add..."
-                  className="w-full text-xs pl-9 pr-3 py-2 rounded-xl border border-[#35312B] bg-[#161616] text-[#F5F0E6] placeholder:text-[#AAA5A0]/60 focus:border-[#D9A441] focus:outline-none"
+                  className="w-full text-xs pl-9 pr-3 py-2 rounded-xl border border-[#393027] bg-[#181510] text-[#FFF5E6] placeholder:text-[#B8ADA0]/60 focus:border-[#E5AF45] focus:outline-none"
                 />
               </div>
             </div>
 
             <div className="p-3 overflow-y-auto space-y-2 flex-1">
               {songs.length === 0 ? (
-                <div className="py-8 px-4 text-center text-xs text-[#AAA5A0] flex flex-col items-center justify-center">
-                  <Music2 className="w-8 h-8 text-[#AAA5A0]/40 mb-2" />
-                  <p className="font-bold text-[#F5F0E6]">No songs in library yet</p>
-                  <p className="text-[11px] text-[#AAA5A0] mt-0.5 mb-3">Create a new song to add directly to this lineup.</p>
+                <div className="py-8 px-4 text-center text-xs text-[#B8ADA0] flex flex-col items-center justify-center">
+                  <Music2 className="w-8 h-8 text-[#B8ADA0]/40 mb-2" />
+                  <p className="font-bold text-[#FFF5E6]">No songs in library yet</p>
+                  <p className="text-[11px] text-[#B8ADA0] mt-0.5 mb-3">Create a new song to add directly to this lineup.</p>
                   <button
                     onClick={() => {
                       setIsSongPickerOpen(false);
                       setIsInlineSongCreateOpen(true);
                     }}
-                    className="px-3.5 py-2 rounded-xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] font-bold text-xs shadow-sm transition-all"
+                    className="px-3.5 py-2 rounded-xl bg-[#E5AF45] hover:bg-[#FFC85C] text-[#100E0B] font-bold text-xs shadow-sm transition-all"
                   >
                     + Create New Song
                   </button>
@@ -964,13 +964,13 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                     <div
                       key={song.id}
                       onClick={() => handleAddSongFromLibrary(song)}
-                      className="p-3 rounded-2xl bg-[#161616] hover:bg-[#262626] border border-transparent hover:border-[#D9A441]/40 transition-colors cursor-pointer flex items-center justify-between gap-3 text-xs"
+                      className="p-3 rounded-2xl bg-[#181510] hover:bg-[#29231C] border border-transparent hover:border-[#E5AF45]/40 transition-colors cursor-pointer flex items-center justify-between gap-3 text-xs"
                     >
                       <div>
-                        <h4 className="font-bold text-[#F5F0E6]">{song.title}</h4>
-                        <p className="text-[11px] text-[#AAA5A0]">{song.artist} • {song.category}</p>
+                        <h4 className="font-bold text-[#FFF5E6]">{song.title}</h4>
+                        <p className="text-[11px] text-[#B8ADA0]">{song.artist} • {song.category}</p>
                       </div>
-                      <span className="font-black text-[#D9A441] px-2 py-0.5 bg-[#101010] rounded-lg border border-[#D9A441]/50">
+                      <span className="font-black text-[#E5AF45] px-2 py-0.5 bg-[#100E0B] rounded-lg border border-[#E5AF45]/50">
                         Key {song.original_key}
                       </span>
                     </div>

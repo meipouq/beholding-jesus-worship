@@ -55,14 +55,14 @@ export const RehearsalsView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2.5 rounded-2xl bg-[#161616] border border-[#35312B] text-[#D9A441] shadow-sm">
+          <div className="p-2.5 rounded-2xl bg-[#181510] border border-[#393027] text-[#E5AF45] shadow-sm">
             <CalendarIcon className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#F5F0E6] leading-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-[#FFF5E6] leading-tight">
               Rehearsals & Schedules
             </h1>
-            <p className="text-xs text-[#AAA5A0] mt-0.5">
+            <p className="text-xs text-[#B8ADA0] mt-0.5">
               Coordinate sound checks, rehearsals, service dates, and team RSVP attendance
             </p>
           </div>
@@ -70,11 +70,11 @@ export const RehearsalsView: React.FC = () => {
 
         <div className="flex items-center gap-2">
           {/* View Toggle */}
-          <div className="flex items-center bg-[#161616] p-1 rounded-2xl border border-[#35312B] shadow-sm">
+          <div className="flex items-center bg-[#181510] p-1 rounded-2xl border border-[#393027] shadow-sm">
             <button
               onClick={() => setViewMode('agenda')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                viewMode === 'agenda' ? 'bg-[#D9A441] text-[#101010] shadow-sm' : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
+                viewMode === 'agenda' ? 'bg-[#E5AF45] text-[#100E0B] shadow-sm' : 'text-[#B8ADA0] hover:text-[#FFF5E6]'
               }`}
             >
               <List className="w-3.5 h-3.5" />
@@ -83,7 +83,7 @@ export const RehearsalsView: React.FC = () => {
             <button
               onClick={() => setViewMode('month')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                viewMode === 'month' ? 'bg-[#D9A441] text-[#101010] shadow-sm' : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
+                viewMode === 'month' ? 'bg-[#E5AF45] text-[#100E0B] shadow-sm' : 'text-[#B8ADA0] hover:text-[#FFF5E6]'
               }`}
             >
               <CalendarDays className="w-3.5 h-3.5" />
@@ -93,7 +93,7 @@ export const RehearsalsView: React.FC = () => {
 
           <button
             onClick={() => setIsAdding(true)}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold shadow-sm transition-all shrink-0"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-[#E5AF45] to-[#D69F35] hover:from-[#FFC85C] hover:to-[#E5AF45] text-[#100E0B] text-xs font-black shadow-[0_4px_16px_rgba(229,175,69,0.25)] hover:shadow-[0_6px_22px_rgba(229,175,69,0.38)] transition-all shrink-0 cursor-pointer active:scale-95"
           >
             <Plus className="w-4 h-4" />
             <span>Schedule Event</span>
@@ -104,17 +104,17 @@ export const RehearsalsView: React.FC = () => {
       {viewMode === 'agenda' ? (
         /* AGENDA LIST VIEW */
         sortedRehearsals.length === 0 ? (
-          <div className="bg-[#1F1F21] rounded-3xl p-12 sm:p-16 text-center border border-[#35312B] shadow-sm flex flex-col items-center justify-center">
-            <div className="w-16 h-16 rounded-3xl bg-[#161616] border border-[#35312B] text-[#D9A441] flex items-center justify-center mb-4 shadow-inner">
-              <CalendarIcon className="w-8 h-8 text-[#D9A441]" />
+          <div className="bg-[#211C17] rounded-3xl p-12 sm:p-16 text-center border border-[#393027] shadow-sm flex flex-col items-center justify-center">
+            <div className="w-16 h-16 rounded-3xl bg-[#181510] border border-[#393027] text-[#E5AF45] flex items-center justify-center mb-4 shadow-inner">
+              <CalendarIcon className="w-8 h-8 text-[#E5AF45]" />
             </div>
-            <h3 className="text-base sm:text-lg font-bold text-[#F5F0E6]">No Rehearsals or Services Scheduled</h3>
-            <p className="text-xs text-[#AAA5A0] mt-1 max-w-md">
+            <h3 className="text-base sm:text-lg font-bold text-[#FFF5E6]">No Rehearsals or Services Scheduled</h3>
+            <p className="text-xs text-[#B8ADA0] mt-1 max-w-md">
               Schedule your worship team practices, weekend sound checks, Sunday services, or fellowship meetings with attendance RSVP tracking.
             </p>
             <button
               onClick={() => setIsAdding(true)}
-              className="mt-5 flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold shadow-sm transition-all"
+              className="mt-5 flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#E5AF45] hover:bg-[#FFC85C] text-[#100E0B] text-xs font-bold shadow-sm transition-all"
             >
               <Plus className="w-4 h-4" />
               <span>Schedule First Event</span>
@@ -135,16 +135,16 @@ export const RehearsalsView: React.FC = () => {
             return (
               <div
                 key={reh.id}
-                className="bg-[#1F1F21] rounded-3xl p-5 sm:p-6 border border-[#35312B] hover:border-[#D9A441]/50 shadow-sm transition-all flex flex-col md:flex-row md:items-center justify-between gap-5"
+                className="bg-[#211C17] rounded-3xl p-5 sm:p-6 border border-[#393027] hover:border-[#E5AF45]/50 shadow-sm transition-all flex flex-col md:flex-row md:items-center justify-between gap-5"
               >
                 {/* Left: Date badge + Event Details */}
                 <div className="flex items-start gap-4 flex-1">
                   {/* Calendar Date Block */}
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#161616] border border-[#35312B] flex flex-col items-center justify-center shrink-0">
-                    <span className="text-[10px] sm:text-[11px] font-bold text-[#D9A441] tracking-wider">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#181510] border border-[#393027] flex flex-col items-center justify-center shrink-0">
+                    <span className="text-[10px] sm:text-[11px] font-bold text-[#E5AF45] tracking-wider">
                       {monthStr}
                     </span>
-                    <span className="text-xl sm:text-2xl font-black text-[#F5F0E6] leading-none">
+                    <span className="text-xl sm:text-2xl font-black text-[#FFF5E6] leading-none">
                       {dayNum}
                     </span>
                   </div>
@@ -152,43 +152,43 @@ export const RehearsalsView: React.FC = () => {
                   {/* Info */}
                   <div className="space-y-1 min-w-0 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="px-2.5 py-0.5 rounded-lg bg-[#262626] text-[#D9A441] border border-[#35312B] text-[10px] font-bold uppercase tracking-wider">
+                      <span className="px-2.5 py-0.5 rounded-lg bg-[#29231C] text-[#E5AF45] border border-[#393027] text-[10px] font-bold uppercase tracking-wider">
                         {reh.type}
                       </span>
-                      <span className="text-xs text-[#AAA5A0] font-medium">
+                      <span className="text-xs text-[#B8ADA0] font-medium">
                         {new Date(reh.date).toLocaleDateString('en-US', { weekday: 'long' })}
                       </span>
                     </div>
 
-                    <h3 className="text-base sm:text-lg font-bold text-[#F5F0E6] leading-snug">
+                    <h3 className="text-base sm:text-lg font-bold text-[#FFF5E6] leading-snug">
                       {reh.title}
                     </h3>
 
-                    <div className="flex items-center gap-4 text-xs text-[#AAA5A0] flex-wrap pt-0.5">
+                    <div className="flex items-center gap-4 text-xs text-[#B8ADA0] flex-wrap pt-0.5">
                       <div className="flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-[#D9A441]" />
+                        <Clock className="w-3.5 h-3.5 text-[#E5AF45]" />
                         <span>{reh.start_time} – {reh.end_time}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <MapPin className="w-3.5 h-3.5 text-[#D9A441]" />
+                        <MapPin className="w-3.5 h-3.5 text-[#E5AF45]" />
                         <span>{reh.venue}</span>
                       </div>
                     </div>
 
                     {reh.prep_notes && (
-                      <p className="text-[11px] text-[#AAA5A0] mt-2 bg-[#161616] p-2.5 rounded-xl border border-[#35312B] italic leading-relaxed">
+                      <p className="text-[11px] text-[#B8ADA0] mt-2 bg-[#181510] p-2.5 rounded-xl border border-[#393027] italic leading-relaxed">
                         "{reh.prep_notes}"
                       </p>
                     )}
 
                     {/* Participants & Attendance Summary */}
-                    <div className="pt-2 flex items-center gap-3 text-xs text-[#AAA5A0] flex-wrap">
-                      <span className="font-semibold text-[#F5F0E6]">Attendance:</span>
-                      <span className="text-[#78B887] font-bold bg-emerald-950/40 px-2 py-0.5 rounded-md border border-[#78B887]/30">
+                    <div className="pt-2 flex items-center gap-3 text-xs text-[#B8ADA0] flex-wrap">
+                      <span className="font-semibold text-[#FFF5E6]">Attendance:</span>
+                      <span className="text-[#79BB8B] font-bold bg-emerald-950/40 px-2 py-0.5 rounded-md border border-[#79BB8B]/30">
                         {goingCount} Going
                       </span>
                       {maybeCount > 0 && (
-                        <span className="text-[#F5C15D] font-semibold bg-amber-950/40 px-2 py-0.5 rounded-md border border-amber-800/40">
+                        <span className="text-[#FFC85C] font-semibold bg-amber-950/40 px-2 py-0.5 rounded-md border border-amber-800/40">
                           {maybeCount} Maybe
                         </span>
                       )}
@@ -202,19 +202,19 @@ export const RehearsalsView: React.FC = () => {
                 </div>
 
                 {/* Right: Personal RSVP Controls & Management */}
-                <div className="flex flex-col sm:flex-row md:flex-col items-end justify-between gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#35312B]">
+                <div className="flex flex-col sm:flex-row md:flex-col items-end justify-between gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#393027]">
                   {/* My RSVP Pill Buttons */}
                   <div className="w-full sm:w-auto">
-                    <span className="text-[10px] font-bold text-[#AAA5A0] uppercase tracking-wider block mb-1 text-left sm:text-right">
+                    <span className="text-[10px] font-bold text-[#B8ADA0] uppercase tracking-wider block mb-1 text-left sm:text-right">
                       Your RSVP:
                     </span>
-                    <div className="flex items-center gap-1.5 bg-[#161616] p-1 rounded-2xl border border-[#35312B]">
+                    <div className="flex items-center gap-1.5 bg-[#181510] p-1 rounded-2xl border border-[#393027]">
                       <button
                         onClick={() => updateRsvp(reh.id, currentUser.id, 'going')}
                         className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                           myRsvp === 'going'
-                            ? 'bg-[#78B887] text-[#101010] shadow-sm'
-                            : 'text-[#AAA5A0] hover:text-[#78B887]'
+                            ? 'bg-[#79BB8B] text-[#100E0B] shadow-sm'
+                            : 'text-[#B8ADA0] hover:text-[#79BB8B]'
                         }`}
                       >
                         <CheckCircle className="w-3.5 h-3.5" />
@@ -225,8 +225,8 @@ export const RehearsalsView: React.FC = () => {
                         onClick={() => updateRsvp(reh.id, currentUser.id, 'maybe')}
                         className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                           myRsvp === 'maybe'
-                            ? 'bg-[#F5C15D] text-[#101010] shadow-sm'
-                            : 'text-[#AAA5A0] hover:text-[#F5C15D]'
+                            ? 'bg-[#FFC85C] text-[#100E0B] shadow-sm'
+                            : 'text-[#B8ADA0] hover:text-[#FFC85C]'
                         }`}
                       >
                         <HelpCircle className="w-3.5 h-3.5" />
@@ -237,8 +237,8 @@ export const RehearsalsView: React.FC = () => {
                         onClick={() => updateRsvp(reh.id, currentUser.id, 'cant_go')}
                         className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                           myRsvp === 'cant_go'
-                            ? 'bg-[#E57373] text-[#101010] shadow-sm'
-                            : 'text-[#AAA5A0] hover:text-[#E57373]'
+                            ? 'bg-[#E57373] text-[#100E0B] shadow-sm'
+                            : 'text-[#B8ADA0] hover:text-[#E57373]'
                         }`}
                       >
                         <XCircle className="w-3.5 h-3.5" />
@@ -255,7 +255,7 @@ export const RehearsalsView: React.FC = () => {
                           setActiveLineupId(reh.lineup_id!);
                           setActiveModule('lineups');
                         }}
-                        className="px-3 py-1.5 rounded-xl bg-[#262626] hover:bg-[#D9A441] text-[#F5F0E6] hover:text-[#101010] text-xs font-bold border border-[#35312B] transition-colors flex items-center gap-1"
+                        className="px-3 py-1.5 rounded-xl bg-[#29231C] hover:bg-[#E5AF45] text-[#FFF5E6] hover:text-[#100E0B] text-xs font-bold border border-[#393027] transition-colors flex items-center gap-1"
                       >
                         <FileText className="w-3.5 h-3.5" />
                         <span>View Setlist</span>
@@ -264,7 +264,7 @@ export const RehearsalsView: React.FC = () => {
 
                     <button
                       onClick={() => setEditingRehearsal(reh)}
-                      className="p-1.5 rounded-xl text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
+                      className="p-1.5 rounded-xl text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C]"
                       title="Edit Event"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
@@ -275,7 +275,7 @@ export const RehearsalsView: React.FC = () => {
                           deleteRehearsal(reh.id);
                         }
                       }}
-                      className="p-1.5 rounded-xl text-[#AAA5A0] hover:text-[#E57373] hover:bg-red-950/30"
+                      className="p-1.5 rounded-xl text-[#B8ADA0] hover:text-[#E57373] hover:bg-red-950/30"
                       title="Delete"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -289,21 +289,21 @@ export const RehearsalsView: React.FC = () => {
         )
       ) : (
         /* MONTH CALENDAR VIEW */
-        <div className="bg-[#1F1F21] rounded-3xl p-6 border border-[#35312B] shadow-sm space-y-4">
-          <div className="flex items-center justify-between pb-4 border-b border-[#35312B]">
-            <h2 className="text-base font-bold text-[#F5F0E6]">
+        <div className="bg-[#211C17] rounded-3xl p-6 border border-[#393027] shadow-sm space-y-4">
+          <div className="flex items-center justify-between pb-4 border-b border-[#393027]">
+            <h2 className="text-base font-bold text-[#FFF5E6]">
               {monthName} {year}
             </h2>
             <div className="flex items-center gap-1">
               <button
                 onClick={prevMonth}
-                className="p-1.5 rounded-xl hover:bg-[#262626] text-[#AAA5A0] hover:text-[#F5F0E6]"
+                className="p-1.5 rounded-xl hover:bg-[#29231C] text-[#B8ADA0] hover:text-[#FFF5E6]"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={nextMonth}
-                className="p-1.5 rounded-xl hover:bg-[#262626] text-[#AAA5A0] hover:text-[#F5F0E6]"
+                className="p-1.5 rounded-xl hover:bg-[#29231C] text-[#B8ADA0] hover:text-[#FFF5E6]"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -313,7 +313,7 @@ export const RehearsalsView: React.FC = () => {
           {/* Calendar Grid */}
           <div className="grid grid-cols-7 gap-2 text-center text-xs">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-              <div key={d} className="font-bold text-[#AAA5A0] uppercase tracking-wider py-1">
+              <div key={d} className="font-bold text-[#B8ADA0] uppercase tracking-wider py-1">
                 {d}
               </div>
             ))}
@@ -329,11 +329,11 @@ export const RehearsalsView: React.FC = () => {
                   key={i}
                   className={`min-h-[85px] p-2 rounded-2xl border text-left flex flex-col justify-between transition-colors ${
                     isValidDay
-                      ? 'bg-[#161616] border-[#35312B] hover:border-[#D9A441]/50'
-                      : 'bg-[#101010]/30 border-transparent opacity-20'
+                      ? 'bg-[#181510] border-[#393027] hover:border-[#E5AF45]/50'
+                      : 'bg-[#100E0B]/30 border-transparent opacity-20'
                   }`}
                 >
-                  <span className={`text-xs font-bold ${isValidDay ? 'text-[#F5F0E6]' : 'text-[#AAA5A0]/30'}`}>
+                  <span className={`text-xs font-bold ${isValidDay ? 'text-[#FFF5E6]' : 'text-[#B8ADA0]/30'}`}>
                     {isValidDay ? day : ''}
                   </span>
 
@@ -341,7 +341,7 @@ export const RehearsalsView: React.FC = () => {
                     <div
                       key={ev.id}
                       onClick={() => setEditingRehearsal(ev)}
-                      className="p-1 rounded-lg bg-[#101010] border border-[#D9A441]/50 text-[#D9A441] text-[10px] font-bold truncate mt-1 cursor-pointer shadow-sm"
+                      className="p-1 rounded-lg bg-[#100E0B] border border-[#E5AF45]/50 text-[#E5AF45] text-[10px] font-bold truncate mt-1 cursor-pointer shadow-sm"
                       title={`${ev.title} (${ev.start_time})`}
                     >
                       {ev.title}

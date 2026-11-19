@@ -93,14 +93,14 @@ export const LineupsListView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-[#161616] border border-[#35312B] text-[#D9A441] flex items-center justify-center shrink-0 shadow-soft">
+          <div className="w-12 h-12 rounded-2xl bg-[#181510] border border-[#393027] text-[#E5AF45] flex items-center justify-center shrink-0 shadow-soft">
             <ListMusic className="w-6 h-6 stroke-[2]" />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-serif text-[#F5F0E6] leading-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif text-[#FFF5E6] leading-tight">
               Service Lineups
             </h1>
-            <p className="text-xs text-[#AAA5A0] mt-0.5 leading-relaxed">
+            <p className="text-xs text-[#B8ADA0] mt-0.5 leading-relaxed">
               Plan, organize, and schedule worship sets with vocal keys and YouTube references.
             </p>
           </div>
@@ -108,7 +108,7 @@ export const LineupsListView: React.FC = () => {
 
         <button
           onClick={handleCreateNew}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold shadow-soft transition-all self-start sm:self-auto active:scale-95 cursor-pointer"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#E5AF45] to-[#D69F35] hover:from-[#FFC85C] hover:to-[#E5AF45] text-[#100E0B] text-xs font-black shadow-[0_4px_16px_rgba(229,175,69,0.25)] hover:shadow-[0_6px_22px_rgba(229,175,69,0.38)] transition-all self-start sm:self-auto active:scale-95 cursor-pointer"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
           <span>New Service Lineup</span>
@@ -121,8 +121,8 @@ export const LineupsListView: React.FC = () => {
           onClick={() => setSelectedStatus('ALL')}
           className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
             selectedStatus === 'ALL'
-              ? 'bg-[#D9A441] text-[#101010] shadow-soft'
-              : 'bg-[#1F1F21] text-[#AAA5A0] hover:text-[#F5F0E6] border border-[#35312B] hover:bg-[#262626]'
+              ? 'bg-gradient-to-r from-[#E5AF45] to-[#D69F35] text-[#100E0B] font-black shadow-[0_2px_10px_rgba(229,175,69,0.25)]'
+              : 'bg-[#211C17] text-[#B8ADA0] hover:text-[#FFF5E6] border border-[#393027] hover:bg-[#29231C]'
           }`}
         >
           All Lineups ({lineups.length})
@@ -131,8 +131,8 @@ export const LineupsListView: React.FC = () => {
           onClick={() => setSelectedStatus('upcoming')}
           className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
             selectedStatus === 'upcoming'
-              ? 'bg-[#D9A441] text-[#101010] shadow-soft'
-              : 'bg-[#1F1F21] text-[#AAA5A0] hover:text-[#F5F0E6] border border-[#35312B] hover:bg-[#262626]'
+              ? 'bg-gradient-to-r from-[#E5AF45] to-[#D69F35] text-[#100E0B] font-black shadow-[0_2px_10px_rgba(229,175,69,0.25)]'
+              : 'bg-[#211C17] text-[#B8ADA0] hover:text-[#FFF5E6] border border-[#393027] hover:bg-[#29231C]'
           }`}
         >
           Upcoming ({upcomingCount})
@@ -141,8 +141,8 @@ export const LineupsListView: React.FC = () => {
           onClick={() => setSelectedStatus('completed')}
           className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
             selectedStatus === 'completed'
-              ? 'bg-[#D9A441] text-[#101010] shadow-soft'
-              : 'bg-[#1F1F21] text-[#AAA5A0] hover:text-[#F5F0E6] border border-[#35312B] hover:bg-[#262626]'
+              ? 'bg-gradient-to-r from-[#E5AF45] to-[#D69F35] text-[#100E0B] font-black shadow-[0_2px_10px_rgba(229,175,69,0.25)]'
+              : 'bg-[#211C17] text-[#B8ADA0] hover:text-[#FFF5E6] border border-[#393027] hover:bg-[#29231C]'
           }`}
         >
           Completed History ({completedCount})
@@ -151,8 +151,8 @@ export const LineupsListView: React.FC = () => {
           onClick={() => setSelectedStatus('draft')}
           className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
             selectedStatus === 'draft'
-              ? 'bg-[#D9A441] text-[#101010] shadow-soft'
-              : 'bg-[#1F1F21] text-[#AAA5A0] hover:text-[#F5F0E6] border border-[#35312B] hover:bg-[#262626]'
+              ? 'bg-gradient-to-r from-[#E5AF45] to-[#D69F35] text-[#100E0B] font-black shadow-[0_2px_10px_rgba(229,175,69,0.25)]'
+              : 'bg-[#211C17] text-[#B8ADA0] hover:text-[#FFF5E6] border border-[#393027] hover:bg-[#29231C]'
           }`}
         >
           Drafts ({draftCount})
@@ -162,8 +162,8 @@ export const LineupsListView: React.FC = () => {
             onClick={() => setSelectedStatus('cancelled')}
             className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
               selectedStatus === 'cancelled'
-                ? 'bg-[#E57373] text-[#101010] shadow-soft'
-                : 'bg-[#262626] text-[#E57373] hover:bg-[#E57373]/15 border border-[#35312B]'
+                ? 'bg-[#E57373] text-[#100E0B] shadow-soft'
+                : 'bg-[#29231C] text-[#E57373] hover:bg-[#E57373]/15 border border-[#393027]'
             }`}
           >
             Cancelled ({cancelledCount})
@@ -173,17 +173,17 @@ export const LineupsListView: React.FC = () => {
 
       {/* Lineup Cards */}
       {filteredLineups.length === 0 ? (
-        <div className="bg-[#1F1F21] rounded-3xl p-12 sm:p-16 text-center border border-[#35312B] shadow-soft flex flex-col items-center justify-center">
-          <div className="w-16 h-16 rounded-3xl bg-[#161616] border border-[#35312B] text-[#D9A441] flex items-center justify-center mb-4 shadow-inner">
-            <ListMusic className="w-8 h-8 text-[#D9A441]" />
+        <div className="bg-[#211C17] rounded-3xl p-12 sm:p-16 text-center border border-[#393027] shadow-soft flex flex-col items-center justify-center">
+          <div className="w-16 h-16 rounded-3xl bg-[#181510] border border-[#393027] text-[#E5AF45] flex items-center justify-center mb-4 shadow-inner">
+            <ListMusic className="w-8 h-8 text-[#E5AF45]" />
           </div>
-          <h3 className="text-base sm:text-lg font-serif font-bold text-[#F5F0E6]">No Service Lineups Found</h3>
-          <p className="text-xs text-[#AAA5A0] mt-1 max-w-md">
+          <h3 className="text-base sm:text-lg font-serif font-bold text-[#FFF5E6]">No Service Lineups Found</h3>
+          <p className="text-xs text-[#B8ADA0] mt-1 max-w-md">
             Create and organize worship sets with songs, assigned vocalists, song categories, custom vocal keys, and YouTube references.
           </p>
           <button
             onClick={handleCreateNew}
-            className="mt-5 flex items-center gap-2 px-6 py-3 rounded-full bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold shadow-soft transition-all active:scale-95 cursor-pointer"
+            className="mt-5 flex items-center gap-2 px-6 py-3 rounded-full bg-[#E5AF45] hover:bg-[#FFC85C] text-[#100E0B] text-xs font-bold shadow-soft transition-all active:scale-95 cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Create First Lineup</span>
@@ -197,23 +197,23 @@ export const LineupsListView: React.FC = () => {
             return (
               <div
                 key={lineup.id}
-                className="bg-[#1F1F21] rounded-3xl p-5 sm:p-6 border border-[#35312B] hover:border-[#D9A441]/40 shadow-soft hover:shadow-card transition-all flex flex-col justify-between text-[#F5F0E6]"
+                className="bg-[#211C17] rounded-3xl p-5 sm:p-6 border border-[#393027] hover:border-[#E5AF45]/40 shadow-soft hover:shadow-card transition-all flex flex-col justify-between text-[#FFF5E6]"
               >
                 <div>
                   {/* Card Top: Status, Songs Count & Quick Icons */}
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
                       {computedStatus === 'ongoing' ? (
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#D9A441]/15 text-[#F5C15D] border border-[#D9A441]/30 animate-pulse">
-                          <Radio className="w-3 h-3 text-[#D9A441]" />
+                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#E5AF45]/15 text-[#FFC85C] border border-[#E5AF45]/30 animate-pulse">
+                          <Radio className="w-3 h-3 text-[#E5AF45]" />
                           <span>Ongoing</span>
                         </span>
                       ) : computedStatus === 'upcoming' ? (
-                        <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#78B887]/15 text-[#78B887] border border-[#78B887]/30">
+                        <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#79BB8B]/15 text-[#79BB8B] border border-[#79BB8B]/30">
                           Upcoming
                         </span>
                       ) : computedStatus === 'completed' ? (
-                        <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#262626] text-[#AAA5A0] border border-[#35312B]">
+                        <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#29231C] text-[#B8ADA0] border border-[#393027]">
                           Completed
                         </span>
                       ) : computedStatus === 'cancelled' ? (
@@ -221,12 +221,12 @@ export const LineupsListView: React.FC = () => {
                           Cancelled
                         </span>
                       ) : (
-                        <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#262626] text-[#AAA5A0] border border-[#35312B]">
+                        <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#29231C] text-[#B8ADA0] border border-[#393027]">
                           Draft
                         </span>
                       )}
 
-                      <span className="text-xs text-[#AAA5A0] font-semibold">
+                      <span className="text-xs text-[#B8ADA0] font-semibold">
                         {lineup.songs?.length || 0} Songs
                       </span>
                     </div>
@@ -235,14 +235,14 @@ export const LineupsListView: React.FC = () => {
                     <div className="flex items-center gap-1.5">
                       <button
                         onClick={() => setSharingLineup(lineup)}
-                        className="p-1.5 rounded-lg text-[#AAA5A0] hover:text-[#D9A441] hover:bg-[#262626] transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg text-[#B8ADA0] hover:text-[#E5AF45] hover:bg-[#29231C] transition-colors cursor-pointer"
                         title="Share Lineup / Save as Photo"
                       >
                         <Share2 className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => setPrintingLineup(lineup)}
-                        className="p-1.5 rounded-lg text-[#AAA5A0] hover:text-[#D9A441] hover:bg-[#262626] transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg text-[#B8ADA0] hover:text-[#E5AF45] hover:bg-[#29231C] transition-colors cursor-pointer"
                         title="Print Setlist"
                       >
                         <Printer className="w-4 h-4" />
@@ -252,7 +252,7 @@ export const LineupsListView: React.FC = () => {
                           const dup = duplicateLineup(lineup.id);
                           alert(`Lineup duplicated as "${dup.title}"`);
                         }}
-                        className="p-1.5 rounded-lg text-[#AAA5A0] hover:text-[#D9A441] hover:bg-[#262626] transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg text-[#B8ADA0] hover:text-[#E5AF45] hover:bg-[#29231C] transition-colors cursor-pointer"
                         title="Duplicate Lineup"
                       >
                         <Copy className="w-4 h-4" />
@@ -263,7 +263,7 @@ export const LineupsListView: React.FC = () => {
                             deleteLineup(lineup.id);
                           }
                         }}
-                        className="p-1.5 rounded-lg text-[#AAA5A0] hover:text-[#E57373] hover:bg-[#262626] transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg text-[#B8ADA0] hover:text-[#E57373] hover:bg-[#29231C] transition-colors cursor-pointer"
                         title="Delete Lineup"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -272,24 +272,24 @@ export const LineupsListView: React.FC = () => {
                   </div>
 
                   {/* Title in Serif Font */}
-                  <h3 className="text-xl sm:text-2xl font-serif text-[#F5F0E6] mt-2.5 leading-snug">
+                  <h3 className="text-xl sm:text-2xl font-serif text-[#FFF5E6] mt-2.5 leading-snug">
                     {lineup.title}
                   </h3>
 
                   {/* Service Date & Time */}
-                  <div className="flex items-center gap-1.5 text-xs font-medium text-[#AAA5A0] mt-1.5">
-                    <Calendar className="w-4 h-4 text-[#D9A441]" />
+                  <div className="flex items-center gap-1.5 text-xs font-medium text-[#B8ADA0] mt-1.5">
+                    <Calendar className="w-4 h-4 text-[#E5AF45]" />
                     <span>{lineup.service_date} • {lineup.service_time}</span>
                   </div>
 
                   {/* Worship Leader & Author Row */}
-                  <div className="flex items-center justify-between gap-2 mt-4 pt-3 border-t border-[#35312B]">
+                  <div className="flex items-center justify-between gap-2 mt-4 pt-3 border-t border-[#393027]">
                     <div className="text-xs">
-                      <span className="text-[#AAA5A0] font-medium">{(lineup.worship_leaders && lineup.worship_leaders.length > 1) ? 'Worship Leaders:' : 'Worship Leader:'}</span>{' '}
-                      <strong className="text-[#F5F0E6] font-bold">{lineup.worship_leader_name || 'TBD'}</strong>
+                      <span className="text-[#B8ADA0] font-medium">{(lineup.worship_leaders && lineup.worship_leaders.length > 1) ? 'Worship Leaders:' : 'Worship Leader:'}</span>{' '}
+                      <strong className="text-[#FFF5E6] font-bold">{lineup.worship_leader_name || 'TBD'}</strong>
                     </div>
                     {lineup.created_by && (
-                      <span className="text-xs font-bold text-[#D9A441] px-3 py-0.5 rounded-full bg-[#161616] border border-[#35312B]">
+                      <span className="text-xs font-bold text-[#E5AF45] px-3 py-0.5 rounded-full bg-[#181510] border border-[#393027]">
                         By {lineup.created_by.split(' ')[0]}
                       </span>
                     )}
@@ -300,16 +300,16 @@ export const LineupsListView: React.FC = () => {
                     {lineup.songs?.map((s, idx) => (
                       <div
                         key={s.id || idx}
-                        className="flex items-center justify-between text-xs py-2 px-3.5 rounded-full bg-[#161616] border border-[#35312B]/70"
+                        className="flex items-center justify-between text-xs py-2 px-3.5 rounded-full bg-[#181510] border border-[#393027]/70"
                       >
                         <div className="flex items-center gap-2 min-w-0 pr-2">
-                          <span className="text-[#AAA5A0] font-medium text-xs w-3">{idx + 1}</span>
-                          <span className="font-bold text-[#F5F0E6] truncate">{s.title}</span>
-                          <span className="text-[10px] font-semibold text-[#D9A441] bg-[#262626] border border-[#35312B] px-2 py-0.5 rounded-full shrink-0">
+                          <span className="text-[#B8ADA0] font-medium text-xs w-3">{idx + 1}</span>
+                          <span className="font-bold text-[#FFF5E6] truncate">{s.title}</span>
+                          <span className="text-[10px] font-semibold text-[#E5AF45] bg-[#29231C] border border-[#393027] px-2 py-0.5 rounded-full shrink-0">
                             Lead: {s.assigned_vocalist_name || lineup.worship_leader_name || 'Leader'}
                           </span>
                         </div>
-                        <span className="font-bold text-[#D9A441] shrink-0 text-xs">
+                        <span className="font-bold text-[#E5AF45] shrink-0 text-xs">
                           Key {s.selected_key || s.original_key || 'G'}
                         </span>
                       </div>
@@ -318,12 +318,12 @@ export const LineupsListView: React.FC = () => {
                 </div>
 
                 {/* Bottom Action Strip: Edit / Cancel / Re-publish */}
-                <div className="mt-5 pt-3 border-t border-[#35312B] flex items-center justify-between gap-2 flex-wrap">
+                <div className="mt-5 pt-3 border-t border-[#393027] flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-1.5">
                     {lineup.status === 'cancelled' ? (
                       <button
                         onClick={() => publishLineup(lineup.id)}
-                        className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-[#78B887] bg-[#78B887]/15 hover:bg-[#78B887]/25 border border-[#78B887]/30 transition-colors cursor-pointer"
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-[#79BB8B] bg-[#79BB8B]/15 hover:bg-[#79BB8B]/25 border border-[#79BB8B]/30 transition-colors cursor-pointer"
                         title="Re-activate service lineup"
                       >
                         <RotateCcw className="w-3.5 h-3.5" />
@@ -336,7 +336,7 @@ export const LineupsListView: React.FC = () => {
                             cancelLineup(lineup.id);
                           }
                         }}
-                        className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-[#AAA5A0] hover:text-[#E57373] bg-[#262626] hover:bg-[#E57373]/15 border border-[#35312B] hover:border-[#E57373]/30 transition-colors cursor-pointer"
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-[#B8ADA0] hover:text-[#E57373] bg-[#29231C] hover:bg-[#E57373]/15 border border-[#393027] hover:border-[#E57373]/30 transition-colors cursor-pointer"
                         title="Cancel this service"
                       >
                         <Ban className="w-3.5 h-3.5" />
@@ -351,10 +351,10 @@ export const LineupsListView: React.FC = () => {
                             completeLineup(lineup.id);
                           }
                         }}
-                        className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-[#AAA5A0] hover:text-[#78B887] bg-[#262626] hover:bg-[#78B887]/15 border border-[#35312B] transition-colors cursor-pointer"
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-[#B8ADA0] hover:text-[#79BB8B] bg-[#29231C] hover:bg-[#79BB8B]/15 border border-[#393027] transition-colors cursor-pointer"
                         title="Mark as completed"
                       >
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#78B887]" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#79BB8B]" />
                         <span>Complete</span>
                       </button>
                     )}
@@ -362,7 +362,7 @@ export const LineupsListView: React.FC = () => {
 
                   <button
                     onClick={() => handleEdit(lineup.id)}
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold shadow-soft transition-all active:scale-95 cursor-pointer"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#E5AF45] hover:bg-[#FFC85C] text-[#100E0B] text-xs font-bold shadow-soft transition-all active:scale-95 cursor-pointer"
                   >
                     <span>Edit & Organize Lineup</span>
                     <ArrowRight className="w-3.5 h-3.5" />

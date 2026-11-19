@@ -53,23 +53,23 @@ export const MobileBottomNav: React.FC = () => {
           onClick={() => setIsMoreMenuOpen(false)}
         >
           <div
-            className="bg-[#1F1F21] rounded-t-3xl p-5 pb-9 shadow-modal border-t border-[#35312B] text-[#F5F0E6] animate-slide-up"
+            className="bg-[#211C17] rounded-t-3xl p-5 pb-9 shadow-modal border-t border-[#393027] text-[#FFF5E6] animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-[#35312B]">
-              <span className="text-xs font-bold text-[#F5F0E6] tracking-wider uppercase">More Worship Modules</span>
+            <div className="flex items-center justify-between pb-3 border-b border-[#393027]">
+              <span className="text-xs font-bold text-[#FFF5E6] tracking-wider uppercase">More Worship Modules</span>
               <button
                 onClick={() => setIsMoreMenuOpen(false)}
-                className="p-1 rounded-full text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]"
+                className="p-1 rounded-full text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C]"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Active User Account Strip inside Mobile Drawer */}
-            <div className="my-3 p-3 rounded-2xl bg-[#161616] border border-[#35312B] flex items-center justify-between">
+            <div className="my-3 p-3 rounded-2xl bg-[#181510] border border-[#393027] flex items-center justify-between">
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-9 h-9 rounded-full bg-[#1F1F21] border border-[#35312B] text-[#F5F0E6] flex items-center justify-center font-bold text-xs shrink-0 overflow-hidden shadow-2xs ring-1 ring-[#D9A441]/40">
+                <div className="w-9 h-9 rounded-full bg-[#211C17] border border-[#393027] text-[#FFF5E6] flex items-center justify-center font-bold text-xs shrink-0 overflow-hidden shadow-2xs ring-1 ring-[#E5AF45]/40">
                   <img
                     src={currentUser.avatar && currentUser.avatar.includes('/') ? currentUser.avatar : '/images/worship_team_profile.png'}
                     alt={currentUser.name}
@@ -80,10 +80,10 @@ export const MobileBottomNav: React.FC = () => {
                   />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-bold text-[#F5F0E6] truncate">
+                  <p className="text-xs font-bold text-[#FFF5E6] truncate">
                     {currentUser.name}
                   </p>
-                  <p className="text-[10px] text-[#D9A441] font-semibold truncate">
+                  <p className="text-[10px] text-[#E5AF45] font-semibold truncate">
                     {currentUser.username ? `@${currentUser.username}` : currentUser.role_title}
                   </p>
                 </div>
@@ -94,9 +94,9 @@ export const MobileBottomNav: React.FC = () => {
                   setIsMoreMenuOpen(false);
                   setIsAuthModalOpen(true);
                 }}
-                className="px-2.5 py-1.5 rounded-xl text-[11px] font-bold bg-[#D9A441] text-[#101010] hover:bg-[#F5C15D] transition-colors flex items-center gap-1 shrink-0 shadow-2xs cursor-pointer"
+                className="px-2.5 py-1.5 rounded-xl text-[11px] font-black bg-gradient-to-r from-[#E5AF45] to-[#D69F35] hover:from-[#FFC85C] hover:to-[#E5AF45] text-[#100E0B] transition-all flex items-center gap-1 shrink-0 shadow-[0_0_10px_rgba(229,175,69,0.25)] cursor-pointer active:scale-95"
               >
-                <UserCheck className="w-3.5 h-3.5 text-[#101010]" />
+                <UserCheck className="w-3.5 h-3.5 text-[#100E0B]" />
                 <span>Account</span>
               </button>
             </div>
@@ -114,8 +114,8 @@ export const MobileBottomNav: React.FC = () => {
                     }}
                     className={`flex items-center gap-2.5 p-3 rounded-2xl border text-left transition-all cursor-pointer ${
                       isActive
-                        ? 'bg-[#D9A441] text-[#101010] border-[#D9A441] shadow-sm font-bold'
-                        : 'bg-[#161616] border-[#35312B] text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626]'
+                        ? 'bg-gradient-to-r from-[#E5AF45] to-[#D69F35] text-[#100E0B] border-[#FFC85C]/60 shadow-[0_0_12px_rgba(229,175,69,0.3)] font-black'
+                        : 'bg-[#181510] border-[#393027] text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C]'
                     }`}
                   >
                     <Icon className="w-4 h-4 shrink-0" />
@@ -129,7 +129,7 @@ export const MobileBottomNav: React.FC = () => {
       )}
 
       {/* Fixed Bottom Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-30 bg-[#101010]/95 backdrop-blur-xl border-t border-[#35312B] md:hidden px-3 py-2 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.5)] no-print">
+      <nav className="fixed bottom-0 left-0 right-0 z-30 bg-[#100E0B]/95 backdrop-blur-xl border-t border-[#393027] md:hidden px-3 py-2 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.6)] no-print">
         {navTabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeModule === tab.id;
@@ -142,20 +142,20 @@ export const MobileBottomNav: React.FC = () => {
                 setIsMoreMenuOpen(false);
               }}
               className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 cursor-pointer ${
-                isActive ? 'text-[#D9A441] font-extrabold' : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
+                isActive ? 'text-[#FFC85C] font-extrabold' : 'text-[#B8ADA0] hover:text-[#FFF5E6]'
               }`}
             >
               <div className="relative">
-                <Icon className={`w-5 h-5 transition-transform ${isActive ? 'stroke-[2.5] text-[#D9A441] scale-110' : 'stroke-[1.8] text-[#AAA5A0]'}`} />
+                <Icon className={`w-5 h-5 transition-transform ${isActive ? 'stroke-[2.5] text-[#FFC85C] scale-110 drop-shadow-[0_0_8px_rgba(229,175,69,0.5)]' : 'stroke-[1.8] text-[#B8ADA0]'}`} />
                 {tab.badge && tab.badge > 0 ? (
-                  <span className="absolute -top-1.5 -right-2 bg-[#E57373] text-[#101010] text-[9px] font-black px-1 rounded-full min-w-3.5 text-center leading-3 shadow-2xs">
+                  <span className="absolute -top-1.5 -right-2 bg-[#E57373] text-[#100E0B] text-[9px] font-black px-1 rounded-full min-w-3.5 text-center leading-3 shadow-2xs">
                     {tab.badge}
                   </span>
                 ) : null}
               </div>
-              <span className={`text-[10px] mt-1 transition-colors ${isActive ? 'font-black text-[#D9A441]' : 'font-medium'}`}>{tab.label}</span>
+              <span className={`text-[10px] mt-1 transition-colors ${isActive ? 'font-black text-[#FFC85C]' : 'font-medium'}`}>{tab.label}</span>
               {isActive && (
-                <div className="w-4 h-0.5 bg-[#D9A441] rounded-full mt-0.5" />
+                <div className="w-5 h-1 bg-gradient-to-r from-[#E5AF45] to-[#FFC85C] rounded-full mt-0.5 shadow-[0_0_8px_rgba(229,175,69,0.5)]" />
               )}
             </button>
           );
@@ -166,14 +166,14 @@ export const MobileBottomNav: React.FC = () => {
           onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
           className={`flex flex-col items-center justify-center flex-1 py-1 transition-all active:scale-95 cursor-pointer ${
             isMoreActive || isMoreMenuOpen
-              ? 'text-[#D9A441] font-extrabold'
-              : 'text-[#AAA5A0] hover:text-[#F5F0E6]'
+              ? 'text-[#FFC85C] font-extrabold'
+              : 'text-[#B8ADA0] hover:text-[#FFF5E6]'
           }`}
         >
-          <MoreHorizontal className={`w-5 h-5 transition-transform ${isMoreActive || isMoreMenuOpen ? 'stroke-[2.5] text-[#D9A441] scale-110' : 'stroke-[1.8] text-[#AAA5A0]'}`} />
-          <span className={`text-[10px] mt-1 transition-colors ${isMoreActive || isMoreMenuOpen ? 'font-black text-[#D9A441]' : 'font-medium'}`}>More</span>
+          <MoreHorizontal className={`w-5 h-5 transition-transform ${isMoreActive || isMoreMenuOpen ? 'stroke-[2.5] text-[#FFC85C] scale-110 drop-shadow-[0_0_8px_rgba(229,175,69,0.5)]' : 'stroke-[1.8] text-[#B8ADA0]'}`} />
+          <span className={`text-[10px] mt-1 transition-colors ${isMoreActive || isMoreMenuOpen ? 'font-black text-[#FFC85C]' : 'font-medium'}`}>More</span>
           {(isMoreActive || isMoreMenuOpen) && (
-            <div className="w-4 h-0.5 bg-[#D9A441] rounded-full mt-0.5" />
+            <div className="w-5 h-1 bg-gradient-to-r from-[#E5AF45] to-[#FFC85C] rounded-full mt-0.5 shadow-[0_0_8px_rgba(229,175,69,0.5)]" />
           )}
         </button>
       </nav>

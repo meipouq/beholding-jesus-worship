@@ -37,16 +37,16 @@ export const YouTubePlayerModal: React.FC = () => {
       onClick={closeVideo}
     >
       <div
-        className="bg-[#1F1F21] rounded-3xl max-w-2xl w-full p-4 md:p-5 shadow-2xl border border-[#35312B] animate-slide-up text-[#F5F0E6]"
+        className="bg-[#211C17] rounded-3xl max-w-2xl w-full p-4 md:p-5 shadow-2xl border border-[#393027] animate-slide-up text-[#FFF5E6]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#35312B]">
+        <div className="flex items-center justify-between pb-3 border-b border-[#393027]">
           <div className="flex items-center gap-2.5 min-w-0 pr-2">
-            <div className="w-7 h-7 rounded-full bg-[#D9A441]/20 text-[#D9A441] flex items-center justify-center shrink-0">
+            <div className="w-7 h-7 rounded-full bg-[#E5AF45]/20 text-[#E5AF45] flex items-center justify-center shrink-0">
               <Play className="w-3.5 h-3.5 fill-current" />
             </div>
-            <h3 className="text-sm font-bold text-[#F5F0E6] truncate">
+            <h3 className="text-sm font-bold text-[#FFF5E6] truncate">
               {activeVideo.title} — Audio / Video Reference
             </h3>
           </div>
@@ -55,14 +55,14 @@ export const YouTubePlayerModal: React.FC = () => {
               href={activeVideo.url}
               target="_blank"
               rel="noreferrer"
-              className="p-1.5 rounded-xl text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626] text-xs flex items-center gap-1 transition-colors"
+              className="p-1.5 rounded-xl text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C] text-xs flex items-center gap-1 transition-colors"
               title="Open directly in YouTube"
             >
               <ExternalLink className="w-4 h-4" />
             </a>
             <button
               onClick={closeVideo}
-              className="p-1.5 rounded-xl text-[#AAA5A0] hover:text-[#F5F0E6] hover:bg-[#262626] transition-colors"
+              className="p-1.5 rounded-xl text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -70,7 +70,7 @@ export const YouTubePlayerModal: React.FC = () => {
         </div>
 
         {/* Video Player */}
-        <div className="mt-4 aspect-video w-full rounded-2xl overflow-hidden bg-[#101010] border border-[#35312B]">
+        <div className="mt-4 aspect-video w-full rounded-2xl overflow-hidden bg-[#100E0B] border border-[#393027]">
           {isEmbeddable ? (
             <iframe
               src={embedUrl}
@@ -81,13 +81,13 @@ export const YouTubePlayerModal: React.FC = () => {
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center">
-              <AlertCircle className="w-8 h-8 text-[#D9A441] mb-2" />
-              <p className="text-sm font-semibold mb-3 text-[#F5F0E6]">Reference URL</p>
+              <AlertCircle className="w-8 h-8 text-[#E5AF45] mb-2" />
+              <p className="text-sm font-semibold mb-3 text-[#FFF5E6]">Reference URL</p>
               <a
                 href={activeVideo.url}
                 target="_blank"
                 rel="noreferrer"
-                className="px-4 py-2 bg-[#D9A441] hover:bg-[#F5C15D] text-[#101010] text-xs font-bold rounded-xl flex items-center gap-2 transition-colors"
+                className="px-4 py-2 bg-[#E5AF45] hover:bg-[#FFC85C] text-[#100E0B] text-xs font-bold rounded-xl flex items-center gap-2 transition-colors"
               >
                 <ExternalLink className="w-4 h-4" />
                 Open External Video Link
@@ -96,9 +96,9 @@ export const YouTubePlayerModal: React.FC = () => {
           )}
         </div>
 
-        <div className="mt-3 flex items-center justify-between text-[11px] text-[#AAA5A0]">
+        <div className="mt-3 flex items-center justify-between text-[11px] text-[#B8ADA0]">
           <span>Beholding Jesus Worship Team • Reference Player</span>
-          <span className="truncate max-w-[240px] text-[#AAA5A0]/80">{activeVideo.url}</span>
+          <span className="truncate max-w-[240px] text-[#B8ADA0]/80">{activeVideo.url}</span>
         </div>
       </div>
     </div>
