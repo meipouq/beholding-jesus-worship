@@ -37,6 +37,7 @@ import { formatDisplayTime } from '../../utils/timeFormat';
 import { LineupPrintModal } from './LineupPrintModal';
 import { LineupShareModal } from './LineupShareModal';
 import { SongEditModal } from '../songs/SongEditModal';
+import { TimePicker } from '../common/TimePicker';
 
 const KEYS = [
   'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'
@@ -573,9 +574,9 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
               Service Date & Time *
             </label>
           </div>
-          <div className="bg-[#211C17] rounded-2xl border border-[#393027] flex items-center divide-x divide-[#393027] shadow-2xs overflow-hidden">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Date Picker */}
-            <div className="flex-1 flex items-center gap-2 px-3.5 py-2.5 relative">
+            <div className="bg-[#211C17] rounded-2xl border border-[#393027] flex items-center gap-2 px-3.5 py-2.5 relative shadow-2xs">
               <Calendar className="w-4 h-4 text-[#B8ADA0] shrink-0" />
               <input
                 type="date"
@@ -591,27 +592,17 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
               />
             </div>
             {/* Time Picker */}
-            <div className="flex-1 flex items-center justify-between gap-2 px-3.5 py-2.5 relative">
-              <div className="flex items-center gap-2 min-w-0 flex-1">
-                <Clock className="w-4 h-4 text-[#B8ADA0] shrink-0" />
-                <input
-                  type="text"
-                  required
-                  value={serviceTime}
-                  onChange={(e) => setServiceTime(e.target.value)}
-                  onBlur={() => {
-                    const formatted = formatDisplayTime(serviceTime);
-                    if (formatted) {
-                      setServiceTime(formatted);
-                    }
-                    handleBlurSave();
-                  }}
-                  placeholder="9:00 AM"
-                  className="w-full text-xs font-semibold text-[#FFF5E6] bg-transparent focus:outline-none"
-                />
-              </div>
-              <ChevronDown className="w-4 h-4 text-[#B8ADA0] shrink-0 pointer-events-none" />
-            </div>
+            <TimePicker
+              value={serviceTime}
+              onChange={(newTime) => {
+                setServiceTime(newTime);
+                const saved = getWorkingLineup(lineupSongs, { service_time: newTime });
+                saveLineup(saved, false);
+              }}
+              required
+              suggestions={['7:00 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '1:00 PM', '2:00 PM', '4:00 PM', '5:00 PM', '6:00 PM']}
+              placeholder="Select service time"
+            />
           </div>
         </div>
       </div>

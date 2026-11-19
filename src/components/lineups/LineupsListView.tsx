@@ -22,6 +22,7 @@ import { LineupBuilderView } from './LineupBuilderView';
 import { LineupPrintModal } from './LineupPrintModal';
 import { LineupShareModal } from './LineupShareModal';
 import { getLineupLifecycleStatus, ComputedLineupStatus } from '../../utils/serviceSchedule';
+import { formatDisplayTime } from '../../utils/timeFormat';
 
 export const LineupsListView: React.FC = () => {
   const {
@@ -279,7 +280,7 @@ export const LineupsListView: React.FC = () => {
                   {/* Service Date & Time */}
                   <div className="flex items-center gap-1.5 text-xs font-medium text-[#B8ADA0] mt-1.5">
                     <Calendar className="w-4 h-4 text-[#E5AF45]" />
-                    <span>{lineup.service_date} • {lineup.service_time}</span>
+                    <span>{lineup.service_date}{formatDisplayTime(lineup.service_time) ? ` • ${formatDisplayTime(lineup.service_time)}` : ''}</span>
                   </div>
 
                   {/* Worship Leader & Author Row */}

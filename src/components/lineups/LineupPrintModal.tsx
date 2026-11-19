@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Printer, Music2 } from 'lucide-react';
 import { ServiceLineup, Song } from '../../types';
 import { useWorship } from '../../context/WorshipContext';
+import { formatDisplayTime } from '../../utils/timeFormat';
 
 interface LineupPrintModalProps {
   lineup: ServiceLineup;
@@ -58,7 +59,7 @@ export const LineupPrintModal: React.FC<LineupPrintModalProps> = ({ lineup, onCl
               <span>•</span>
               <span>{lineup.service_date}</span>
               <span>•</span>
-              <span>{lineup.service_time}</span>
+              <span>{formatDisplayTime(lineup.service_time) || lineup.service_time}</span>
             </div>
             {lineup.theme && (
               <p className="text-xs italic text-stone-700 mt-1">

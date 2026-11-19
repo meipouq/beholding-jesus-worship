@@ -1,6 +1,7 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { StorageService } from './storage';
 import { ServiceLineup, Announcement } from '../types';
+import { formatDisplayTime } from '../utils/timeFormat';
 
 let supabaseClient: SupabaseClient | null = null;
 let currentSupabaseUrl = '';
@@ -79,10 +80,14 @@ export function sanitizeRecordForSupabase(table: string, record: any): any {
     if (!sanitized.created_by) sanitized.created_by = 'Worship Lead';
   } else if (table === 'announcements') {
     if (!sanitized.author_name) sanitized.author_name = 'Worship Ministry';
+    if (sanitized.event_time) {
+      sanitized.event_time = formatDisplayTime(sanitized.event_time) || null;
+    }
   } else if (table === 'service_lineups') {
     if (!sanitized.worship_leader_name) sanitized.worship_leader_name = 'Worship Leader';
     if (!sanitized.created_by) sanitized.created_by = 'Worship Leader';
     if (!sanitized.updated_by) sanitized.updated_by = sanitized.created_by;
+    sanitized.service_time = formatDisplayTime(sanitized.service_time) || '9:00 AM';
     // Database schema constraint allows 'draft' and 'published'
     if (sanitized.status === 'cancelled') {
       sanitized.status = 'draft';
@@ -99,6 +104,9 @@ export function sanitizeRecordForSupabase(table: string, record: any): any {
     } else if (sanitized.status !== 'draft') {
       sanitized.status = 'published';
     }
+  } else if (table === 'rehearsals') {
+    sanitized.start_time = formatDisplayTime(sanitized.start_time) || '4:00 PM';
+    sanitized.end_time = formatDisplayTime(sanitized.end_time) || '6:00 PM';
   } else if (table === 'team_members') {
     if (!sanitized.vocal_range) sanitized.vocal_range = 'Alto';
     if (!sanitized.availability) sanitized.availability = 'Available';

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { History, Clock, Star, Users, ArrowRight, Music2, CheckCircle2 } from 'lucide-react';
 import { ServiceLineup, Song } from '../../types';
+import { formatDisplayTime } from '../../utils/timeFormat';
 import { ServiceHistoryDetailModal } from './ServiceHistoryDetailModal';
 
 interface ServiceHistorySectionProps {
@@ -70,7 +71,7 @@ export const ServiceHistorySection: React.FC<ServiceHistorySectionProps> = ({
                       Completed
                     </span>
                     <span className="text-xs text-[#B8ADA0] font-medium">
-                      {lineup.service_date} • {lineup.service_time}
+                      {lineup.service_date}{formatDisplayTime(lineup.service_time) ? ` • ${formatDisplayTime(lineup.service_time)}` : ''}
                     </span>
                   </div>
 

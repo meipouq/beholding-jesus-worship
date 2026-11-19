@@ -122,3 +122,48 @@ export function formatDisplayTime(timeStr?: string | null): string | null {
   const parsed = parseValidTime(trimmed);
   return parsed ? parsed.formatted12 : null;
 }
+
+/**
+ * Common, convenient church worship & rehearsal time suggestions
+ */
+export const DEFAULT_TIME_SUGGESTIONS: string[] = [
+  '7:00 AM',
+  '8:00 AM',
+  '9:00 AM',
+  '10:00 AM',
+  '10:30 AM',
+  '12:00 PM',
+  '1:00 PM',
+  '2:00 PM',
+  '4:00 PM',
+  '5:00 PM',
+  '6:00 PM',
+  '7:00 PM'
+];
+
+/**
+ * Compares two time strings chronologically.
+ * Returns:
+ *   negative number if timeA is earlier than timeB
+ *   0 if timeA and timeB are identical
+ *   positive number if timeA is later than timeB
+ * Returns null if either time string cannot be parsed.
+ */
+export function compareTimes(timeA?: string | null, timeB?: string | null): number | null {
+  const parsedA = parseValidTime(timeA);
+  const parsedB = parseValidTime(timeB);
+  if (!parsedA || !parsedB) return null;
+
+  const minutesA = parsedA.hours * 60 + parsedA.minutes;
+  const minutesB = parsedB.hours * 60 + parsedB.minutes;
+  return minutesA - minutesB;
+}
+
+/**
+ * Validates that an event end time is strictly after the start time.
+ */
+export function isEndTimeAfterStartTime(startTime?: string | null, endTime?: string | null): boolean {
+  const diff = compareTimes(startTime, endTime);
+  if (diff === null) return true;
+  return diff < 0;
+}

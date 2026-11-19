@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Calendar, Plus, Check } from 'lucide-react';
 import { Song, ServiceLineup, LineupSongItem } from '../../types';
 import { useWorship } from '../../context/WorshipContext';
+import { formatDisplayTime } from '../../utils/timeFormat';
 
 interface AddToLineupModalProps {
   song: Song | null;
@@ -96,7 +97,7 @@ export const AddToLineupModal: React.FC<AddToLineupModalProps> = ({ song, onClos
               >
                 {lineups.map((l) => (
                   <option key={l.id} value={l.id} className="bg-[#211C17] text-[#FFF5E6]">
-                    {l.title} ({l.service_date} • {l.service_time}) - {l.status.toUpperCase()}
+                    {l.title} ({l.service_date}{formatDisplayTime(l.service_time) ? ` • ${formatDisplayTime(l.service_time)}` : ''}) - {l.status.toUpperCase()}
                   </option>
                 ))}
               </select>

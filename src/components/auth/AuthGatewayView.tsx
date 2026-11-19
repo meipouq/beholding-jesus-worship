@@ -201,11 +201,11 @@ export const AuthGatewayView: React.FC = () => {
             {/* Top Content Block */}
             <div className="px-6 pt-7 sm:pt-9 pb-2 flex flex-col items-center text-center">
               {/* Circular Worship Team Emblem */}
-              <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full flex items-center justify-center transition-transform duration-300 hover:scale-105 border border-[#E5AF45]/40 ring-2 ring-[#E5AF45]/20 shadow-xl bg-[#100E0B] p-2">
+              <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden flex items-center justify-center transition-transform duration-300 hover:scale-105 border-2 border-[#E5AF45]/60 ring-2 ring-[#E5AF45]/20 shadow-xl bg-white p-0">
                 <img
                   src="/images/worship_team_profile.png"
                   alt="Beholding Jesus Worship Team"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover rounded-full"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = '/apple-touch-icon.png';
                   }}

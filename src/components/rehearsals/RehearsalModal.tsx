@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { X, Calendar, Clock, MapPin, Users, AlertCircle } from 'lucide-react';
 import { Rehearsal, TeamMember } from '../../types';
 import { useWorship } from '../../context/WorshipContext';
-import { formatDisplayTime } from '../../utils/timeFormat';
+import { formatDisplayTime, compareTimes } from '../../utils/timeFormat';
+import { TimePicker } from '../common/TimePicker';
 
 interface RehearsalModalProps {
   rehearsal: Rehearsal | null;
@@ -68,6 +69,12 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
     const parsedEnd = formatDisplayTime(endTime);
     if (!parsedStart || !parsedEnd) {
       setTimeError('Please ensure valid hours and minutes for start and end times (e.g. 4:00 PM).');
+      return;
+    }
+
+    const orderDiff = compareTimes(parsedStart, parsedEnd);
+    if (orderDiff !== null && orderDiff >= 0) {
+      setTimeError('End time must be after start time (e.g. 4:00 PM to 6:00 PM).');
       return;
     }
 
@@ -174,40 +181,30 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-[#B8ADA0] uppercase tracking-wider block mb-1">
-                Start Time
-              </label>
-              <input
-                type="text"
+              <TimePicker
+                label="Start Time"
                 value={startTime}
-                onChange={(e) => {
-                  setStartTime(e.target.value);
+                onChange={(t) => {
+                  setStartTime(t);
                   if (timeError) setTimeError(null);
                 }}
-                onBlur={handleTimeBlur}
+                required
+                suggestions={['2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM']}
                 placeholder="4:00 PM"
-                className={`w-full text-xs p-3 rounded-2xl border bg-[#181510] text-[#FFF5E6] placeholder:text-[#B8ADA0]/50 focus:outline-none transition-colors ${
-                  timeError ? 'border-[#E57373] focus:border-[#E57373]' : 'border-[#393027] focus:border-[#E5AF45]'
-                }`}
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-[#B8ADA0] uppercase tracking-wider block mb-1">
-                End Time
-              </label>
-              <input
-                type="text"
+              <TimePicker
+                label="End Time"
                 value={endTime}
-                onChange={(e) => {
-                  setEndTime(e.target.value);
+                onChange={(t) => {
+                  setEndTime(t);
                   if (timeError) setTimeError(null);
                 }}
-                onBlur={handleTimeBlur}
+                required
+                suggestions={['3:30 PM', '4:30 PM', '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM']}
                 placeholder="6:00 PM"
-                className={`w-full text-xs p-3 rounded-2xl border bg-[#181510] text-[#FFF5E6] placeholder:text-[#B8ADA0]/50 focus:outline-none transition-colors ${
-                  timeError ? 'border-[#E57373] focus:border-[#E57373]' : 'border-[#393027] focus:border-[#E5AF45]'
-                }`}
               />
             </div>
           </div>

@@ -3,6 +3,7 @@ import { X, Megaphone, Pin, AlertCircle, Calendar, Clock } from 'lucide-react';
 import { Announcement } from '../../types';
 import { useWorship } from '../../context/WorshipContext';
 import { formatDisplayTime, isValidTime } from '../../utils/timeFormat';
+import { TimePicker } from '../common/TimePicker';
 
 interface AnnouncementModalProps {
   announcement: Announcement | null;
@@ -152,29 +153,17 @@ export const AnnouncementModal: React.FC<AnnouncementModalProps> = ({
             </div>
 
             <div>
-              <label className="text-[11px] font-bold text-[#B8ADA0] uppercase tracking-wider block mb-1 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-[#E5AF45]" />
-                <span>Event Time</span>
-              </label>
-              <input
-                type="text"
+              <TimePicker
+                label="Event Time (Optional)"
                 value={eventTime}
-                onChange={(e) => {
-                  setEventTime(e.target.value);
+                onChange={(t) => {
+                  setEventTime(t);
                   if (timeError) setTimeError(null);
                 }}
-                onBlur={handleTimeBlur}
-                placeholder="e.g. 8:00 AM"
-                className={`w-full text-xs p-2.5 rounded-2xl border bg-[#181510] text-[#FFF5E6] placeholder:text-[#B8ADA0]/50 focus:outline-none font-medium transition-colors ${
-                  timeError ? 'border-[#E57373] focus:border-[#E57373]' : 'border-[#393027] focus:border-[#E5AF45]'
-                }`}
+                suggestions={['7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '1:00 PM', '2:00 PM', '5:00 PM', '6:00 PM', '7:00 PM']}
+                placeholder="Select event time"
+                error={timeError}
               />
-              {timeError && (
-                <p className="text-[10px] text-[#E57373] mt-1 font-semibold flex items-center gap-1 animate-fade-in">
-                  <AlertCircle className="w-3 h-3 shrink-0" />
-                  <span>{timeError}</span>
-                </p>
-              )}
             </div>
           </div>
 

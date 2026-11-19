@@ -15,6 +15,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { ServiceLineup, Song } from '../../types';
+import { formatDisplayTime } from '../../utils/timeFormat';
 
 interface ServiceHistoryDetailModalProps {
   lineup: ServiceLineup;
@@ -56,7 +57,7 @@ export const ServiceHistoryDetailModal: React.FC<ServiceHistoryDetailModalProps>
                 </span>
               </div>
               <p className="text-xs text-[#B8ADA0] mt-0.5">
-                {lineup.service_date} • {lineup.service_time}
+                {lineup.service_date}{formatDisplayTime(lineup.service_time) ? ` • ${formatDisplayTime(lineup.service_time)}` : ''}
               </p>
             </div>
           </div>
