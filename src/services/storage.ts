@@ -383,8 +383,8 @@ export const StorageService = {
     const envKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
     const stored = getItem(STORAGE_KEYS.SUPABASE_CONFIG, { url: '', key: '' });
     return {
-      url: stored.url || envUrl || 'https://rhdonxpnknueyvrvtirf.supabase.co',
-      key: stored.key || envKey || 'sb_publishable_Mvd8RTvt8spt0k0eMZYgoQ_fkvCd1aA'
+      url: stored.url || envUrl || 'https://qemwqoamnvswfffzxqkv.supabase.co',
+      key: stored.key || envKey || 'sb_publishable_Tv9Zb_xjkXsGN3bvQ-Z9NA_5VAJvGUs'
     };
   },
 
