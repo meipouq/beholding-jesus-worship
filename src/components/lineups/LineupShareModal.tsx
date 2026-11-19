@@ -131,7 +131,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
       scale: 2, // 2x gives crystal-clear 1280px / 2080px resolution
       useCORS: true,
       allowTaint: true,
-      backgroundColor: isDark ? '#18181B' : '#FAF6F0',
+      backgroundColor: isDark ? '#100E0B' : '#FAF6F0',
       logging: false
     });
   };
@@ -444,7 +444,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                     fontWeight: '800',
                     letterSpacing: '0.15em',
                     textTransform: 'uppercase',
-                    color: isDark ? '#E5A93C' : '#B45309',
+                    color: isDark ? '#E5AF45' : '#B45309',
                     whiteSpace: 'nowrap'
                   }}
                 >
@@ -456,7 +456,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                     fontWeight: '700',
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
-                    color: isDark ? '#71717A' : '#78716C',
+                    color: isDark ? '#B8ADA0' : '#78716C',
                     whiteSpace: 'nowrap'
                   }}
                 >
@@ -478,7 +478,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                   style={{
                     fontSize: isLandscape ? '26px' : '24px',
                     fontWeight: '800',
-                    color: isDark ? '#FFFFFF' : '#1C1917',
+                    color: isDark ? '#FFF5E6' : '#1C1917',
                     letterSpacing: '-0.02em',
                     lineHeight: '32px',
                     margin: 0,
@@ -490,21 +490,27 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
 
                 <span
                   style={{
-                    padding: '4px 14px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '26px',
+                    lineHeight: '26px',
+                    padding: '0 14px',
                     borderRadius: '9999px',
                     fontSize: '11px',
                     fontWeight: '700',
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
                     backgroundColor: isPublished
-                      ? (isDark ? '#122A1E' : '#DCFCE7')
-                      : (isDark ? '#2E200F' : '#FEF3C7'),
+                      ? (isDark ? 'rgba(121, 187, 139, 0.15)' : '#DCFCE7')
+                      : (isDark ? 'rgba(229, 175, 69, 0.15)' : '#FEF3C7'),
                     color: isPublished
-                      ? (isDark ? '#4ADE80' : '#166534')
-                      : (isDark ? '#FBBF24' : '#92400E'),
+                      ? (isDark ? '#79BB8B' : '#166534')
+                      : (isDark ? '#E5AF45' : '#92400E'),
                     border: isPublished
-                      ? (isDark ? '1px solid #166534' : '1px solid #86EFAC')
-                      : (isDark ? '1px solid #854D0E' : '1px solid #FCD34D'),
+                      ? (isDark ? '1px solid rgba(121, 187, 139, 0.4)' : '1px solid #86EFAC')
+                      : (isDark ? '1px solid rgba(229, 175, 69, 0.4)' : '1px solid #FCD34D'),
+                    boxSizing: 'border-box',
                     flexShrink: 0
                   }}
                 >
@@ -517,7 +523,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                 style={{
                   fontSize: '13px',
                   fontWeight: '500',
-                  color: isDark ? '#A1A1AA' : '#78716C',
+                  color: isDark ? '#B8ADA0' : '#78716C',
                   marginTop: '6px',
                   lineHeight: '20px',
                   whiteSpace: 'nowrap'
@@ -536,11 +542,12 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                   marginTop: '16px',
                   padding: '12px 16px',
                   borderRadius: '16px',
-                  backgroundColor: isDark ? '#222225' : '#F5EFE6',
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.06)' : '1px solid #E5DFD5',
+                  backgroundColor: isDark ? '#211C17' : '#F5EFE6',
+                  border: isDark ? '1px solid #393027' : '1px solid #E5DFD5',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '8px'
+                  gap: '10px',
+                  boxSizing: 'border-box'
                 }}
               >
                 <div
@@ -549,34 +556,60 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     flexWrap: 'wrap',
-                    gap: '8px'
+                    gap: '10px',
+                    minHeight: '28px'
                   }}
                 >
                   {lineup.worship_leader_name && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
                       <span
                         style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: '26px',
+                          lineHeight: '26px',
+                          padding: '0 10px',
+                          borderRadius: '8px',
                           fontSize: '10px',
                           fontWeight: '800',
                           letterSpacing: '0.08em',
                           textTransform: 'uppercase',
-                          color: isDark ? '#E5A93C' : '#92400E',
-                          backgroundColor: isDark ? '#2D261C' : '#FEF3C7',
+                          color: isDark ? '#E5AF45' : '#92400E',
+                          backgroundColor: isDark ? '#29231C' : '#FEF3C7',
                           border: isDark ? '1px solid #594017' : '1px solid #FCD34D',
-                          padding: '2px 8px',
-                          borderRadius: '6px'
+                          boxSizing: 'border-box',
+                          flexShrink: 0
                         }}
                       >
                         ⭐ {(lineup.worship_leaders && lineup.worship_leaders.length > 1) ? 'LEADERS' : 'LEADER'}
                       </span>
-                      <span style={{ fontSize: '13px', fontWeight: '700', color: isDark ? '#FFFFFF' : '#1C1917' }}>
+                      <span
+                        style={{
+                          fontSize: '14px',
+                          fontWeight: '700',
+                          color: isDark ? '#FFF5E6' : '#1C1917',
+                          lineHeight: '26px',
+                          display: 'inline-flex',
+                          alignItems: 'center'
+                        }}
+                      >
                         {lineup.worship_leader_name}
                       </span>
                     </div>
                   )}
 
                   {lineup.theme && (
-                    <div style={{ fontSize: '12px', fontStyle: 'italic', color: isDark ? '#FDE68A' : '#78350F' }}>
+                    <div
+                      style={{
+                        fontSize: '12px',
+                        fontStyle: 'italic',
+                        color: isDark ? '#FFC85C' : '#78350F',
+                        lineHeight: '26px',
+                        display: 'inline-flex',
+                        alignItems: 'center'
+                      }}
+                    >
                       Theme: "{lineup.theme}"
                     </div>
                   )}
@@ -590,26 +623,32 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                       alignItems: 'center',
                       flexWrap: 'wrap',
                       gap: '8px',
-                      paddingTop: '6px',
-                      borderTop: isDark ? '1px solid rgba(255, 255, 255, 0.05)' : '1px solid #EAE3D7'
+                      paddingTop: '8px',
+                      borderTop: isDark ? '1px solid #393027' : '1px solid #EAE3D7'
                     }}
                   >
                     {lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0 && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: '10px', fontWeight: '800', letterSpacing: '0.06em', textTransform: 'uppercase', color: isDark ? '#E5A93C' : '#92400E' }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: '10px', fontWeight: '800', letterSpacing: '0.06em', textTransform: 'uppercase', color: isDark ? '#E5AF45' : '#92400E', lineHeight: '24px' }}>
                           🎤 VOCALS:
                         </span>
                         {lineup.assigned_vocalists.map((v) => (
                           <span
                             key={v.id || v.name}
                             style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              height: '24px',
+                              lineHeight: '24px',
+                              padding: '0 8px',
+                              borderRadius: '6px',
+                              backgroundColor: isDark ? '#181510' : '#FFFFFF',
+                              border: isDark ? '1px solid #393027' : '1px solid #D6CEBE',
+                              color: isDark ? '#FFF5E6' : '#292524',
                               fontSize: '11px',
                               fontWeight: '600',
-                              padding: '2px 8px',
-                              borderRadius: '6px',
-                              backgroundColor: isDark ? '#18181B' : '#FFFFFF',
-                              border: isDark ? '1px solid #332F2A' : '1px solid #D6CEBE',
-                              color: isDark ? '#E4E4E7' : '#292524'
+                              boxSizing: 'border-box'
                             }}
                           >
                             {v.name}
@@ -619,21 +658,27 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                     )}
 
                     {lineup.assigned_musicians && lineup.assigned_musicians.length > 0 && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginLeft: (lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0) ? '12px' : '0' }}>
-                        <span style={{ fontSize: '10px', fontWeight: '800', letterSpacing: '0.06em', textTransform: 'uppercase', color: isDark ? '#E5A93C' : '#92400E' }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginLeft: (lineup.assigned_vocalists && lineup.assigned_vocalists.length > 0) ? '12px' : '0' }}>
+                        <span style={{ fontSize: '10px', fontWeight: '800', letterSpacing: '0.06em', textTransform: 'uppercase', color: isDark ? '#E5AF45' : '#92400E', lineHeight: '24px' }}>
                           🎸 BAND:
                         </span>
                         {lineup.assigned_musicians.map((m) => (
                           <span
                             key={m.id || m.name}
                             style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              height: '24px',
+                              lineHeight: '24px',
+                              padding: '0 8px',
+                              borderRadius: '6px',
+                              backgroundColor: isDark ? '#181510' : '#FFFFFF',
+                              border: isDark ? '1px solid #393027' : '1px solid #D6CEBE',
+                              color: isDark ? '#FFF5E6' : '#292524',
                               fontSize: '11px',
                               fontWeight: '600',
-                              padding: '2px 8px',
-                              borderRadius: '6px',
-                              backgroundColor: isDark ? '#18181B' : '#FFFFFF',
-                              border: isDark ? '1px solid #332F2A' : '1px solid #D6CEBE',
-                              color: isDark ? '#E4E4E7' : '#292524'
+                              boxSizing: 'border-box'
                             }}
                           >
                             {m.name} ({m.instrument})
@@ -655,10 +700,10 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                   padding: '40px 20px',
                   textAlign: 'center',
                   fontSize: '13px',
-                  color: isDark ? '#71717A' : '#A8A29E',
-                  backgroundColor: isDark ? '#222225' : '#FFFFFF',
+                  color: isDark ? '#B8ADA0' : '#A8A29E',
+                  backgroundColor: isDark ? '#211C17' : '#FFFFFF',
                   borderRadius: '18px',
-                  border: isDark ? '1px dashed #3F3F46' : '1px dashed #D6CEBE',
+                  border: isDark ? '1px dashed #393027' : '1px dashed #D6CEBE',
                   marginTop: '20px'
                 }}
               >
@@ -674,7 +719,8 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        padding: '0 4px'
+                        padding: '0 4px',
+                        lineHeight: '18px'
                       }}
                     >
                       <span
@@ -683,7 +729,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                           fontWeight: '800',
                           letterSpacing: '0.08em',
                           textTransform: 'uppercase',
-                          color: isDark ? '#E4E4E7' : '#292524'
+                          color: isDark ? '#FFF5E6' : '#292524'
                         }}
                       >
                         {categoryName}
@@ -694,7 +740,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                           fontWeight: '800',
                           letterSpacing: '0.08em',
                           textTransform: 'uppercase',
-                          color: isDark ? '#71717A' : '#78716C'
+                          color: isDark ? '#B8ADA0' : '#78716C'
                         }}
                       >
                         {songItems.length} {songItems.length === 1 ? 'SONG' : 'SONGS'}
@@ -714,7 +760,6 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                     >
                       {songItems.map((song) => {
                         const selectedKey = song.selected_key || song.original_key || 'G';
-                        const hasVideo = !!song.youtube_url;
 
                         return (
                           <div
@@ -726,39 +771,43 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                               gap: '14px',
                               padding: '12px 16px',
                               borderRadius: '16px',
-                              backgroundColor: isDark ? '#222225' : '#FFFFFF',
+                              backgroundColor: isDark ? '#211C17' : '#FFFFFF',
                               border: isDark
-                                ? '1px solid rgba(255, 255, 255, 0.06)'
+                                ? '1px solid #393027'
                                 : '1px solid #E7E1D6',
                               boxSizing: 'border-box'
                             }}
                           >
-                            {/* Left: Square KEY Badge (Exact match to Sunday Lineup Card) */}
+                            {/* Left: Square KEY Badge (Centering perfected for high-res canvas) */}
                             <div
                               style={{
-                                width: '46px',
-                                height: '46px',
-                                minWidth: '46px',
-                                minHeight: '46px',
+                                width: '48px',
+                                height: '48px',
+                                minWidth: '48px',
+                                minHeight: '48px',
                                 borderRadius: '12px',
-                                backgroundColor: isDark ? '#2D261C' : '#FEF3C7',
+                                backgroundColor: isDark ? '#29231C' : '#FEF3C7',
                                 border: isDark ? '1px solid #594017' : '1px solid #F59E0B',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                flexShrink: 0
+                                flexShrink: 0,
+                                boxSizing: 'border-box',
+                                padding: '4px 0'
                               }}
                             >
                               <span
                                 style={{
                                   fontSize: '9px',
                                   fontWeight: '800',
-                                  letterSpacing: '0.06em',
+                                  letterSpacing: '0.08em',
                                   textTransform: 'uppercase',
-                                  color: isDark ? '#E5A93C' : '#B45309',
-                                  lineHeight: '1',
-                                  marginBottom: '2px'
+                                  color: isDark ? '#E5AF45' : '#B45309',
+                                  lineHeight: '11px',
+                                  height: '11px',
+                                  display: 'block',
+                                  textAlign: 'center'
                                 }}
                               >
                                 KEY
@@ -767,24 +816,31 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                                 style={{
                                   fontSize: '16px',
                                   fontWeight: '800',
-                                  color: isDark ? '#FDF8F0' : '#78350F',
-                                  lineHeight: '1'
+                                  color: isDark ? '#FFF5E6' : '#78350F',
+                                  lineHeight: '20px',
+                                  height: '20px',
+                                  display: 'block',
+                                  textAlign: 'center',
+                                  marginTop: '2px'
                                 }}
                               >
                                 {selectedKey}
                               </span>
                             </div>
 
-                            {/* Center: Song Title & Subtitle (Clean block typography, zero slicing) */}
-                            <div style={{ flex: 1, minWidth: 0, padding: '0 14px' }}>
+                            {/* Center: Song Title & Subtitle (Clean block typography, zero clipping) */}
+                            <div style={{ flex: 1, minWidth: 0 }}>
                               <div
                                 style={{
-                                  fontSize: '16px',
+                                  fontSize: '15px',
                                   fontWeight: '700',
-                                  color: isDark ? '#FFFFFF' : '#1C1917',
-                                  lineHeight: '24px',
+                                  color: isDark ? '#FFF5E6' : '#1C1917',
+                                  lineHeight: '22px',
                                   marginBottom: '2px',
-                                  display: 'block'
+                                  display: 'block',
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis'
                                 }}
                               >
                                 {song.title}
@@ -793,36 +849,34 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                                 style={{
                                   fontSize: '12px',
                                   fontWeight: '600',
-                                  color: isDark ? '#F3B755' : '#92400E',
-                                  lineHeight: '18px',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: '6px',
+                                  color: isDark ? '#E5AF45' : '#92400E',
+                                  lineHeight: '20px',
+                                  display: 'block',
+                                  whiteSpace: 'nowrap',
                                   overflow: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                  whiteSpace: 'nowrap'
+                                  textOverflow: 'ellipsis'
                                 }}
                               >
                                 <span>
                                   Lead: {song.assigned_vocalist_name || lineup.worship_leader_name || 'Worship Leader'}
                                 </span>
                                 {song.artist && (
-                                  <span style={{ color: isDark ? '#A1A1AA' : '#78716C', fontWeight: '400' }}>
+                                  <span style={{ color: isDark ? '#B8ADA0' : '#78716C', fontWeight: '400', marginLeft: '6px' }}>
                                     • {song.artist}
                                   </span>
                                 )}
                               </div>
                             </div>
 
-                            {/* Right: Circular Gold Play Icon (Exact match to Sunday Lineup Card) */}
+                            {/* Right: Circular Gold Play Icon (Perfect geometry & centered) */}
                             <div
                               style={{
-                                width: '32px',
-                                height: '32px',
-                                minWidth: '32px',
-                                minHeight: '32px',
+                                width: '34px',
+                                height: '34px',
+                                minWidth: '34px',
+                                minHeight: '34px',
                                 borderRadius: '50%',
-                                backgroundColor: '#D4A359',
+                                backgroundColor: '#E5AF45',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -834,10 +888,11 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                                 style={{
                                   width: '13px',
                                   height: '13px',
-                                  fill: '#18181B',
-                                  stroke: '#18181B',
+                                  fill: '#100E0B',
+                                  stroke: '#100E0B',
                                   strokeWidth: '1.5',
-                                  marginLeft: '2px'
+                                  marginLeft: '2px',
+                                  display: 'block'
                                 }}
                               >
                                 <polygon points="6 3 20 12 6 21 6 3" />
@@ -857,16 +912,16 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               <div
                 style={{
                   marginTop: '16px',
-                  padding: '10px 14px',
-                  borderRadius: '12px',
-                  backgroundColor: isDark ? '#222225' : '#F5EFE6',
-                  border: isDark ? '1px solid rgba(255, 255, 255, 0.05)' : '1px solid #E5DFD5',
+                  padding: '12px 16px',
+                  borderRadius: '14px',
+                  backgroundColor: isDark ? '#211C17' : '#F5EFE6',
+                  border: isDark ? '1px solid #393027' : '1px solid #E5DFD5',
                   fontSize: '11px',
-                  color: isDark ? '#D4D4D8' : '#57534E',
-                  lineHeight: '1.4'
+                  color: isDark ? '#B8ADA0' : '#57534E',
+                  lineHeight: '20px'
                 }}
               >
-                <span style={{ fontWeight: '700', color: isDark ? '#E5A93C' : '#92400E', marginRight: '6px' }}>
+                <span style={{ fontWeight: '700', color: isDark ? '#E5AF45' : '#92400E', marginRight: '6px' }}>
                   📌 STAGE PREP & CALL TIME:
                 </span>
                 <span>{lineup.notes}</span>
@@ -880,7 +935,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               style={{
                 marginTop: '24px',
                 paddingTop: '16px',
-                borderTop: isDark ? '1px solid #27272A' : '1px solid #EAE3D7',
+                borderTop: isDark ? '1px solid #393027' : '1px solid #EAE3D7',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -890,9 +945,9 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
               <div
                 style={{
                   fontSize: '11px',
-                  color: isDark ? '#A1A1AA' : '#78716C',
+                  color: isDark ? '#B8ADA0' : '#78716C',
                   fontStyle: 'italic',
-                  lineHeight: '1.4'
+                  lineHeight: '20px'
                 }}
               >
                 Beholding Jesus Worship Team • Together in Worship
@@ -904,10 +959,11 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                   fontStyle: 'italic',
                   fontWeight: '600',
                   fontSize: '16px',
-                  color: isDark ? '#E5A93C' : '#B45309',
+                  color: isDark ? '#E5AF45' : '#B45309',
                   letterSpacing: '0.02em',
                   whiteSpace: 'nowrap',
-                  flexShrink: 0
+                  flexShrink: 0,
+                  lineHeight: '20px'
                 }}
               >
                 For His Glory
