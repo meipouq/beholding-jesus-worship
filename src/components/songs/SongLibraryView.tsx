@@ -253,10 +253,12 @@ export const SongLibraryView: React.FC = () => {
               <div
                 key={song.id}
                 onClick={() => setViewingSong(song)}
-                className="bg-[#181510] hover:bg-[#1E1914] rounded-[22px] p-4 sm:p-5 border border-[#393027] hover:border-[#E5AF45]/50 shadow-sm relative transition-all cursor-pointer group"
+                className={`bg-[#181510] hover:bg-[#1E1914] rounded-[22px] p-4 sm:p-5 border border-[#393027] hover:border-[#E5AF45]/50 shadow-sm relative transition-all cursor-pointer group ${
+                  openMenuSongId === song.id ? 'z-30' : 'z-0'
+                }`}
               >
                 {/* Top Right: 3-dots Menu Button */}
-                <div className="absolute top-3.5 right-3.5 z-10" onClick={(e) => e.stopPropagation()}>
+                <div className="absolute top-3.5 right-3.5 z-30" onClick={(e) => e.stopPropagation()}>
                   <button
                     onClick={() => setOpenMenuSongId(openMenuSongId === song.id ? null : song.id)}
                     className="p-1 rounded-full text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C] transition-colors cursor-pointer"
@@ -267,9 +269,10 @@ export const SongLibraryView: React.FC = () => {
 
                   {/* Dropdown Menu */}
                   {openMenuSongId === song.id && (
-                    <div className="absolute right-0 top-8 w-48 bg-[#211C17] border border-[#393027] rounded-2xl shadow-2xl py-1.5 z-30 animate-fade-in text-xs">
+                    <div className="absolute right-0 top-8 w-48 bg-[#211C17] border border-[#393027] rounded-2xl shadow-2xl py-1.5 z-40 animate-fade-in text-xs">
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setViewingSong(song);
                           setOpenMenuSongId(null);
                         }}
@@ -279,7 +282,8 @@ export const SongLibraryView: React.FC = () => {
                         <span>View Details & Lyrics</span>
                       </button>
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           openChords(song);
                           setOpenMenuSongId(null);
                         }}
@@ -289,7 +293,8 @@ export const SongLibraryView: React.FC = () => {
                         <span>Chords & Transposer</span>
                       </button>
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setEditingSong(song);
                           setOpenMenuSongId(null);
                         }}
@@ -300,7 +305,8 @@ export const SongLibraryView: React.FC = () => {
                       </button>
                       <div className="my-1 border-t border-[#393027]" />
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setOpenMenuSongId(null);
                           if (window.confirm(`Are you sure you want to delete "${song.title}" from the song library?`)) {
                             deleteSong(song.id);
