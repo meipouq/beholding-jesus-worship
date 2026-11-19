@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { ServiceLineup } from '../../types';
+import { formatDisplayTime } from '../../utils/timeFormat';
 
 interface LineupShareModalProps {
   lineup: ServiceLineup;
@@ -67,7 +68,8 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
   const generateMessengerText = () => {
     let text = `✝️ BEHOLDING JESUS – WORSHIP TEAM\n`;
     text += `📋 ${lineup.title.toUpperCase()}\n`;
-    text += `🗓️ ${formattedDate || lineup.service_date} • ${lineup.service_time}\n`;
+    const displayServiceTime = formatDisplayTime(lineup.service_time) || lineup.service_time;
+    text += `🗓️ ${formattedDate || lineup.service_date}${displayServiceTime ? ` • ${displayServiceTime}` : ''}\n`;
     if (lineup.theme) {
       text += `✨ Theme: "${lineup.theme}"\n`;
     }
@@ -581,7 +583,7 @@ export const LineupShareModal: React.FC<LineupShareModalProps> = ({ lineup, onCl
                   whiteSpace: 'nowrap'
                 }}
               >
-                {`${formattedDate} • ${totalSongsCount} ${totalSongsCount === 1 ? 'song' : 'songs'}${lineup.service_time ? ` • ${lineup.service_time}` : ''}`}
+                {`${formattedDate} • ${totalSongsCount} ${totalSongsCount === 1 ? 'song' : 'songs'}${formatDisplayTime(lineup.service_time) ? ` • ${formatDisplayTime(lineup.service_time)}` : (lineup.service_time ? ` • ${lineup.service_time}` : '')}`}
               </div>
             </div>
 

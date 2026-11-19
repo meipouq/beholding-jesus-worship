@@ -32,9 +32,11 @@ import {
   getCompletedServiceHistory,
   getLineupLifecycleStatus
 } from '../../utils/serviceSchedule';
+import { formatDisplayTime } from '../../utils/timeFormat';
 
 function formatServiceDate(dateStr?: string, timeStr?: string): string {
   if (!dateStr) return '';
+  const displayTime = timeStr ? formatDisplayTime(timeStr) : null;
   try {
     const parts = dateStr.split('-');
     if (parts.length === 3) {
@@ -44,7 +46,7 @@ function formatServiceDate(dateStr?: string, timeStr?: string): string {
       const d = new Date(year, monthIndex, day);
       const weekday = d.toLocaleDateString('en-US', { weekday: 'short' });
       const month = d.toLocaleDateString('en-US', { month: 'short' });
-      return `${weekday}, ${month} ${day}, ${year}${timeStr ? ` • ${timeStr}` : ''}`;
+      return `${weekday}, ${month} ${day}, ${year}${displayTime ? ` • ${displayTime}` : ''}`;
     }
     return dateStr;
   } catch {
@@ -291,7 +293,7 @@ export const DashboardView: React.FC = () => {
               Upcoming Rehearsal
             </span>
             <span className="text-base font-bold text-[#FFF5E6] leading-tight">
-              {nextRehearsal ? `${formatServiceDate(nextRehearsal.date).split(', ')[1]?.split(' • ')[0] || nextRehearsal.date}, ${nextRehearsal.start_time}` : 'None Scheduled'}
+              {nextRehearsal ? `${formatServiceDate(nextRehearsal.date).split(', ')[1]?.split(' • ')[0] || nextRehearsal.date}, ${formatDisplayTime(nextRehearsal.start_time) || nextRehearsal.start_time}` : 'None Scheduled'}
             </span>
           </div>
         </div>
@@ -563,7 +565,7 @@ export const DashboardView: React.FC = () => {
                           {event.title}
                         </h4>
                         <p className="text-[11px] text-[#B8ADA0] mt-0.5 truncate">
-                          {event.start_time} – {event.venue}
+                          {formatDisplayTime(event.start_time) || event.start_time} – {event.venue}
                         </p>
                       </div>
                     </div>

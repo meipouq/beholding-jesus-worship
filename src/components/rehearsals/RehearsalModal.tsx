@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { X, Calendar, Clock, MapPin, Users } from 'lucide-react';
+import { X, Calendar, Clock, MapPin, Users, AlertCircle } from 'lucide-react';
 import { Rehearsal, TeamMember } from '../../types';
 import { useWorship } from '../../context/WorshipContext';
+import { formatDisplayTime } from '../../utils/timeFormat';
 
 interface RehearsalModalProps {
   rehearsal: Rehearsal | null;
@@ -21,6 +22,7 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
   const [date, setDate] = useState(rehearsal?.date || new Date().toISOString().slice(0, 10));
   const [startTime, setStartTime] = useState(rehearsal?.start_time || '4:00 PM');
   const [endTime, setEndTime] = useState(rehearsal?.end_time || '6:00 PM');
+  const [timeError, setTimeError] = useState<string | null>(null);
   const [venue, setVenue] = useState(rehearsal?.venue || 'Main Sanctuary');
   const [prepNotes, setPrepNotes] = useState(rehearsal?.prep_notes || '');
   const [lineupId, setLineupId] = useState(rehearsal?.lineup_id || '');
@@ -36,9 +38,38 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
     }
   };
 
+  const handleTimeBlur = () => {
+    if (startTime.trim()) {
+      const parsedStart = formatDisplayTime(startTime);
+      if (parsedStart) {
+        setStartTime(parsedStart);
+      } else {
+        setTimeError('Invalid start time (e.g. 4:00 PM or 16:00)');
+        return;
+      }
+    }
+    if (endTime.trim()) {
+      const parsedEnd = formatDisplayTime(endTime);
+      if (parsedEnd) {
+        setEndTime(parsedEnd);
+      } else {
+        setTimeError('Invalid end time (e.g. 6:00 PM or 18:00)');
+        return;
+      }
+    }
+    setTimeError(null);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !date) return;
+
+    const parsedStart = formatDisplayTime(startTime);
+    const parsedEnd = formatDisplayTime(endTime);
+    if (!parsedStart || !parsedEnd) {
+      setTimeError('Please ensure valid hours and minutes for start and end times (e.g. 4:00 PM).');
+      return;
+    }
 
     const participants = members
       .filter(m => selectedParticipants.includes(m.id))
@@ -56,8 +87,8 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
       title: title.trim(),
       type,
       date,
-      start_time: startTime,
-      end_time: endTime,
+      start_time: parsedStart,
+      end_time: parsedEnd,
       venue: venue.trim(),
       prep_notes: prepNotes.trim(),
       lineup_id: lineupId || undefined,
@@ -149,9 +180,15 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
               <input
                 type="text"
                 value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
+                onChange={(e) => {
+                  setStartTime(e.target.value);
+                  if (timeError) setTimeError(null);
+                }}
+                onBlur={handleTimeBlur}
                 placeholder="4:00 PM"
-                className="w-full text-xs p-3 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] placeholder:text-[#B8ADA0]/50 focus:outline-none focus:border-[#E5AF45]"
+                className={`w-full text-xs p-3 rounded-2xl border bg-[#181510] text-[#FFF5E6] placeholder:text-[#B8ADA0]/50 focus:outline-none transition-colors ${
+                  timeError ? 'border-[#E57373] focus:border-[#E57373]' : 'border-[#393027] focus:border-[#E5AF45]'
+                }`}
               />
             </div>
 
@@ -162,12 +199,25 @@ export const RehearsalModal: React.FC<RehearsalModalProps> = ({
               <input
                 type="text"
                 value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
+                onChange={(e) => {
+                  setEndTime(e.target.value);
+                  if (timeError) setTimeError(null);
+                }}
+                onBlur={handleTimeBlur}
                 placeholder="6:00 PM"
-                className="w-full text-xs p-3 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] placeholder:text-[#B8ADA0]/50 focus:outline-none focus:border-[#E5AF45]"
+                className={`w-full text-xs p-3 rounded-2xl border bg-[#181510] text-[#FFF5E6] placeholder:text-[#B8ADA0]/50 focus:outline-none transition-colors ${
+                  timeError ? 'border-[#E57373] focus:border-[#E57373]' : 'border-[#393027] focus:border-[#E5AF45]'
+                }`}
               />
             </div>
           </div>
+
+          {timeError && (
+            <p className="text-[11px] text-[#E57373] font-semibold flex items-center gap-1.5 px-1 animate-fade-in">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>{timeError}</span>
+            </p>
+          )}
 
           <div>
             <label className="text-[11px] font-bold text-[#B8ADA0] uppercase tracking-wider block mb-1">

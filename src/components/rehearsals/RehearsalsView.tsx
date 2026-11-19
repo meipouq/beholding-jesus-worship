@@ -19,6 +19,7 @@ import {
 import { useWorship } from '../../context/WorshipContext';
 import { Rehearsal } from '../../types';
 import { RehearsalModal } from './RehearsalModal';
+import { formatDisplayTime } from '../../utils/timeFormat';
 
 export const RehearsalsView: React.FC = () => {
   const {
@@ -167,7 +168,7 @@ export const RehearsalsView: React.FC = () => {
                     <div className="flex items-center gap-4 text-xs text-[#B8ADA0] flex-wrap pt-0.5">
                       <div className="flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5 text-[#E5AF45]" />
-                        <span>{reh.start_time} – {reh.end_time}</span>
+                        <span>{formatDisplayTime(reh.start_time) || reh.start_time} – {formatDisplayTime(reh.end_time) || reh.end_time}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <MapPin className="w-3.5 h-3.5 text-[#E5AF45]" />
@@ -342,7 +343,7 @@ export const RehearsalsView: React.FC = () => {
                       key={ev.id}
                       onClick={() => setEditingRehearsal(ev)}
                       className="p-1 rounded-lg bg-[#100E0B] border border-[#E5AF45]/50 text-[#E5AF45] text-[10px] font-bold truncate mt-1 cursor-pointer shadow-sm"
-                      title={`${ev.title} (${ev.start_time})`}
+                      title={`${ev.title} (${formatDisplayTime(ev.start_time) || ev.start_time})`}
                     >
                       {ev.title}
                     </div>

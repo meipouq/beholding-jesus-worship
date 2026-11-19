@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Megaphone, Pin, AlertCircle, Calendar, Clock } from 'lucide-react';
 import { Announcement } from '../../types';
 import { useWorship } from '../../context/WorshipContext';
+import { formatDisplayTime, isValidTime } from '../../utils/timeFormat';
 
 interface AnnouncementModalProps {
   announcement: Announcement | null;
@@ -20,20 +21,45 @@ export const AnnouncementModal: React.FC<AnnouncementModalProps> = ({
   const [content, setContent] = useState(announcement?.content || '');
   const [eventDate, setEventDate] = useState(announcement?.event_date || '');
   const [eventTime, setEventTime] = useState(announcement?.event_time || '');
+  const [timeError, setTimeError] = useState<string | null>(null);
   const [status, setStatus] = useState<'published' | 'draft'>(announcement?.status || 'published');
   const [isPinned, setIsPinned] = useState(announcement?.is_pinned || false);
   const [isImportant, setIsImportant] = useState(announcement?.is_important || false);
 
+  const handleTimeBlur = () => {
+    if (!eventTime.trim()) {
+      setTimeError(null);
+      return;
+    }
+    const formatted = formatDisplayTime(eventTime);
+    if (formatted) {
+      setEventTime(formatted);
+      setTimeError(null);
+    } else {
+      setTimeError('Invalid time (e.g. 8:00 AM, 1:00 PM, or 14:00)');
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
+
+    let formattedTime: string | undefined = undefined;
+    if (eventTime.trim()) {
+      const parsed = formatDisplayTime(eventTime);
+      if (!parsed) {
+        setTimeError('Invalid time (e.g. 8:00 AM, 1:00 PM, or 14:00)');
+        return;
+      }
+      formattedTime = parsed;
+    }
 
     const saved: Announcement = {
       id: announcement?.id || `ann-${Date.now()}`,
       title: title.trim(),
       content: content.trim(),
       event_date: eventDate || undefined,
-      event_time: eventTime || undefined,
+      event_time: formattedTime,
       status,
       author_id: announcement?.author_id || currentUser.id,
       author_name: announcement?.author_name || currentUser.name,
@@ -133,10 +159,22 @@ export const AnnouncementModal: React.FC<AnnouncementModalProps> = ({
               <input
                 type="text"
                 value={eventTime}
-                onChange={(e) => setEventTime(e.target.value)}
+                onChange={(e) => {
+                  setEventTime(e.target.value);
+                  if (timeError) setTimeError(null);
+                }}
+                onBlur={handleTimeBlur}
                 placeholder="e.g. 8:00 AM"
-                className="w-full text-xs p-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] placeholder:text-[#B8ADA0]/50 focus:outline-none focus:border-[#E5AF45] font-medium"
+                className={`w-full text-xs p-2.5 rounded-2xl border bg-[#181510] text-[#FFF5E6] placeholder:text-[#B8ADA0]/50 focus:outline-none font-medium transition-colors ${
+                  timeError ? 'border-[#E57373] focus:border-[#E57373]' : 'border-[#393027] focus:border-[#E5AF45]'
+                }`}
               />
+              {timeError && (
+                <p className="text-[10px] text-[#E57373] mt-1 font-semibold flex items-center gap-1 animate-fade-in">
+                  <AlertCircle className="w-3 h-3 shrink-0" />
+                  <span>{timeError}</span>
+                </p>
+              )}
             </div>
           </div>
 

@@ -15,6 +15,24 @@ import {
 import { useWorship } from '../../context/WorshipContext';
 import { Announcement } from '../../types';
 import { AnnouncementModal } from './AnnouncementModal';
+import { formatDisplayTime } from '../../utils/timeFormat';
+
+function formatEventDate(dateStr?: string): string {
+  if (!dateStr) return '';
+  try {
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      const year = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1;
+      const day = parseInt(parts[2], 10);
+      const d = new Date(year, month, day);
+      return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    return dateStr;
+  } catch {
+    return dateStr;
+  }
+}
 
 export const AnnouncementsView: React.FC = () => {
   const {
@@ -228,18 +246,18 @@ export const AnnouncementsView: React.FC = () => {
                 </div>
 
                 {/* Event Schedule Details (if provided) */}
-                {(ann.event_date || ann.event_time) && (
-                  <div className="p-3 rounded-2xl bg-[#181510] border border-[#393027] flex items-center gap-3 text-xs text-[#FFF5E6] font-medium">
+                {(ann.event_date || (ann.event_time && formatDisplayTime(ann.event_time))) && (
+                  <div className="p-3 rounded-2xl bg-[#181510] border border-[#393027] flex items-center gap-3 text-xs text-[#FFF5E6] font-medium flex-wrap">
                     {ann.event_date && (
                       <div className="flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-[#E5AF45]" />
-                        <span>{ann.event_date}</span>
+                        <span>{formatEventDate(ann.event_date)}</span>
                       </div>
                     )}
-                    {ann.event_time && (
+                    {ann.event_time && formatDisplayTime(ann.event_time) && (
                       <div className="flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5 text-[#E5AF45]" />
-                        <span>{ann.event_time}</span>
+                        <span>{formatDisplayTime(ann.event_time)}</span>
                       </div>
                     )}
                   </div>

@@ -33,6 +33,7 @@ import {
 import { ServiceLineup, LineupSongItem, Song, TeamMember } from '../../types';
 import { useWorship } from '../../context/WorshipContext';
 import { LineupHistoryModal } from './LineupHistoryModal';
+import { formatDisplayTime } from '../../utils/timeFormat';
 import { LineupPrintModal } from './LineupPrintModal';
 import { LineupShareModal } from './LineupShareModal';
 import { SongEditModal } from '../songs/SongEditModal';
@@ -168,7 +169,7 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
       id: currentLineupId,
       title: title.trim() || 'Sunday Worship Service',
       service_date: serviceDate,
-      service_time: serviceTime,
+      service_time: formatDisplayTime(serviceTime) || serviceTime,
       worship_leader_id: selectedLeaderIds[0] || currentUser.id,
       worship_leader_name: formatLeaderNames(selectedLeaderIds),
       worship_leaders: worshipLeadersData,
@@ -598,7 +599,13 @@ export const LineupBuilderView: React.FC<LineupBuilderViewProps> = ({ lineupId, 
                   required
                   value={serviceTime}
                   onChange={(e) => setServiceTime(e.target.value)}
-                  onBlur={handleBlurSave}
+                  onBlur={() => {
+                    const formatted = formatDisplayTime(serviceTime);
+                    if (formatted) {
+                      setServiceTime(formatted);
+                    }
+                    handleBlurSave();
+                  }}
                   placeholder="9:00 AM"
                   className="w-full text-xs font-semibold text-[#FFF5E6] bg-transparent focus:outline-none"
                 />

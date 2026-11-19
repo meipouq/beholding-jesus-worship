@@ -112,7 +112,7 @@ export const AuthModal: React.FC = () => {
     setRegSuccess(null);
 
     if (regPassword !== regConfirmPassword) {
-      setRegError('Passwords do not match.');
+      setRegError('Passwords do not match. Please ensure both fields are identical.');
       return;
     }
 
@@ -351,7 +351,7 @@ export const AuthModal: React.FC = () => {
             {/* Full Name */}
             <div>
               <label className="block text-[11px] font-bold text-[#B8ADA0] mb-1">
-                Real Full Name *
+                Full Name *
               </label>
               <div className="relative">
                 <User className="w-4 h-4 text-[#B8ADA0] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -366,11 +366,11 @@ export const AuthModal: React.FC = () => {
               </div>
             </div>
 
-            {/* Unique Username */}
+            {/* Username */}
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-[11px] font-bold text-[#B8ADA0]">
-                  Unique Username * (used for live sync & authorship)
+                  Username *
                 </label>
                 {usernameStatus.checking ? (
                   <span className="text-[10px] text-[#B8ADA0]">Checking...</span>
@@ -393,47 +393,62 @@ export const AuthModal: React.FC = () => {
               </div>
             </div>
 
-            {/* Role & Vocal Range */}
-            <div className="grid grid-cols-2 gap-2.5">
-              <div>
-                <label className="block text-[11px] font-bold text-[#B8ADA0] mb-1">
-                  Vocal Range / Part
-                </label>
-                <select
-                  value={regVocalRange}
-                  onChange={(e) => setRegVocalRange(e.target.value as any)}
-                  className="w-full text-xs px-3 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none cursor-pointer"
-                >
-                  <option value="Soprano" className="bg-[#181510] text-[#FFF5E6]">Soprano</option>
-                  <option value="Mezzo-Soprano" className="bg-[#181510] text-[#FFF5E6]">Mezzo-Soprano</option>
-                  <option value="Alto" className="bg-[#181510] text-[#FFF5E6]">Alto</option>
-                  <option value="Tenor" className="bg-[#181510] text-[#FFF5E6]">Tenor</option>
-                  <option value="Baritone" className="bg-[#181510] text-[#FFF5E6]">Baritone</option>
-                  <option value="Bass" className="bg-[#181510] text-[#FFF5E6]">Bass</option>
-                  <option value="Instrumentalist" className="bg-[#181510] text-[#FFF5E6]">Instrumentalist Only</option>
-                </select>
-              </div>
+            {/* Ministry Role & Conditional Vocal Range */}
+            {(() => {
+              const isVocalRole = regRoleTitle === 'Worship Leader' || regRoleTitle === 'Worship Team Vocalist';
+              return (
+                <div className={isVocalRole ? "grid grid-cols-2 gap-2.5" : "space-y-1"}>
+                  <div>
+                    <label className="block text-[11px] font-bold text-[#B8ADA0] mb-1">
+                      Ministry Role
+                    </label>
+                    <select
+                      value={regRoleTitle}
+                      onChange={(e) => {
+                        const newRole = e.target.value;
+                        setRegRoleTitle(newRole);
+                        const isVocal = newRole === 'Worship Leader' || newRole === 'Worship Team Vocalist';
+                        if (!isVocal) {
+                          setRegVocalRange('Instrumentalist');
+                        } else if (regVocalRange === 'Instrumentalist') {
+                          setRegVocalRange('Soprano');
+                        }
+                      }}
+                      className="w-full text-xs px-3 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none cursor-pointer"
+                    >
+                      <option value="Worship Leader" className="bg-[#181510] text-[#FFF5E6]">Worship Leader</option>
+                      <option value="Worship Team Vocalist" className="bg-[#181510] text-[#FFF5E6]">Vocalist</option>
+                      <option value="Acoustic Guitarist" className="bg-[#181510] text-[#FFF5E6]">Acoustic Guitarist</option>
+                      <option value="Keyboardist / Pianist" className="bg-[#181510] text-[#FFF5E6]">Keyboardist / Pianist</option>
+                      <option value="Electric Guitarist" className="bg-[#181510] text-[#FFF5E6]">Electric Guitarist</option>
+                      <option value="Bass Guitarist" className="bg-[#181510] text-[#FFF5E6]">Bass Guitarist</option>
+                      <option value="Drummer" className="bg-[#181510] text-[#FFF5E6]">Drummer</option>
+                      <option value="Sound & Multimedia" className="bg-[#181510] text-[#FFF5E6]">Sound & Multimedia</option>
+                    </select>
+                  </div>
 
-              <div>
-                <label className="block text-[11px] font-bold text-[#B8ADA0] mb-1">
-                  Ministry Role
-                </label>
-                <select
-                  value={regRoleTitle}
-                  onChange={(e) => setRegRoleTitle(e.target.value)}
-                  className="w-full text-xs px-3 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none cursor-pointer"
-                >
-                  <option value="Worship Leader" className="bg-[#181510] text-[#FFF5E6]">Worship Leader</option>
-                  <option value="Worship Team Vocalist" className="bg-[#181510] text-[#FFF5E6]">Worship Team Vocalist</option>
-                  <option value="Acoustic Guitarist" className="bg-[#181510] text-[#FFF5E6]">Acoustic Guitarist</option>
-                  <option value="Keyboardist / Pianist" className="bg-[#181510] text-[#FFF5E6]">Keyboardist / Pianist</option>
-                  <option value="Electric Guitarist" className="bg-[#181510] text-[#FFF5E6]">Electric Guitarist</option>
-                  <option value="Bass Guitarist" className="bg-[#181510] text-[#FFF5E6]">Bass Guitarist</option>
-                  <option value="Drummer" className="bg-[#181510] text-[#FFF5E6]">Drummer</option>
-                  <option value="Sound & Multimedia" className="bg-[#181510] text-[#FFF5E6]">Sound & Multimedia</option>
-                </select>
-              </div>
-            </div>
+                  {isVocalRole && (
+                    <div>
+                      <label className="block text-[11px] font-bold text-[#B8ADA0] mb-1">
+                        Vocal Range
+                      </label>
+                      <select
+                        value={regVocalRange}
+                        onChange={(e) => setRegVocalRange(e.target.value as any)}
+                        className="w-full text-xs px-3 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none cursor-pointer"
+                      >
+                        <option value="Soprano" className="bg-[#181510] text-[#FFF5E6]">Soprano</option>
+                        <option value="Mezzo-Soprano" className="bg-[#181510] text-[#FFF5E6]">Mezzo-Soprano</option>
+                        <option value="Alto" className="bg-[#181510] text-[#FFF5E6]">Alto</option>
+                        <option value="Tenor" className="bg-[#181510] text-[#FFF5E6]">Tenor</option>
+                        <option value="Baritone" className="bg-[#181510] text-[#FFF5E6]">Baritone</option>
+                        <option value="Bass" className="bg-[#181510] text-[#FFF5E6]">Bass</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Password */}
             <div>
@@ -473,9 +488,28 @@ export const AuthModal: React.FC = () => {
                   value={regConfirmPassword}
                   onChange={(e) => setRegConfirmPassword(e.target.value)}
                   placeholder="Re-type your password"
-                  className="w-full text-xs pl-10 pr-3 py-2.5 rounded-2xl border border-[#393027] bg-[#181510] text-[#FFF5E6] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45] focus:outline-none"
+                  className={`w-full text-xs pl-10 pr-3 py-2.5 rounded-2xl border bg-[#181510] text-[#FFF5E6] focus:outline-none transition-colors ${
+                    regConfirmPassword && regPassword !== regConfirmPassword
+                      ? 'border-[#E57373] focus:border-[#E57373] focus:ring-1 focus:ring-[#E57373]'
+                      : regConfirmPassword && regPassword === regConfirmPassword
+                      ? 'border-[#79BB8B] focus:border-[#79BB8B] focus:ring-1 focus:ring-[#79BB8B]'
+                      : 'border-[#393027] focus:border-[#E5AF45] focus:ring-1 focus:ring-[#E5AF45]'
+                  }`}
                 />
               </div>
+              {/* Password Match Status */}
+              {regConfirmPassword && regPassword !== regConfirmPassword && (
+                <p className="text-[11px] text-[#E57373] font-semibold flex items-center gap-1.5 mt-1.5 px-0.5 animate-fade-in">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0 text-[#E57373]" />
+                  <span>Passwords do not match. Please ensure both fields are identical.</span>
+                </p>
+              )}
+              {regConfirmPassword && regPassword === regConfirmPassword && regPassword.length >= 6 && (
+                <p className="text-[11px] text-[#79BB8B] font-semibold flex items-center gap-1.5 mt-1.5 px-0.5 animate-fade-in">
+                  <CheckCircle2 className="w-3.5 h-3.5 shrink-0 text-[#79BB8B]" />
+                  <span>Passwords match</span>
+                </p>
+              )}
             </div>
 
             <button

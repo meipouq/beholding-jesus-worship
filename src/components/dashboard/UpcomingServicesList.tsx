@@ -2,6 +2,7 @@ import React from 'react';
 import { Calendar, Clock, Star, Users, ArrowRight, ListMusic, Plus } from 'lucide-react';
 import { ServiceLineup, Song } from '../../types';
 import { calculateServiceCountdown } from '../../utils/serviceSchedule';
+import { formatDisplayTime } from '../../utils/timeFormat';
 
 interface UpcomingServicesListProps {
   lineups: ServiceLineup[];
@@ -12,6 +13,7 @@ interface UpcomingServicesListProps {
 
 function formatReadableDate(dateStr?: string, timeStr?: string): string {
   if (!dateStr) return '';
+  const displayTime = timeStr ? formatDisplayTime(timeStr) : null;
   try {
     const parts = dateStr.split('-');
     if (parts.length === 3) {
@@ -21,7 +23,7 @@ function formatReadableDate(dateStr?: string, timeStr?: string): string {
       const d = new Date(year, month, day);
       const weekday = d.toLocaleDateString('en-US', { weekday: 'short' });
       const monthName = d.toLocaleDateString('en-US', { month: 'short' });
-      return `${weekday}, ${monthName} ${day}, ${year}${timeStr ? ` • ${timeStr}` : ''}`;
+      return `${weekday}, ${monthName} ${day}, ${year}${displayTime ? ` • ${displayTime}` : ''}`;
     }
     return dateStr;
   } catch {

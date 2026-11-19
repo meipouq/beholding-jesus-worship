@@ -3,6 +3,7 @@ import { Play, Pencil, Share2, Music2, Star, Users, Radio, CheckCircle2 } from '
 import { ServiceLineup, Song, TeamMember } from '../../types';
 import { ServiceCountdownTimer } from './ServiceCountdownTimer';
 import { getLineupLifecycleStatus } from '../../utils/serviceSchedule';
+import { formatDisplayTime } from '../../utils/timeFormat';
 
 interface FullLineupCardProps {
   lineup: ServiceLineup;
@@ -20,6 +21,7 @@ interface FullLineupCardProps {
 // Format date nicely (e.g. "Sunday, Nov 29, 2026")
 function formatHeroDate(dateStr?: string, timeStr?: string): string {
   if (!dateStr) return 'Upcoming Sunday';
+  const displayTime = timeStr ? formatDisplayTime(timeStr) : null;
   try {
     const parts = dateStr.split('-');
     if (parts.length === 3) {
@@ -29,7 +31,7 @@ function formatHeroDate(dateStr?: string, timeStr?: string): string {
       const d = new Date(year, monthIndex, day);
       const weekday = d.toLocaleDateString('en-US', { weekday: 'short' });
       const monthName = d.toLocaleDateString('en-US', { month: 'short' });
-      return `${weekday}, ${monthName} ${day}, ${year}${timeStr ? ` • ${timeStr}` : ''}`;
+      return `${weekday}, ${monthName} ${day}, ${year}${displayTime ? ` • ${displayTime}` : ''}`;
     }
     return dateStr;
   } catch {
