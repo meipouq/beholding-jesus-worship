@@ -1,4 +1,4 @@
-import webpush from 'web-push';
+import * as webpush from 'web-push';
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://rpeevqhwwbqixuaxhsot.supabase.co';
@@ -34,7 +34,16 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const { title, body, url, category, notification_id } = req.body || {};
+    let bodyData = req.body;
+    if (typeof bodyData === 'string') {
+      try {
+        bodyData = JSON.parse(bodyData);
+      } catch (e) {
+        // ignore parse error
+      }
+    }
+
+    const { title, body, url, category, notification_id } = bodyData || {};
 
     if (!title || !body) {
       return res.status(400).json({ error: 'title and body are required.' });
