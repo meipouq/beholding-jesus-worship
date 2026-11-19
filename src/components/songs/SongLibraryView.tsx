@@ -232,8 +232,153 @@ export const SongLibraryView: React.FC = () => {
             Clear Filters
           </button>
         </div>
+      ) : viewMode === 'grid' ? (
+        /* GRID VIEW: Responsive 2-column on mobile, 3-col on tablet, 4-col on desktop */
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {filteredSongs.map((song) => {
+            const hasVideo = !!song.youtube_url;
+
+            const handlePlay = (e: React.MouseEvent) => {
+              e.stopPropagation();
+              if (hasVideo) {
+                playVideo(song.title, song.youtube_url!);
+              } else {
+                const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(
+                  `${song.title} ${song.artist || ''} worship song`
+                )}`;
+                playVideo(song.title, searchUrl);
+              }
+            };
+
+            return (
+              <div
+                key={song.id}
+                onClick={() => setViewingSong(song)}
+                className={`bg-[#181510] hover:bg-[#1E1914] rounded-[22px] p-3.5 sm:p-4 border border-[#393027] hover:border-[#E5AF45]/50 shadow-sm relative transition-all cursor-pointer group flex flex-col justify-between ${
+                  openMenuSongId === song.id ? 'z-30' : 'z-0'
+                }`}
+              >
+                {/* Top Row: Key Badge on Left + 3-dots Menu on Right */}
+                <div className="flex items-center justify-between gap-1.5 mb-2.5">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openChords(song);
+                    }}
+                    className="px-2.5 py-0.5 rounded-full bg-[#14120F] text-[#E5AF45] border border-[#E5AF45]/50 shadow-[0_0_8px_rgba(229,175,69,0.12)] text-[10px] font-bold hover:scale-105 active:scale-95 transition-transform cursor-pointer shrink-0"
+                    title="Transpose & Chords"
+                  >
+                    Key: {song.original_key || 'C'}
+                  </button>
+
+                  {/* 3-dots Menu Button */}
+                  <div className="relative" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => setOpenMenuSongId(openMenuSongId === song.id ? null : song.id)}
+                      className="p-1 rounded-full text-[#B8ADA0] hover:text-[#FFF5E6] hover:bg-[#29231C] transition-colors cursor-pointer"
+                      title="Song Options"
+                    >
+                      <MoreVertical className="w-4 h-4" />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {openMenuSongId === song.id && (
+                      <div className="absolute right-0 top-7 w-44 bg-[#211C17] border border-[#393027] rounded-2xl shadow-2xl py-1.5 z-40 animate-fade-in text-xs">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setViewingSong(song);
+                            setOpenMenuSongId(null);
+                          }}
+                          className="w-full text-left px-3 py-2 text-[#FFF5E6] hover:bg-[#29231C] hover:text-[#E5AF45] flex items-center gap-2 transition-colors cursor-pointer"
+                        >
+                          <Eye className="w-3.5 h-3.5 text-[#E5AF45]" />
+                          <span>View Details & Lyrics</span>
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openChords(song);
+                            setOpenMenuSongId(null);
+                          }}
+                          className="w-full text-left px-3 py-2 text-[#FFF5E6] hover:bg-[#29231C] hover:text-[#E5AF45] flex items-center gap-2 transition-colors cursor-pointer"
+                        >
+                          <FileMusic className="w-3.5 h-3.5 text-[#E5AF45]" />
+                          <span>Chords & Transposer</span>
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingSong(song);
+                            setOpenMenuSongId(null);
+                          }}
+                          className="w-full text-left px-3 py-2 text-[#FFF5E6] hover:bg-[#29231C] hover:text-[#E5AF45] flex items-center gap-2 transition-colors cursor-pointer"
+                        >
+                          <Edit3 className="w-3.5 h-3.5 text-[#E5AF45]" />
+                          <span>Edit Song</span>
+                        </button>
+                        <div className="my-1 border-t border-[#393027]" />
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenMenuSongId(null);
+                            if (window.confirm(`Are you sure you want to delete "${song.title}" from the song library?`)) {
+                              deleteSong(song.id);
+                            }
+                          }}
+                          className="w-full text-left px-3 py-2 text-[#E57373] hover:bg-[#29231C] flex items-center gap-2 transition-colors cursor-pointer"
+                        >
+                          <Trash2 className="w-3.5 h-3.5 text-[#E57373]" />
+                          <span>Delete Song</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Middle: Title, Artist, and Category */}
+                <div className="min-w-0 mb-3 flex-1">
+                  <h3 className="text-sm sm:text-base font-bold text-[#FFF5E6] tracking-tight leading-snug group-hover:text-[#FFC85C] transition-colors line-clamp-2">
+                    {song.title}
+                  </h3>
+                  <p className="text-[11px] sm:text-xs text-[#B8ADA0] font-medium mt-1 truncate">
+                    {song.artist?.trim() ? song.artist : (song.composer?.trim() ? song.composer : 'Worship Team Repertoire')}
+                  </p>
+                  <div className="mt-2">
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#241F1A] text-[#B8ADA0] border border-[#393027] text-[10px] font-semibold tracking-wide inline-block truncate max-w-full">
+                      {song.category}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Bottom Row Actions in Grid: Play Icon Button + Compact Add to Lineup Button */}
+                <div className="flex items-center gap-2 pt-2 border-t border-[#393027]/60" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    onClick={handlePlay}
+                    className="w-8 h-8 rounded-full bg-gradient-to-r from-[#FFC85C] to-[#E5AF45] hover:from-[#FFD57E] hover:to-[#E5AF45] text-[#100E0B] flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(229,175,69,0.25)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                    title="Play YouTube Video Reference"
+                  >
+                    <Play className="w-3.5 h-3.5 fill-[#100E0B] text-[#100E0B] ml-0.5" />
+                  </button>
+
+                  <button
+                    onClick={() => setSongToAddToLineup(song)}
+                    className="flex-1 py-1.5 px-2 rounded-xl bg-[#211C17] hover:bg-[#29231C] border border-[#E5AF45]/60 hover:border-[#E5AF45] text-[#FFF5E6] flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer group/btn min-w-0"
+                    title="Add to Lineup"
+                  >
+                    <UserPlus className="w-3.5 h-3.5 text-[#E5AF45] shrink-0" />
+                    <span className="text-[11px] font-bold text-[#FFF5E6] group-hover/btn:text-[#E5AF45] truncate">
+                      + Lineup
+                    </span>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       ) : (
-        <div className={viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5" : "space-y-3"}>
+        /* LIST VIEW: Wide 1-column layout (user's preferred table view) */
+        <div className="space-y-3">
           {filteredSongs.map((song) => {
             const hasVideo = !!song.youtube_url;
 
