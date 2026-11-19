@@ -12,7 +12,7 @@ const VAPID_PUBLIC_KEY =
   'BCykR7uJot_OyVgiG_UVZlgqyRvVvFXhtrgXkAv7mKxpbK61PaNh1jw9nZTUoDEJLu1dSWZ3xHlaU64KOeCgxGE';
 const VAPID_PRIVATE_KEY =
   process.env.VAPID_PRIVATE_KEY ||
-  'JmrcCWB7xroM27LrsQtekr9EvUCV78OwNxuF7HP_55E';
+  'mSo6XQx4kB_bjlNmxnaeQviJpbvATDFcCwIRCSFtQbA';
 const VAPID_SUBJECT =
   process.env.VAPID_SUBJECT || 'mailto:worship@beholdingjesus.org';
 

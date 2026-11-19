@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Bell,
   Smartphone,
@@ -79,7 +80,7 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === 'undefined') return null;
 
   const handleSendTestPush = async () => {
     setTesting(true);
@@ -179,9 +180,9 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
     syncPushPreferencesToSupabase(currentUser.id, updated, isSubscribed);
   };
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs overscroll-contain flex flex-col justify-start sm:justify-center items-center p-3 sm:p-4 pt-14 pb-8 sm:py-6 animate-fade-in"
+      className="fixed inset-0 z-[9999] overflow-y-auto bg-black/60 backdrop-blur-xs overscroll-contain flex flex-col justify-start sm:justify-center items-center p-3 sm:p-4 pt-14 pb-8 sm:py-6 animate-fade-in"
       onClick={onClose}
     >
       <div
@@ -446,6 +447,7 @@ export const NotificationSettingsModal: React.FC<NotificationSettingsModalProps>
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
