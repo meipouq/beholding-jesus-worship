@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Bell,
   CheckCheck,
@@ -9,19 +9,28 @@ import {
   CheckSquare,
   Megaphone,
   MessageCircle,
-  Settings
+  Settings,
+  Zap
 } from 'lucide-react';
 import { useWorship, AppModule } from '../../context/WorshipContext';
 import { NotificationSettingsModal } from '../settings/NotificationSettingsModal';
+import { getExistingSubscription } from '../../services/pushNotifications';
 
 export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isPushSubscribed, setIsPushSubscribed] = useState(true);
   const {
     notifications,
     markNotifRead,
     markAllNotifsRead,
     setActiveModule
   } = useWorship();
+
+  useEffect(() => {
+    getExistingSubscription().then((sub) => {
+      setIsPushSubscribed(!!sub);
+    });
+  }, [isSettingsOpen]);
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -91,6 +100,27 @@ export const NotificationCenter: React.FC<{ onClose: () => void }> = ({ onClose 
           </button>
         </div>
       </div>
+
+      {/* Quick Web Push Setup Strip */}
+      {!isPushSubscribed && (
+        <div className="mt-2.5 mb-1 p-2.5 sm:p-3 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 flex items-center justify-between gap-2.5 shadow-2xs">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="w-7 h-7 rounded-xl bg-[#1E1D1B] text-amber-400 flex items-center justify-center shrink-0 shadow-2xs">
+              <Zap className="w-3.5 h-3.5 fill-amber-400" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-bold text-stone-900 leading-tight">Web Push Alerts</p>
+              <p className="text-[10px] text-stone-600 truncate">Get alerted when app is closed</p>
+            </div>
+          </div>
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className="px-3 py-1.5 rounded-xl bg-[#1E1D1B] hover:bg-stone-800 active:scale-95 text-white text-[11px] font-extrabold shadow-2xs shrink-0 cursor-pointer transition-transform"
+          >
+            Enable
+          </button>
+        </div>
+      )}
 
       <div className="max-h-80 overflow-y-auto mt-2 space-y-1.5 divide-y divide-stone-50">
         {notifications.length === 0 ? (
