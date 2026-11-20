@@ -110,6 +110,11 @@ export function sanitizeRecordForSupabase(table: string, record: any): any {
   } else if (table === 'team_members') {
     if (!sanitized.vocal_range) sanitized.vocal_range = 'Alto';
     if (!sanitized.availability) sanitized.availability = 'Available';
+    // Protect database from massive base64 payloads (>50KB) that cause quota exhaustion
+    if (sanitized.avatar && typeof sanitized.avatar === 'string' && sanitized.avatar.startsWith('data:image/') && sanitized.avatar.length > 50000) {
+      console.warn('Excessively large avatar string detected in team_members (>50KB). Resetting to initials to protect egress quota.');
+      sanitized.avatar = sanitized.name ? sanitized.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() : 'TM';
+    }
   }
 
   return sanitized;

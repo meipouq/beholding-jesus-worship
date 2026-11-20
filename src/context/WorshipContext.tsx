@@ -156,8 +156,22 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Multi-device real-time sync with Supabase
   useEffect(() => {
-    // 1. Initial & Continuous Pull
-    const syncAll = () => {
+    let lastPullTime = 0;
+
+    // 1. Initial & On-Demand Pull
+    const syncAll = (force = false) => {
+      // Prevent background egress: do not pull if the tab/app is minimized or hidden unless forced
+      if (!force && typeof document !== 'undefined' && document.hidden) {
+        return;
+      }
+
+      // Throttle pulls to at most once every 10 seconds unless forced by a realtime event
+      const now = Date.now();
+      if (!force && now - lastPullTime < 10000) {
+        return;
+      }
+      lastPullTime = now;
+
       pullAllFromSupabase().then((res) => {
         if (res.success) {
           setMembers(StorageService.getMembers());
@@ -173,9 +187,11 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
       });
     };
 
-    syncAll();
+    // Initial sync
+    syncAll(true);
 
     // 2. Subscribe to Supabase Realtime channel for instant broadcast across devices
+    // Realtime uses lightweight WebSocket events with near-zero egress
     const client = getSupabase();
     let channel: any = null;
     if (client) {
@@ -183,7 +199,7 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
         channel = client
           .channel('worship-team-realtime')
           .on('postgres_changes', { event: '*', schema: 'public' }, () => {
-            syncAll();
+            syncAll(true);
           })
           .subscribe();
       } catch (e) {
@@ -191,10 +207,27 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
       }
     }
 
-    // 3. Ultra-responsive 4-second auto-poll fallback
-    const interval = setInterval(syncAll, 4000);
+    // 3. Smart visibility & focus sync (syncs when user returns to this tab)
+    const handleVisibilityOrFocus = () => {
+      if (typeof document !== 'undefined' && !document.hidden) {
+        const now = Date.now();
+        if (now - lastPullTime > 30000) {
+          syncAll(true);
+        }
+      }
+    };
 
-    // 4. Automatic Service Expiration & Upcoming Rotation Watcher
+    document.addEventListener('visibilitychange', handleVisibilityOrFocus);
+    window.addEventListener('focus', handleVisibilityOrFocus);
+
+    // 4. Relaxed 2-minute fallback poll (ONLY runs if tab is active/visible, NEVER in background)
+    const interval = setInterval(() => {
+      if (typeof document !== 'undefined' && !document.hidden) {
+        syncAll(false);
+      }
+    }, 120000);
+
+    // 5. Automatic Service Expiration & Upcoming Rotation Watcher
     const checkServiceExpiration = () => {
       const now = new Date();
       let hasChanges = false;
@@ -223,11 +256,13 @@ export const WorshipProvider: React.FC<{ children: React.ReactNode }> = ({ child
       }
     };
 
-    const rotationInterval = setInterval(checkServiceExpiration, 3000);
+    const rotationInterval = setInterval(checkServiceExpiration, 10000);
 
     return () => {
       clearInterval(interval);
       clearInterval(rotationInterval);
+      document.removeEventListener('visibilitychange', handleVisibilityOrFocus);
+      window.removeEventListener('focus', handleVisibilityOrFocus);
       if (client && channel) {
         client.removeChannel(channel);
       }

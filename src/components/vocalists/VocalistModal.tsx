@@ -25,16 +25,51 @@ export const VocalistModal: React.FC<VocalistModalProps> = ({ vocalist, onClose,
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Please select an image smaller than 5MB');
+    if (file.size > 10 * 1024 * 1024) {
+      alert('Please select an image smaller than 10MB');
       return;
     }
 
     const reader = new FileReader();
-    reader.onloadend = () => {
-      if (typeof reader.result === 'string') {
-        setAvatar(reader.result);
-      }
+    reader.onload = (event) => {
+      if (typeof event.target?.result !== 'string') return;
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          const maxSize = 160;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxSize) {
+              height = Math.round((height * maxSize) / width);
+              width = maxSize;
+            }
+          } else {
+            if (height > maxSize) {
+              width = Math.round((width * maxSize) / height);
+              height = maxSize;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            // Ultra-compressed lightweight JPEG (typically 5-10 KB, preventing database egress bloat)
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+            setAvatar(compressedDataUrl);
+          } else {
+            setAvatar(event.target!.result as string);
+          }
+        } catch (err) {
+          console.warn('Image compression fallback:', err);
+          setAvatar(event.target!.result as string);
+        }
+      };
+      img.src = event.target.result;
     };
     reader.readAsDataURL(file);
   };
